@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Soccer Online - Lig & Turnuva Merkezi</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pso: {
+                            dark: '#0B0F19',
+                            card: '#151D2A',
+                            border: '#232E42',
+                            accent: '#00F0FF',
+                            neonGreen: '#00FF66',
+                            neonPurple: '#7000FF',
+                            gold: '#FFD700',
+                            silver: '#C0C0C0',
+                            bronze: '#CD7F32'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Rajdhani', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19;
+            color: #F3F4F6;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        .glass-panel {
+            background: rgba(21, 29, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-interactive {
+            transition: all 0.25s ease;
+        }
+        .glass-panel-interactive:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        .text-glow-green {
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #232E42;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-pso-accent selection:text-black">
+
+    <header class="sticky top-0 z-40 glass-panel border-b border-pso-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-pso-accent to-pso-neonPurple flex items-center justify-center shadow-lg shadow-pso-accent/20">
+                        <i class="fa-solid fa-futbol text-2xl text-black"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-heading font-bold text-2xl tracking-wider text-white">PSO</span>
+                            <span class="bg-pso-accent/10 border border-pso-accent/30 text-pso-accent text-xs font-semibold px-2 py-0.5 rounded-full uppercase">Süper Lig</span>
+                        </div>
+                        <p class="text-xs text-gray-400 font-medium">Pro Soccer Online Türkiye</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs (Desktop) -->
+                <nav class="hidden md:flex items-center space-x-1 bg-black/30 p-1.5 rounded-xl border border-white/5">
+                    <button onclick="switchTab('standings')" id="nav-standings" class="tab-btn active px-4 py-2 rounded-lg font-heading font-semibold text-base transition-all flex items-center gap-2 text-pso-accent bg-pso-card">
+                        <i class="fa-solid fa-trophy text-sm"></i> Puan Durumu
+                    </button>
+                    <button onclick="switchTab('fixtures')" id="nav-fixtures" class="tab-btn px-4 py-2 rounded-lg font-heading font-semibold text-base transition-all flex items-center gap-2 text-gray-400 hover:text-white">
+                        <i class="fa-regular fa-calendar-alt text-sm"></i> Fikstür & Maçlar
+                    </button>
+                    <button onclick="switchTab('stats')" id="nav-stats" class="tab-btn px-4 py-2 rounded-lg font-heading font-semibold text-base transition-all flex items-center gap-2 text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-chart-line text-sm"></i> İstatistikler
+                    </button>
+                    <button onclick="switchTab('teams')" id="nav-teams" class="tab-btn px-4 py-2 rounded-lg font-heading font-semibold text-base transition-all flex items-center gap-2 text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-shield-halved text-sm"></i> Takımlar
+                    </button>
+                    <button onclick="switchTab('news')" id="nav-news" class="tab-btn px-4 py-2 rounded-lg font-heading font-semibold text-base transition-all flex items-center gap-2 text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-bullhorn text-sm"></i> Duyurular
+                    </button>
+                </nav>
+
+                <!-- Admin Toggle & Quick Stats -->
+                <div class="flex items-center gap-3">
+                    <button id="admin-toggle-btn" onclick="toggleAdminMode()" class="px-3.5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider border transition-all flex items-center gap-2 bg-pso-card border-pso-border text-gray-300 hover:border-pso-accent">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span id="admin-btn-text">Yönetici Modu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Bar -->
+        <div class="md:hidden flex overflow-x-auto border-t border-pso-border bg-black/40 px-2 py-2 gap-1 no-scrollbar">
+            <button onclick="switchTab('standings')" id="mob-nav-standings" class="tab-btn-mob px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap bg-pso-card text-pso-accent border border-pso-accent/30">Puan Durumu</button>
+            <button onclick="switchTab('fixtures')" id="mob-nav-fixtures" class="tab-btn-mob px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap text-gray-400">Fikstür</button>
+            <button onclick="switchTab('stats')" id="mob-nav-stats" class="tab-btn-mob px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap text-gray-400">İstatistikler</button>
+            <button onclick="switchTab('teams')" id="mob-nav-teams" class="tab-btn-mob px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap text-gray-400">Takımlar</button>
+            <button onclick="switchTab('news')" id="mob-nav-news" class="tab-btn-mob px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap text-gray-400">Duyurular</button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Admin Control Banner (Visible when admin mode is ON) -->
+        <div id="admin-banner" class="hidden glass-panel border-l-4 border-l-pso-neonGreen p-4 rounded-xl flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-pso-neonGreen/10 flex items-center justify-center text-pso-neonGreen">
+                    <i class="fa-solid fa-lock-open text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading font-bold text-lg text-white">Yönetici Paneli Aktif</h3>
+                    <p class="text-xs text-gray-400">Maç skoru ekleyebilir, oyuncu/takım düzenleyebilir ve lig duyuruları yayınlayabilirsiniz.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="openAddMatchModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-pso-accent/20 text-pso-accent border border-pso-accent/30 hover:bg-pso-accent hover:text-black transition-all">
+                    <i class="fa-solid fa-plus mr-1"></i> Maç / Fikstür Ekle
+                </button>
+                <button onclick="openAddTeamModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-pso-neonPurple/20 text-pso-neonPurple border border-pso-neonPurple/30 hover:bg-pso-neonPurple hover:text-white transition-all">
+                    <i class="fa-solid fa-shield-plus mr-1"></i> Takım Ekle
+                </button>
+                <button onclick="resetToDefaultData()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Verileri Sıfırla
+                </button>
+            </div>
+        </div>
+
+        <!-- SECTION 1: STANDINGS TAB -->
+        <section id="tab-standings" class="tab-content block space-y-6">
+            
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-2xl glass-panel p-6 sm:p-8 border border-pso-border bg-gradient-to-r from-pso-card via-pso-card to-pso-dark">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-pso-accent">
+                    <i class="fa-solid fa-trophy text-[220px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="text-pso-accent text-xs font-bold uppercase tracking-widest bg-pso-accent/10 px-3 py-1 rounded-full border border-pso-accent/20">Sezon 4 - Top 8 Lig</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white mt-3 mb-2">PSO TÜRKİYE ŞAMPİYONASI</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Türkiye'nin en rekabetçi Pro Soccer Online topluluk ligi. İlk 4 takım Play-off Şampiyonlar Grubu'na kalırken, son 2 takım küme düşme hattındadır.
+                    </p>
+                    <div class="mt-5 flex flex-wrap gap-4 text-xs font-medium text-gray-300">
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-pso-accent"></span> Şampiyonlar Ligi (1-2)</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Play-off Grubu (3-4)</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-500"></span> Küme Düşme Hattı (7-8)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="glass-panel rounded-2xl overflow-hidden border border-pso-border">
+                <div class="p-4 sm:p-6 border-b border-pso-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h3 class="font-heading font-bold text-xl text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-pso-accent"></i> Güncel Lig Puan Cetveli
+                    </h3>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <input type="text" id="standing-search" oninput="renderStandings()" placeholder="Takım ara..." class="bg-black/40 border border-pso-border rounded-xl px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-pso-accent w-full sm:w-48">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-black/50 text-gray-400 font-heading font-bold text-xs uppercase tracking-wider border-b border-pso-border">
+                                <th class="py-3.5 px-4 text-center w-12">Sıra</th>
+                                <th class="py-3.5 px-4">Takım</th>
+                                <th class="py-3.5 px-3 text-center">O</th>
+                                <th class="py-3.5 px-3 text-center">G</th>
+                                <th class="py-3.5 px-3 text-center">B</th>
+                                <th class="py-3.5 px-3 text-center">M</th>
+                                <th class="py-3.5 px-3 text-center hidden md:table-cell">AG</th>
+                                <th class="py-3.5 px-3 text-center hidden md:table-cell">YG</th>
+                                <th class="py-3.5 px-3 text-center">AV</th>
+                                <th class="py-3.5 px-4 text-center font-bold text-pso-accent">PUAN</th>
+                                <th class="py-3.5 px-4 text-center hidden sm:table-cell">Form</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody" class="divide-y divide-pso-border/50 text-gray-200">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-fixtures" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 rounded-2xl border border-pso-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-pso-accent/10 flex items-center justify-center text-pso-accent">
+                        <i class="fa-regular fa-calendar-check text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-xl text-white">Fikstür ve Maç Sonuçları</h3>
+                        <p class="text-xs text-gray-400">Haftalık karşılaşmalar ve detaylı istatistikler</p>
+                    </div>
+                </div>
+
+                <!-- Week Selector Buttons -->
+                <div id="week-selector" class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                    <!-- JS populate week tabs -->
+                </div>
+            </div>
+
+            <!-- Matches List Container -->
+            <div id="matches-container" class="grid grid-cols-1 gap-4">
+                <!-- JS populated matches -->
+            </div>
+        </section>
+
+        <section id="tab-stats" class="tab-content hidden space-y-6">
+            
+            <!-- Player of the Month Highlight Card -->
+            <div class="glass-panel p-6 rounded-2xl border border-pso-accent/30 bg-gradient-to-r from-pso-card via-pso-card to-pso-neonPurple/20 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="relative">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-pso-accent to-pso-gold p-1 shadow-lg shadow-pso-accent/20">
+                            <div class="w-full h-full bg-pso-card rounded-xl flex items-center justify-center overflow-hidden text-3xl font-heading font-bold text-pso-accent">
+                                <i class="fa-solid fa-crown text-pso-gold"></i>
+                            </div>
+                        </div>
+                        <span class="absolute -bottom-2 -right-2 bg-pso-gold text-black text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">POTM</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-pso-gold uppercase tracking-wider">Haftanın En Değerli Oyuncusu (MVP)</span>
+                        <h3 id="potm-name" class="font-heading font-extrabold text-2xl text-white mt-0.5">Eren "Falcon" Yılmaz</h3>
+                        <p id="potm-team" class="text-xs text-gray-400">Anadolu Esports • Santrafor (ST)</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6 border-t md:border-t-0 md:border-l border-pso-border pt-4 md:pt-0 md:pl-6 w-full md:w-auto justify-around">
+                    <div class="text-center">
+                        <p class="text-xs text-gray-400">Gol</p>
+                        <p id="potm-goals" class="font-heading font-bold text-2xl text-pso-accent">14</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-gray-400">Asist</p>
+                        <p id="potm-assists" class="font-heading font-bold text-2xl text-pso-neonGreen">6</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-gray-400">Maç Adedi</p>
+                        <p id="potm-matches" class="font-heading font-bold text-2xl text-white">5</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboards Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Top Goal Scorers -->
+                <div class="glass-panel rounded-2xl overflow-hidden border border-pso-border">
+                    <div class="p-4 border-b border-pso-border bg-black/20 flex items-center justify-between">
+                        <h4 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-soccer-ball text-pso-accent"></i> Gol Krallığı
+                        </h4>
+                        <span class="text-xs text-gray-400">Top 5</span>
+                    </div>
+                    <div id="top-scorers-list" class="divide-y divide-pso-border/50">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+                <!-- Top Assist Leaders -->
+                <div class="glass-panel rounded-2xl overflow-hidden border border-pso-border">
+                    <div class="p-4 border-b border-pso-border bg-black/20 flex items-center justify-between">
+                        <h4 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-hands-helping text-pso-neonGreen"></i> Asist Krallığı
+                        </h4>
+                        <span class="text-xs text-gray-400">Top 5</span>
+                    </div>
+                    <div id="top-assists-list" class="divide-y divide-pso-border/50">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+                <!-- Top Goalkeepers -->
+                <div class="glass-panel rounded-2xl overflow-hidden border border-pso-border">
+                    <div class="p-4 border-b border-pso-border bg-black/20 flex items-center justify-between">
+                        <h4 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-mitten text-pso-gold"></i> En İyi Kaleciler (Clean Sheets)
+                        </h4>
+                        <span class="text-xs text-gray-400">Gol Yemediği Maçlar</span>
+                    </div>
+                    <div id="top-goalkeepers-list" class="divide-y divide-pso-border/50">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+                <!-- Discipline / Fair Play Table -->
+                <div class="glass-panel rounded-2xl overflow-hidden border border-pso-border">
+                    <div class="p-4 border-b border-pso-border bg-black/20 flex items-center justify-between">
+                        <h4 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-rectangle-list text-yellow-500"></i> Disiplin Tablosu
+                        </h4>
+                        <span class="text-xs text-gray-400">Kartlar</span>
+                    </div>
+                    <div id="discipline-list" class="divide-y divide-pso-border/50">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="tab-teams" class="tab-content hidden space-y-6">
+            <!-- Filter & Search Bar -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 glass-panel p-4 rounded-2xl border border-pso-border">
+                <div class="relative w-full sm:w-72">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                    <input type="text" id="team-search" oninput="renderTeams()" placeholder="Takım veya oyuncu ara..." class="w-full bg-black/40 border border-pso-border rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-pso-accent">
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-400">
+                    <span>Toplam Takım: <strong id="team-count" class="text-pso-accent">0</strong></span>
+                </div>
+            </div>
+
+            <!-- Teams Cards Grid -->
+            <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS Render -->
+            </div>
+
+            <!-- Free Agents Section -->
+            <div class="glass-panel rounded-2xl p-6 border border-pso-border space-y-4">
+                <div class="flex items-center justify-between border-b border-pso-border pb-4">
+                    <div>
+                        <h3 class="font-heading font-bold text-xl text-white flex items-center gap-2">
+                            <i class="fa-solid fa-users-slash text-pso-accent"></i> Serbest Oyuncular Havuzu (Free Agents)
+                        </h3>
+                        <p class="text-xs text-gray-400">Takımı olmayan ve transfer bekleyen oyuncular</p>
+                    </div>
+                    <button onclick="openAddFreeAgentModal()" class="px-3 py-1.5 rounded-xl bg-pso-accent/10 border border-pso-accent/30 text-pso-accent hover:bg-pso-accent hover:text-black text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-plus mr-1"></i> Oyuncu İlanı Ver
+                    </button>
+                </div>
+                <div id="free-agents-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <!-- JS Render -->
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-news" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-pso-border space-y-6">
+                <div class="flex items-center justify-between border-b border-pso-border pb-4">
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl text-white flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn text-pso-accent"></i> Lig Duyuruları & Kurallar
+                        </h3>
+                        <p class="text-xs text-gray-400">PSO Türkiye Süper Ligi resmi duyuruları</p>
+                    </div>
+                    <button id="add-news-btn" onclick="openAddNewsModal()" class="hidden px-3 py-1.5 rounded-xl bg-pso-neonGreen/20 border border-pso-neonGreen/30 text-pso-neonGreen hover:bg-pso-neonGreen hover:text-black text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-plus mr-1"></i> Yeni Duyuru Ekle
+                    </button>
+                </div>
+
+                <div id="news-container" class="space-y-4">
+                    <!-- JS Render -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Match Details (Stats & Scorers) -->
+    <div id="modal-match-details" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel bg-pso-card border border-pso-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 relative">
+            <button onclick="closeModal('modal-match-details')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div id="match-details-content">
+                <!-- JS populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add / Edit Match Result -->
+    <div id="modal-add-match" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel bg-pso-card border border-pso-border rounded-2xl max-w-lg w-full p-6 space-y-4 relative">
+            <button onclick="closeModal('modal-add-match')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="font-heading font-bold text-xl text-white">Maç Skoru / Detayı Ekle</h3>
+            <form id="add-match-form" onsubmit="handleSaveMatch(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-400 mb-1">Hafta Seçin</label>
+                    <select id="form-match-week" class="w-full bg-black/50 border border-pso-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pso-accent">
+                        <option value="1">1. Hafta</option>
+                        <option value="2">2. Hafta</option>
+                        <option value="3">3. Hafta</option>
+                        <option value="4">4. Hafta</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-400 mb-1">Ev Sahibi Takım</label>
+                        <select id="form-home-team" class="w-full bg-black/50 border border-pso-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pso-accent"></select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">Deplasman Takım</label>
+                        <select id="form-away-team" class="w-full bg-black/50 border border-pso-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pso-accent"></select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-400 mb-1">Ev Sahibi Skor</label>
+                        <input type="number" id="form-home-score" min="0" value="0" class="w-full bg-black/50 border border-pso-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pso-accent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">Deplasman Skor</label>
+                        <input type="number" id="form-away-score" min="0" value="0" class="w-full bg-black/50 border border-pso-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pso-accent">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1">Gol Atanlar (Örn: Eren Yılmaz (2), Ahmet Kaya (1))</label>
+                    <input type="text" id="form-scorers" placeholder="Oyuncu Adı (Gol Sayısı)" class="w-full bg-black/50 border border-pso-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pso-accent">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-pso-accent text-black font-heading font-bold text-sm uppercase hover:bg-cyan-400 transition-all">Maçı Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="border-t border-pso-border bg-black/60 py-6 mt-12 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-pso-accent"></i>
+                <span>Pro Soccer Online League Hub &copy; 2026</span>
+            </div>
+            <p>Esports turnuva sistemi. Pro Soccer Online ile resmi bir bağı yoktur.</p>
+        </div>
+    </footer>
+
+    <script>
+        // State & LocalStorage Management
+        const STORAGE_KEY = 'pso_league_data_v1';
+        let isAdmin = false;
+        let activeWeek = 1;
+
+        // Default Seed Data
+        const defaultData = {
+            teams: [
+                { id: 't1', name: 'Anadolu Esports', captain: 'Eren "Falcon"', logo: '🛡️', color: 'from-blue-600 to-indigo-900', played: 5, wins: 4, draws: 1, losses: 0, gf: 15, ga: 4 },
+                { id: 't2', name: 'Bosphorus Lions', captain: 'Kaan "K1NG"', logo: '🦁', color: 'from-amber-500 to-red-800', played: 5, wins: 3, draws: 2, losses: 0, gf: 12, ga: 5 },
+                { id: 't3', name: 'Cyber Eagles', captain: 'Burak "Vortex"', logo: '🦅', color: 'from-cyan-500 to-blue-900', played: 5, wins: 3, draws: 1, losses: 1, gf: 10, ga: 7 },
+                { id: 't4', name: 'Vanguard FC', captain: 'Mert "Shadow"', logo: '⚔️', color: 'from-purple-600 to-pink-900', played: 5, wins: 2, draws: 1, losses: 2, gf: 8, ga: 8 },
+                { id: 't5', name: 'Ottoman Stars', captain: 'Sinan "Reis"', logo: '🌙', color: 'from-red-600 to-amber-700', played: 5, wins: 2, draws: 0, losses: 3, gf: 7, ga: 10 },
+                { id: 't6', name: 'Anatolia Striker', captain: 'Oğuz "Sniper"', logo: '🎯', color: 'from-emerald-500 to-teal-900', played: 5, wins: 1, draws: 1, losses: 3, gf: 6, ga: 11 },
+                { id: 't7', name: 'Pera City FC', captain: 'Uğur "Phantom"', logo: '🐺', color: 'from-gray-600 to-slate-900', played: 5, wins: 1, draws: 0, losses: 4, gf: 5, ga: 12 },
+                { id: 't8', name: 'Nexus Gaming', captain: 'Yusuf "Apex"', logo: '⚡', color: 'from-yellow-500 to-orange-800', played: 5, wins: 0, draws: 2, losses: 3, gf: 4, ga: 10 }
+            ],
+            players: [
+                { id: 'p1', name: 'Eren Yılmaz', nickname: 'Falcon', teamId: 't1', position: 'ST', goals: 8, assists: 4, cleanSheets: 0, yellowCards: 1, redCards: 0 },
+                { id: 'p2', name: 'Kaan Demir', nickname: 'K1NG', teamId: 't2', position: 'ST', goals: 6, assists: 3, cleanSheets: 0, yellowCards: 2, redCards: 0 },
+                { id: 'p3', name: 'Burak Çelik', nickname: 'Vortex', teamId: 't3', position: 'CM', goals: 4, assists: 5, cleanSheets: 0, yellowCards: 0, redCards: 0 },
+                { id: 'p4', name: 'Alperen Şahin', nickname: 'Wall', teamId: 't1', position: 'GK', goals: 0, assists: 1, cleanSheets: 3, yellowCards: 0, redCards: 0 },
+                { id: 'p5', name: 'Mert Aksoy', nickname: 'Shadow', teamId: 't4', position: 'CB', goals: 2, assists: 1, cleanSheets: 1, yellowCards: 3, redCards: 1 },
+                { id: 'p6', name: 'Ahmet Kaya', nickname: 'Matrix', teamId: 't2', position: 'GK', goals: 0, assists: 0, cleanSheets: 2, yellowCards: 0, redCards: 0 }
+            ],
+            matches: [
+                { id: 'm1', week: 1, homeId: 't1', awayId: 't5', homeScore: 3, awayScore: 1, completed: true, date: '12 Ekim 2026', mvp: 'Eren Yılmaz', details: { possession: '58% - 42%', shots: '12 - 5', saves: '2 - 6' }, scorers: 'Eren Yılmaz (2), Burak Çelik (1) | Sinan Reis (1)' },
+                { id: 'm2', week: 1, homeId: 't2', awayId: 't6', homeScore: 2, awayScore: 0, completed: true, date: '12 Ekim 2026', mvp: 'Kaan Demir', details: { possession: '61% - 39%', shots: '10 - 3', saves: '1 - 4' }, scorers: 'Kaan Demir (2)' },
+                { id: 'm3', week: 1, homeId: 't3', awayId: 't7', homeScore: 4, awayScore: 1, completed: true, date: '13 Ekim 2026', mvp: 'Burak Çelik', details: { possession: '52% - 48%', shots: '14 - 7', saves: '3 - 5' }, scorers: 'Burak Çelik (2), Caner (2) | Uğur (1)' },
+                { id: 'm4', week: 1, homeId: 't4', awayId: 't8', homeScore: 1, awayScore: 1, completed: true, date: '13 Ekim 2026', mvp: 'Mert Aksoy', details: { possession: '50% - 50%', shots: '8 - 8', saves: '4 - 4' }, scorers: 'Mert (1) | Yusuf (1)' },
+                { id: 'm5', week: 2, homeId: 't1', awayId: 't2', homeScore: 2, awayScore: 2, completed: true, date: '19 Ekim 2026', mvp: 'Eren Yılmaz', details: { possession: '54% - 46%', shots: '11 - 9', saves: '3 - 4' }, scorers: 'Eren Yılmaz (1), Hakan (1) | Kaan Demir (2)' },
+                { id: 'm6', week: 2, homeId: 't3', awayId: 't4', homeScore: 2, awayScore: 1, completed: true, date: '19 Ekim 2026', mvp: 'Vortex', details: { possession: '49% - 51%', shots: '7 - 6', saves: '2 - 3' }, scorers: 'Vortex (1), Emre (1) | Shadow (1)' }
+            ],
+            freeAgents: [
+                { id: 'fa1', name: 'Cem "Ghost" Öztürk', position: 'GK / CB', note: 'Eski Şampiyonluk tecrübesi, DC aktif, her gün müsait.' },
+                { id: 'fa2', name: 'Onur "Flash" Yıldız', position: 'ST / RW', note: 'Bitiriciliği yüksek, pas trafiğine uyan takım arıyor.' }
+            ],
+            news: [
+                { id: 'n1', title: 'PSO Türkiye Süper Ligi 4. Sezon Başladı!', date: '10 Ekim 2026', author: 'Lig Yönetimi', content: '8 elit takımın mücadelesi resmi olarak start aldı. Tüm takımlara ve oyunculara fair-play çerçevesinde başarılar dileriz.' },
+                { id: 'n2', title: 'Haftalık Oyuncu İstatistikleri Güncellendi', date: '14 Ekim 2026', author: 'İstatistik Departmanı', content: '1. Hafta maçlarının tamamlanmasının ardından Eren Yılmaz liderliği ele geçirdi.' }
+            ]
+        };
+
+        let appData = loadData();
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : defaultData;
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            refreshAllViews();
+        }
+
+        function resetToDefaultData() {
+            if (confirm('Tüm veriler varsayılan demo haline sıfırlanacak. Emin misiniz?')) {
+                appData = JSON.parse(JSON.stringify(defaultData));
+                saveData();
+            }
+        }
+
+        // Toggle Admin Mode
+        function toggleAdminMode() {
+            isAdmin = !isAdmin;
+            const banner = document.getElementById('admin-banner');
+            const btnText = document.getElementById('admin-btn-text');
+            const addNewsBtn = document.getElementById('add-news-btn');
+
+            if (isAdmin) {
+                banner.classList.remove('hidden');
+                btnText.innerText = 'Yönetici Modu (AÇIK)';
+                if (addNewsBtn) addNewsBtn.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+                btnText.innerText = 'Yönetici Modu';
+                if (addNewsBtn) addNewsBtn.classList.add('hidden');
+            }
+            refreshAllViews();
+        }
+
+        // Navigation Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-pso-accent', 'bg-pso-card');
+                btn.classList.add('text-gray-400');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-pso-accent', 'bg-pso-card');
+                activeNav.classList.remove('text-gray-400');
+            }
+            
+            // Mobile Tabs UI
+            document.querySelectorAll('.tab-btn-mob').forEach(btn => {
+                btn.classList.remove('bg-pso-card', 'text-pso-accent', 'border', 'border-pso-accent/30');
+                btn.classList.add('text-gray-400');
+            });
+            const mobActiveNav = document.getElementById(`mob-nav-${tabId}`);
+            if (mobActiveNav) {
+                mobActiveNav.classList.add('bg-pso-card', 'text-pso-accent', 'border', 'border-pso-accent/30');
+            }
+        }
+
+        function renderStandings() {
+            const tbody = document.getElementById('standings-tbody');
+            const searchVal = document.getElementById('standing-search').value.toLowerCase();
+
+            // Calculate & Sort Teams
+            let sortedTeams = appData.teams.map(t => {
+                const pts = (t.wins * 3) + (t.draws * 1);
+                const gd = t.gf - t.ga;
+                return { ...t, pts, gd };
+            }).sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+
+            tbody.innerHTML = '';
+
+            sortedTeams.filter(t => t.name.toLowerCase().includes(searchVal)).forEach((team, index) => {
+                const rank = index + 1;
+                let zoneColor = 'border-l-transparent';
+                if (rank <= 2) zoneColor = 'border-l-4 border-l-pso-accent bg-pso-accent/5';
+                else if (rank <= 4) zoneColor = 'border-l-4 border-l-blue-500 bg-blue-500/5';
+                else if (rank >= 7) zoneColor = 'border-l-4 border-l-red-500 bg-red-500/5';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-white/5 transition-colors ${zoneColor}">
+                        <td class="py-3 px-4 text-center font-heading font-bold text-base text-gray-300">${rank}</td>
+                        <td class="py-3 px-4 font-semibold text-white flex items-center gap-3">
+                            <span class="text-xl">${team.logo}</span>
+                            <div>
+                                <div class="font-heading font-bold text-base">${team.name}</div>
+                                <div class="text-[10px] text-gray-400">Kaptan: ${team.captain}</div>
+                            </div>
+                        </td>
+                        <td class="py-3 px-3 text-center text-gray-300 font-medium">${team.played}</td>
+                        <td class="py-3 px-3 text-center text-emerald-400 font-semibold">${team.wins}</td>
+                        <td class="py-3 px-3 text-center text-yellow-400 font-semibold">${team.draws}</td>
+                        <td class="py-3 px-3 text-center text-rose-400 font-semibold">${team.losses}</td>
+                        <td class="py-3 px-3 text-center text-gray-400 hidden md:table-cell">${team.gf}</td>
+                        <td class="py-3 px-3 text-center text-gray-400 hidden md:table-cell">${team.ga}</td>
+                        <td class="py-3 px-3 text-center font-semibold ${team.gd >= 0 ? 'text-pso-neonGreen' : 'text-rose-400'}">${team.gd > 0 ? '+' + team.gd : team.gd}</td>
+                        <td class="py-3 px-4 text-center font-heading font-extrabold text-lg text-pso-accent">${team.pts}</td>
+                        <td class="py-3 px-4 text-center hidden sm:table-cell">
+                            <div class="flex items-center justify-center gap-1 text-[10px] font-bold">
+                                <span class="w-5 h-5 rounded flex items-center justify-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">G</span>
+                                <span class="w-5 h-5 rounded flex items-center justify-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">G</span>
+                                <span class="w-5 h-5 rounded flex items-center justify-center bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">B</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderFixtures() {
+            const selector = document.getElementById('week-selector');
+            const container = document.getElementById('matches-container');
+
+            // Weeks buttons
+            const weeks = [1, 2, 3, 4];
+            selector.innerHTML = weeks.map(w => `
+                <button onclick="changeWeek(${w})" class="px-3.5 py-1.5 rounded-xl font-heading font-semibold text-xs transition-all whitespace-nowrap ${activeWeek === w ? 'bg-pso-accent text-black shadow-lg shadow-pso-accent/20' : 'bg-black/40 text-gray-400 hover:text-white border border-pso-border'}">
+                    ${w}. Hafta
+                </button>
+            `).join('');
+
+            const matches = appData.matches.filter(m => m.week === activeWeek);
+            container.innerHTML = '';
+
+            if (matches.length === 0) {
+                container.innerHTML = `<div class="glass-panel p-8 text-center text-gray-400 rounded-2xl">Bu haftaya ait fikstür bulunamadı.</div>`;
+                return;
+            }
+
+            matches.forEach(m => {
+                const home = appData.teams.find(t => t.id === m.homeId) || { name: 'Bilinmiyor', logo: '⚽' };
+                const away = appData.teams.find(t => t.id === m.awayId) || { name: 'Bilinmiyor', logo: '⚽' };
+
+                container.innerHTML += `
+                    <div class="glass-panel glass-panel-interactive rounded-2xl p-4 sm:p-5 border border-pso-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="text-xs text-gray-500 font-medium flex items-center gap-2">
+                            <i class="fa-regular fa-clock"></i> ${m.date}
+                        </div>
+
+                        <!-- Match Scoreboard -->
+                        <div class="flex items-center justify-between w-full sm:w-2/3 gap-4">
+                            <!-- Home Team -->
+                            <div class="flex items-center justify-end gap-3 flex-1 text-right">
+                                <span class="font-heading font-bold text-base sm:text-lg text-white">${home.name}</span>
+                                <span class="text-2xl">${home.logo}</span>
+                            </div>
+
+                            <!-- Score Badge -->
+                            <div class="px-4 py-2 rounded-xl bg-black/60 border border-pso-border flex items-center gap-3">
+                                <span class="font-heading font-extrabold text-2xl text-pso-accent">${m.completed ? m.homeScore : '-'}</span>
+                                <span class="text-gray-600 text-xs font-bold">:</span>
+                                <span class="font-heading font-extrabold text-2xl text-pso-accent">${m.completed ? m.awayScore : '-'}</span>
+                            </div>
+
+                            <!-- Away Team -->
+                            <div class="flex items-center justify-start gap-3 flex-1 text-left">
+                                <span class="text-2xl">${away.logo}</span>
+                                <span class="font-heading font-bold text-base sm:text-lg text-white">${away.name}</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex items-center gap-2">
+                            <button onclick="openMatchDetail('${m.id}')" class="px-3 py-1.5 rounded-lg bg-pso-card border border-pso-border hover:border-pso-accent text-xs text-gray-300 transition-all flex items-center gap-1">
+                                <i class="fa-solid fa-chart-bar text-pso-accent"></i> Detay
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function changeWeek(w) {
+            activeWeek = w;
+            renderFixtures();
+        }
+
+        function renderStats() {
+            // Top Goal Scorers
+            const scorersContainer = document.getElementById('top-scorers-list');
+            const sortedScorers = [...appData.players].sort((a,b) => b.goals - a.goals).slice(0, 5);
+            scorersContainer.innerHTML = sortedScorers.map((p, idx) => {
+                const team = appData.teams.find(t => t.id === p.teamId) || { name: 'Serbest', logo: '⚽' };
+                return `
+                    <div class="p-3 sm:p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="font-heading font-bold text-base w-6 text-center ${idx === 0 ? 'text-pso-gold' : 'text-gray-400'}">#${idx + 1}</span>
+                            <div>
+                                <p class="font-heading font-bold text-base text-white">${p.name} <span class="text-xs font-normal text-pso-accent">"${p.nickname}"</span></p>
+                                <p class="text-xs text-gray-400">${team.logo} ${team.name} • ${p.position}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-heading font-extrabold text-xl text-pso-accent">${p.goals}</span>
+                            <span class="text-[10px] text-gray-500 uppercase block">Gol</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Top Assist Leaders
+            const assistsContainer = document.getElementById('top-assists-list');
+            const sortedAssists = [...appData.players].sort((a,b) => b.assists - a.assists).slice(0, 5);
+            assistsContainer.innerHTML = sortedAssists.map((p, idx) => {
+                const team = appData.teams.find(t => t.id === p.teamId) || { name: 'Serbest', logo: '⚽' };
+                return `
+                    <div class="p-3 sm:p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="font-heading font-bold text-base w-6 text-center ${idx === 0 ? 'text-pso-silver' : 'text-gray-400'}">#${idx + 1}</span>
+                            <div>
+                                <p class="font-heading font-bold text-base text-white">${p.name} <span class="text-xs font-normal text-pso-neonGreen">"${p.nickname}"</span></p>
+                                <p class="text-xs text-gray-400">${team.logo} ${team.name} • ${p.position}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-heading font-extrabold text-xl text-pso-neonGreen">${p.assists}</span>
+                            <span class="text-[10px] text-gray-500 uppercase block">Asist</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Goalkeepers
+            const gksContainer = document.getElementById('top-goalkeepers-list');
+            const sortedGks = appData.players.filter(p => p.position === 'GK').sort((a,b) => b.cleanSheets - a.cleanSheets);
+            gksContainer.innerHTML = sortedGks.map((p, idx) => {
+                const team = appData.teams.find(t => t.id === p.teamId) || { name: 'Serbest', logo: '🧤' };
+                return `
+                    <div class="p-3 sm:p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="font-heading font-bold text-base w-6 text-center text-pso-gold">#${idx + 1}</span>
+                            <div>
+                                <p class="font-heading font-bold text-base text-white">${p.name} <span class="text-xs font-normal text-pso-gold">"${p.nickname}"</span></p>
+                                <p class="text-xs text-gray-400">${team.logo} ${team.name}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-heading font-extrabold text-xl text-pso-gold">${p.cleanSheets}</span>
+                            <span class="text-[10px] text-gray-500 uppercase block">Göz Açtırmayan</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Discipline
+            const discContainer = document.getElementById('discipline-list');
+            discContainer.innerHTML = appData.players.filter(p => p.yellowCards > 0 || p.redCards > 0).map(p => {
+                const team = appData.teams.find(t => t.id === p.teamId) || { name: 'Serbest' };
+                return `
+                    <div class="p-3 sm:p-4 flex items-center justify-between hover:bg-white/5 transition-colors text-xs">
+                        <div>
+                            <p class="font-heading font-bold text-sm text-white">${p.name}</p>
+                            <p class="text-gray-400">${team.name}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="flex items-center gap-1 font-bold text-yellow-400"><i class="fa-solid fa-square"></i> ${p.yellowCards}</span>
+                            <span class="flex items-center gap-1 font-bold text-red-500"><i class="fa-solid fa-square"></i> ${p.redCards}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTeams() {
+            const grid = document.getElementById('teams-grid');
+            const searchVal = document.getElementById('team-search').value.toLowerCase();
+
+            document.getElementById('team-count').innerText = appData.teams.length;
+            grid.innerHTML = '';
+
+            const filteredTeams = appData.teams.filter(t => t.name.toLowerCase().includes(searchVal));
+
+            filteredTeams.forEach(team => {
+                const squad = appData.players.filter(p => p.teamId === team.id);
+
+                grid.innerHTML += `
+                    <div class="glass-panel glass-panel-interactive rounded-2xl p-5 border border-pso-border space-y-4">
+                        <!-- Team Header -->
+                        <div class="flex items-center justify-between border-b border-pso-border pb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${team.color} flex items-center justify-center text-2xl shadow-md">
+                                    ${team.logo}
+                                </div>
+                                <div>
+                                    <h4 class="font-heading font-bold text-lg text-white">${team.name}</h4>
+                                    <p class="text-xs text-gray-400">Kaptan: <span class="text-pso-accent">${team.captain}</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Squad List -->
+                        <div class="space-y-2">
+                            <p class="text-[11px] font-bold uppercase text-gray-500 tracking-wider">Kadro Oyuncuları (${squad.length})</p>
+                            <div class="space-y-1.5">
+                                ${squad.map(p => `
+                                    <div class="flex items-center justify-between text-xs bg-black/30 px-3 py-1.5 rounded-lg">
+                                        <span class="text-gray-200 font-medium">${p.name} <span class="text-gray-500 text-[10px]">(${p.nickname})</span></span>
+                                        <span class="bg-pso-card px-2 py-0.5 rounded text-[10px] font-bold text-pso-accent">${p.position}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Free Agents Render
+            const faList = document.getElementById('free-agents-list');
+            faList.innerHTML = appData.freeAgents.map(fa => `
+                <div class="bg-black/30 border border-pso-border rounded-xl p-3 text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-white">${fa.name}</span>
+                        <span class="bg-pso-accent/20 text-pso-accent text-[10px] px-2 py-0.5 rounded font-bold">${fa.position}</span>
+                    </div>
+                    <p class="text-gray-400 text-[11px] leading-snug">${fa.note}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = appData.news.map(n => `
+                <div class="glass-panel p-5 rounded-xl border border-pso-border space-y-2">
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span class="text-pso-accent font-semibold">${n.author}</span>
+                        <span>${n.date}</span>
+                    </div>
+                    <h4 class="font-heading font-bold text-xl text-white">${n.title}</h4>
+                    <p class="text-gray-300 text-xs leading-relaxed">${n.content}</p>
+                </div>
+            `).join('');
+        }
+
+        function refreshAllViews() {
+            renderStandings();
+            renderFixtures();
+            renderStats();
+            renderTeams();
+            renderNews();
+        }
+
+        function openMatchDetail(matchId) {
+            const m = appData.matches.find(x => x.id === matchId);
+            if (!m) return;
+            const home = appData.teams.find(t => t.id === m.homeId);
+            const away = appData.teams.find(t => t.id === m.awayId);
+
+            const content = document.getElementById('match-details-content');
+            content.innerHTML = `
+                <div class="text-center space-y-4">
+                    <span class="bg-pso-accent/10 border border-pso-accent/30 text-pso-accent text-xs font-bold px-3 py-1 rounded-full uppercase">${m.week}. Hafta Karşılaşması</span>
+                    <div class="flex items-center justify-around my-4">
+                        <div class="text-center">
+                            <span class="text-4xl block mb-1">${home.logo}</span>
+                            <h4 class="font-heading font-bold text-lg text-white">${home.name}</h4>
+                        </div>
+                        <div class="text-3xl font-heading font-extrabold text-pso-accent px-4 py-2 bg-black/50 rounded-xl border border-pso-border">
+                            ${m.homeScore} - ${m.awayScore}
+                        </div>
+                        <div class="text-center">
+                            <span class="text-4xl block mb-1">${away.logo}</span>
+                            <h4 class="font-heading font-bold text-lg text-white">${away.name}</h4>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-pso-border pt-4 text-left space-y-3">
+                        <h5 class="font-heading font-bold text-sm text-pso-accent uppercase">Maç Detayları</h5>
+                        <div class="bg-black/30 p-3 rounded-xl text-xs space-y-2">
+                            <p><strong class="text-gray-400">Gol Atanlar:</strong> <span class="text-white">${m.scorers || 'Bilgi yok'}</span></p>
+                            <p><strong class="text-gray-400">Maçın Adamı (MOTM):</strong> <span class="text-pso-gold font-bold">${m.mvp || 'Bilinmiyor'}</span></p>
+                            <p><strong class="text-gray-400">Topla Oynama:</strong> <span class="text-white">${m.details?.possession || '50% - 50%'}</span></p>
+                            <p><strong class="text-gray-400">Şutlar:</strong> <span class="text-white">${m.details?.shots || '0 - 0'}</span></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-match-details').classList.remove('hidden');
+        }
+
+        function openAddMatchModal() {
+            const homeSelect = document.getElementById('form-home-team');
+            const awaySelect = document.getElementById('form-away-team');
+
+            homeSelect.innerHTML = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            awaySelect.innerHTML = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+            document.getElementById('modal-add-match').classList.remove('hidden');
+        }
+
+        function handleSaveMatch(e) {
+            e.preventDefault();
+            const week = parseInt(document.getElementById('form-match-week').value);
+            const homeId = document.getElementById('form-home-team').value;
+            const awayId = document.getElementById('form-away-team').value;
+            const homeScore = parseInt(document.getElementById('form-home-score').value);
+            const awayScore = parseInt(document.getElementById('form-away-score').value);
+            const scorers = document.getElementById('form-scorers').value;
+
+            if (homeId === awayId) {
+                alert('Ev sahibi ve Deplasman takımı aynı olamaz!');
+                return;
+            }
+
+            const newMatch = {
+                id: 'm_' + Date.now(),
+                week,
+                homeId,
+                awayId,
+                homeScore,
+                awayScore,
+                completed: true,
+                date: 'Canlı Eklendi',
+                mvp: 'Belirlenmedi',
+                scorers,
+                details: { possession: '50% - 50%', shots: '8 - 8', saves: '3 - 3' }
+            };
+
+            // Update Team Standings automatically
+            const homeTeam = appData.teams.find(t => t.id === homeId);
+            const awayTeam = appData.teams.find(t => t.id === awayId);
+
+            if (homeTeam && awayTeam) {
+                homeTeam.played += 1;
+                awayTeam.played += 1;
+                homeTeam.gf += homeScore;
+                homeTeam.ga += awayScore;
+                awayTeam.gf += awayScore;
+                awayTeam.ga += homeScore;
+
+                if (homeScore > awayScore) {
+                    homeTeam.wins += 1;
+                    awayTeam.losses += 1;
+                } else if (awayScore > homeScore) {
+                    awayTeam.wins += 1;
+                    homeTeam.losses += 1;
+                } else {
+                    homeTeam.draws += 1;
+                    awayTeam.draws += 1;
+                }
+            }
+
+            appData.matches.push(newMatch);
+            saveData();
+            closeModal('modal-add-match');
+            alert('Maç skoru ve puan durumu başarıyla güncellendi!');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Initialize App
+        window.onload = function() {
+            refreshAllViews();
+        };
+    </script>
+</body>
+</html>
