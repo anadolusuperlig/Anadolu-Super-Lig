@@ -1,6 +1,683 @@
 <!DOCTYPE html>
 <html lang="tr" class="dark">
+<head><!DOCTYPE html>
+<html lang="tr" class="dark">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anadolu Süper Lig - Pro Soccer Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 900: '#0b0f19', 800: '#111827', 700: '#1f2937', 600: '#374151' },
+                        brand: { 500: '#e11d48', 600: '#be123c', 400: '#fb7185' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="glass sticky top-0 z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Dahili Vektörel Anadolu Süper Lig Logosunu Yükle -->
+                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-brand-500/60 shadow-lg shadow-brand-500/30 flex-shrink-0 bg-red-600 flex items-center justify-center">
+                    <svg viewBox="0 0 200 200" class="w-full h-full">
+                        <circle cx="100" cy="100" r="95" fill="#d90429" stroke="#ffffff" stroke-width="6"/>
+                        <circle cx="100" cy="100" r="85" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        <!-- Ay-Yıldız & Futbol Topu İkonu -->
+                        <path d="M 90 40 A 35 35 0 1 0 130 90 A 42 42 0 1 1 90 40 Z" fill="#ffffff"/>
+                        <polygon points="100,25 104,36 115,36 106,43 109,54 100,47 91,54 94,43 85,36 96,36" fill="#ffffff"/>
+                        <circle cx="100" cy="80" r="22" fill="#ffffff" stroke="#d90429" stroke-width="3"/>
+                        <path d="M 100 65 L 112 73 L 107 88 L 93 88 L 88 73 Z" fill="#d90429"/>
+                        <!-- Yazı -->
+                        <text x="100" y="130" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
+                        <text x="100" y="152" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
+                        <line x1="40" y1="165" x2="160" y2="165" stroke="#ffffff" stroke-width="2"/>
+                        <polygon points="100,160 102,166 108,166 103,170 105,176 100,172 95,176 97,170 92,166 98,166" fill="#ffffff"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent">ANADOLU SÜPER LİG</h1>
+                    <span class="text-xs font-semibold text-brand-400 tracking-wider uppercase">Pro Soccer Online Sezonu</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex space-x-1 bg-dark-800/80 p-1.5 rounded-2xl border border-gray-800">
+                <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-md">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
+                </button>
+                <button onclick="switchTab('fixtures')" id="nav-fixtures" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="calendar" class="w-4 h-4"></i><span>Fikstür</span>
+                </button>
+                <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="award" class="w-4 h-4"></i><span>Krallıklar</span>
+                </button>
+                <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="shield" class="w-4 h-4"></i><span>Kulüpler & Oyuncular</span>
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20"></div>
+                <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-4 py-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-gray-700 text-sm font-bold flex items-center space-x-2 transition-all">
+                    <i data-lucide="user" class="w-4 h-4 text-brand-400"></i>
+                    <span id="admin-btn-text" class="hidden sm:inline">Yönetici Girişi</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        
+        <!-- Admin Active Banner -->
+        <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i data-lucide="edit-3" class="w-5 h-5 text-brand-400"></i>
+                <span class="text-sm font-bold text-white">Yönetici Modu Açık: Kulüpler sekmesinden her takıma özel oyuncu ekleyebilir, istatistiklerini düzenleyebilirsiniz.</span>
+            </div>
+            <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Tüm Verileri Sıfırla</button>
+        </div>
+
+        <!-- Standings Tab -->
+        <section id="tab-standings" class="tab-content space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-800/50 p-6 rounded-3xl border border-gray-800">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Puan Durumu</h2>
+                    <p class="text-sm text-gray-400 mt-1">14 Takımlı Anadolu Süper Lig Sıralaması</p>
+                </div>
+                <div id="admin-add-team-container" class="hidden">
+                    <button onclick="addNewTeamPrompt()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg flex items-center space-x-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i><span>Yeni Takım Ekle</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-xs font-bold text-gray-400 uppercase tracking-wider bg-dark-800/40">
+                                <th class="py-4 px-6 text-center w-16">#</th>
+                                <th class="py-4 px-6">Takım</th>
+                                <th class="py-4 px-4 text-center">O</th>
+                                <th class="py-4 px-4 text-center">G</th>
+                                <th class="py-4 px-4 text-center">B</th>
+                                <th class="py-4 px-4 text-center">M</th>
+                                <th class="py-4 px-4 text-center">AG</th>
+                                <th class="py-4 px-4 text-center">YG</th>
+                                <th class="py-4 px-4 text-center">AV</th>
+                                <th class="py-4 px-6 text-center font-black text-white">Puan</th>
+                                <th class="admin-only hidden py-4 px-6 text-center">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody" class="divide-y divide-gray-800/50 text-sm font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fixtures Tab -->
+        <section id="tab-fixtures" class="tab-content hidden space-y-6">
+            <div class="flex justify-between items-center bg-dark-800/50 p-6 rounded-3xl border border-gray-800">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Fikstür & Maç Sonuçları</h2>
+                    <p class="text-sm text-gray-400 mt-1">13 Haftalık Program</p>
+                </div>
+                <div class="flex flex-wrap gap-1.5" id="week-selector"></div>
+            </div>
+            <div id="fixtures-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </section>
+
+        <!-- Stats Tab -->
+        <section id="tab-stats" class="tab-content hidden space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Gol Krallığı -->
+                <div class="glass rounded-3xl p-6 space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-gray-800 pb-4">
+                        <div class="p-3 bg-amber-500/10 rounded-2xl text-amber-400"><i data-lucide="award" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold">Gol Krallığı</h3>
+                            <p class="text-xs text-gray-400">Lig genelindeki en golcü oyuncular</p>
+                        </div>
+                    </div>
+                    <div id="scorers-list" class="space-y-4"></div>
+                </div>
+
+                <!-- Asist Krallığı -->
+                <div class="glass rounded-3xl p-6 space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-gray-800 pb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-2xl text-blue-400"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold">Asist Krallığı</h3>
+                            <p class="text-xs text-gray-400">Lig genelindeki en çok asist yapanlar</p>
+                        </div>
+                    </div>
+                    <div id="assists-list" class="space-y-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teams Tab -->
+        <section id="tab-teams" class="tab-content hidden space-y-6">
+            <div class="bg-dark-800/50 p-6 rounded-3xl border border-gray-800">
+                <h2 class="text-2xl font-black text-white">Kulüpler & Kadro İstatistikleri</h2>
+                <p class="text-sm text-gray-400 mt-1">Yönetici girişi yapıp her takıma özel oyuncu ekleyebilirsiniz.</p>
+            </div>
+            <div id="teams-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+        </section>
+
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass bg-dark-800/90 w-full max-w-md rounded-3xl p-6 border border-gray-700 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-gray-700 pb-4">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i data-lucide="lock" class="w-5 h-5 text-brand-400"></i>
+                    <span>Yönetici Girişi</span>
+                </h3>
+                <button onclick="toggleLoginModal()" class="p-2 rounded-xl hover:bg-dark-700 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Kullanıcı Adı</label>
+                    <input type="text" id="login-username" class="w-full px-4 py-3 bg-dark-900/80 border border-gray-700 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Şifre</label>
+                    <input type="password" id="login-password" class="w-full px-4 py-3 bg-dark-900/80 border border-gray-700 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500 transition-all">
+                </div>
+            </div>
+            <div class="pt-2">
+                <button onclick="loginAdmin()" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl shadow-lg transition-all">Giriş Yap</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-gray-800/80 py-6 text-center text-xs text-gray-500">
+        Anadolu Süper Lig &copy; 2026. Tüm hakları saklıdır.
+    </footer>
+
+    <!-- Script Logics -->
+    <script>
+        const ADMIN_ACCOUNTS = [
+            { username: "civciv", password: "1717OK", name: "Civciv" },
+            { username: "Noctra", password: "hahaytcano", name: "Noctra" },
+            { username: "31cibalik", password: "Cinar.61", name: "31cibalik" },
+            { username: "egess", password: "ege1s0y!", name: "egess" }
+        ];
+
+        let currentUser = null;
+
+        // Kadroları Tamamen Temizlenmiş 14 Takım Listesi
+        const defaultTeams = [
+            { id: 1, name: "Anadolu Gücü", logo: "🦅", squad: [] },
+            { id: 2, name: "Cyber United", logo: "⚡", squad: [] },
+            { id: 3, name: "Anatolia Esports", logo: "🐺", squad: [] },
+            { id: 4, name: "Night Wolves", logo: "🌙", squad: [] },
+            { id: 5, name: "Pixel FC", logo: "🎮", squad: [] },
+            { id: 6, name: "Royal Titans", logo: "🛡️", squad: [] },
+            { id: 7, name: "Bosphorus FC", logo: "🌊", squad: [] },
+            { id: 8, name: "Ankara City", logo: "🏛️", squad: [] },
+            { id: 9, name: "Ege Yıldızları", logo: "⭐", squad: [] },
+            { id: 10, name: "Karadeniz Gücü", logo: "⚓", squad: [] },
+            { id: 11, name: "Toros Spor", logo: "🏔️", squad: [] },
+            { id: 12, name: "Güneş FC", logo: "☀️", squad: [] },
+            { id: 13, name: "Fırtına Esports", logo: "🌪️", squad: [] },
+            { id: 14, name: "Zirve United", logo: "👑", squad: [] }
+        ];
+
+        function generate13WeekFixtures(teams) {
+            let fixtures = [];
+            let matchId = 1;
+            for (let week = 1; week <= 13; week++) {
+                for (let i = 0; i < 7; i++) {
+                    let homeIdx = (week + i) % teams.length;
+                    let awayIdx = (week + teams.length - 1 - i) % teams.length;
+                    if (homeIdx === awayIdx) awayIdx = (awayIdx + 1) % teams.length;
+
+                    fixtures.push({
+                        id: matchId++,
+                        week: week,
+                        home: teams[homeIdx].id,
+                        away: teams[awayIdx].id,
+                        homeScore: 0,
+                        awayScore: 0,
+                        played: false
+                    });
+                }
+            }
+            return fixtures;
+        }
+
+        const defaultLeagueData = {
+            teams: defaultTeams,
+            fixtures: generate13WeekFixtures(defaultTeams)
+        };
+
+        let leagueData = JSON.parse(localStorage.getItem('asl_final_clean_data')) || defaultLeagueData;
+        let currentWeek = 1;
+
+        function saveData() {
+            localStorage.setItem('asl_final_clean_data', JSON.stringify(leagueData));
+        }
+
+        function resetAllDataCompletely() {
+            if (confirm("Bütün goller, kadrolar, maç skorları ve takımlar sıfırlanacak. Emin misiniz?")) {
+                localStorage.clear();
+                leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
+                saveData();
+                renderAll();
+                alert("Tüm veriler ve kadrolar sıfırlandı!");
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md');
+                btn.classList.add('text-gray-400');
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-md');
+            activeBtn.classList.remove('text-gray-400');
+            lucide.createIcons();
+        }
+
+        function calculateStandings() {
+            leagueData.teams.forEach(t => {
+                t.p = 0; t.w = 0; t.d = 0; t.l = 0; t.gf = 0; t.ga = 0; t.pts = 0;
+            });
+
+            leagueData.fixtures.forEach(f => {
+                if (!f.played) return;
+                let homeTeam = leagueData.teams.find(t => t.id === f.home);
+                let awayTeam = leagueData.teams.find(t => t.id === f.away);
+
+                if (!homeTeam || !awayTeam) return;
+
+                homeTeam.p++; awayTeam.p++;
+                homeTeam.gf += f.homeScore; homeTeam.ga += f.awayScore;
+                awayTeam.gf += f.awayScore; awayTeam.ga += f.homeScore;
+
+                if (f.homeScore > f.awayScore) {
+                    homeTeam.w++; homeTeam.pts += 3;
+                    awayTeam.l++;
+                } else if (f.homeScore < f.awayScore) {
+                    awayTeam.w++; awayTeam.pts += 3;
+                    homeTeam.l++;
+                } else {
+                    homeTeam.d++; homeTeam.pts += 1;
+                    awayTeam.d++; awayTeam.pts += 1;
+                }
+            });
+
+            leagueData.teams.sort((a, b) => {
+                if (b.pts !== a.pts) return b.pts - a.pts;
+                let avB = (b.gf - b.ga);
+                let avA = (a.gf - a.ga);
+                if (avB !== avA) return avB - avA;
+                return b.gf - a.gf;
+            });
+        }
+
+        function renderStandings() {
+            calculateStandings();
+            const tbody = document.getElementById('standings-tbody');
+            tbody.innerHTML = '';
+
+            leagueData.teams.forEach((t, index) => {
+                let badgeColor = "text-gray-400";
+                let rowBorder = "";
+                if (index === 0) { badgeColor = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"; rowBorder = "bg-emerald-500/5"; }
+                else if (index >= leagueData.teams.length - 2) { badgeColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30"; rowBorder = "bg-rose-500/5"; }
+
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-dark-700/40 transition-colors ${rowBorder}`;
+                tr.innerHTML = `
+                    <td class="py-4 px-6 text-center font-bold"><span class="inline-flex items-center justify-center w-7 h-7 rounded-xl ${badgeColor}">${index + 1}</span></td>
+                    <td class="py-4 px-6 font-bold flex items-center space-x-3"><span class="text-xl">${t.logo}</span><span>${t.name}</span></td>
+                    <td class="py-4 px-4 text-center text-gray-300">${t.p}</td>
+                    <td class="py-4 px-4 text-center text-emerald-400">${t.w}</td>
+                    <td class="py-4 px-4 text-center text-amber-400">${t.d}</td>
+                    <td class="py-4 px-4 text-center text-rose-400">${t.l}</td>
+                    <td class="py-4 px-4 text-center text-gray-300">${t.gf}</td>
+                    <td class="py-4 px-4 text-center text-gray-300">${t.ga}</td>
+                    <td class="py-4 px-4 text-center font-semibold ${(t.gf - t.ga) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${(t.gf - t.ga) > 0 ? '+' + (t.gf - t.ga) : (t.gf - t.ga)}</td>
+                    <td class="py-4 px-6 text-center font-black text-brand-400 text-base">${t.pts}</td>
+                    <td class="admin-only ${currentUser ? '' : 'hidden'} py-4 px-6 text-center">
+                        <div class="flex items-center justify-center space-x-2">
+                            <button onclick="editTeamPrompt(${t.id})" class="px-2.5 py-1 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-lg text-white">Düzenle</button>
+                            <button onclick="deleteTeam(${t.id})" class="px-2 py-1 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-lg text-white">Sil</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderFixtures() {
+            const weekSelector = document.getElementById('week-selector');
+            weekSelector.innerHTML = '';
+            for (let i = 1; i <= 13; i++) {
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${currentWeek === i ? 'bg-brand-600 text-white shadow-md' : 'bg-dark-800 text-gray-400 hover:bg-dark-700'}`;
+                btn.innerText = i + '. Hafta';
+                btn.onclick = () => { currentWeek = i; renderFixtures(); };
+                weekSelector.appendChild(btn);
+            }
+
+            const container = document.getElementById('fixtures-container');
+            container.innerHTML = '';
+
+            const weekMatches = leagueData.fixtures.filter(f => f.week === currentWeek);
+            weekMatches.forEach(m => {
+                let home = leagueData.teams.find(t => t.id === m.home);
+                let away = leagueData.teams.find(t => t.id === m.away);
+
+                const card = document.createElement('div');
+                card.className = 'glass p-5 rounded-2xl flex items-center justify-between border border-gray-800 shadow-lg';
+                
+                let scoreArea = `
+                    <div class="px-4 py-2 bg-dark-900/80 rounded-xl border border-gray-800 text-center font-black text-lg tracking-widest text-brand-400 min-w-[80px]">
+                        ${m.played ? `${m.homeScore} -${m.awayScore}` : 'VS'}
+                    </div>
+                `;
+
+                if (currentUser) {
+                    scoreArea = `
+                        <div class="flex items-center space-x-2 bg-dark-900/90 p-1.5 rounded-xl border border-brand-500/40">
+                            <input type="number" id="fh-${m.id}" value="${m.homeScore}" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
+                            <span class="text-xs text-gray-400">-</span>
+                            <input type="number" id="fa-${m.id}" value="${m.awayScore}" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
+                            <button onclick="saveMatchScoreDirect(${m.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow">Kaydet</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 w-1/3 justify-end">
+                        <span class="font-bold text-xs sm:text-sm text-right truncate">${home ? home.name : ''}</span>
+                        <span class="text-lg sm:text-xl">${home ? home.logo : ''}</span>
+                    </div>
+                    ${scoreArea}
+                    <div class="flex items-center space-x-3 w-1/3">
+                        <span class="text-lg sm:text-xl">${away ? away.logo : ''}</span>
+                        <span class="font-bold text-xs sm:text-sm truncate">${away ? away.name : ''}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderStats() {
+            let allPlayers = [];
+            leagueData.teams.forEach(t => {
+                t.squad.forEach(p => {
+                    allPlayers.push({ ...p, teamName: t.name });
+                });
+            });
+
+            // Gol Krallığı
+            let scorers = [...allPlayers].filter(p => p.goals > 0).sort((a, b) => b.goals - a.goals);
+            const scorersEl = document.getElementById('scorers-list');
+            if(scorers.length === 0) {
+                scorersEl.innerHTML = '<div class="text-xs text-gray-500 italic p-3">Henüz gol krallığı için kayıt yok.</div>';
+            } else {
+                scorersEl.innerHTML = scorers.slice(0, 10).map((s, idx) => `
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/40 border border-gray-800">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
+                            <div>
+                                <div class="font-bold text-sm">${s.name} <span class="text-xs text-brand-400">(${s.pos})</span></div>
+                                <div class="text-xs text-gray-400">${s.teamName}</div>
+                            </div>
+                        </div>
+                        <div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm">${s.goals} Gol</div>
+                    </div>
+                `).join('');
+            }
+
+            // Asist Krallığı
+            let assists = [...allPlayers].filter(p => p.assists > 0).sort((a, b) => b.assists - a.assists);
+            const assistsEl = document.getElementById('assists-list');
+            if(assists.length === 0) {
+                assistsEl.innerHTML = '<div class="text-xs text-gray-500 italic p-3">Henüz asist krallığı için kayıt yok.</div>';
+            } else {
+                assistsEl.innerHTML = assists.slice(0, 10).map((a, idx) => `
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/40 border border-gray-800">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
+                            <div>
+                                <div class="font-bold text-sm">${a.name} <span class="text-xs text-brand-400">(${a.pos})</span></div>
+                                <div class="text-xs text-gray-400">${a.teamName}</div>
+                            </div>
+                        </div>
+                        <div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm">${a.assists} Asist</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderTeams() {
+            const container = document.getElementById('teams-container');
+            container.innerHTML = leagueData.teams.map(t => `
+                <div class="glass p-6 rounded-3xl space-y-4 border border-gray-800">
+                    <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-3xl p-3 bg-dark-800 rounded-2xl">${t.logo}</span>
+                            <div>
+                                <h3 class="font-extrabold text-lg">${t.name}</h3>
+                                <span class="text-xs text-brand-400 font-semibold">Resmi Kulüp</span>
+                            </div>
+                        </div>
+                        <!-- Her Takım İçin Oyuncu Ekleme Butonu -->
+                        ${currentUser ? `<button onclick="addSquadPlayerPrompt(${t.id})" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-xl text-white shadow">+ Oyuncu Ekle</button>` : ''}
+                    </div>
+                    <div class="space-y-3">
+                        <div class="text-xs font-bold text-gray-400 uppercase">Kadro & Oyuncu İstatistikleri</div>
+                        <div class="space-y-2">
+                            ${t.squad.length === 0 ? '<div class="text-xs text-gray-500 italic py-2">Kadro boş. Sağ üstteki "+ Oyuncu Ekle" butonuna basarak oyuncu ekleyebilirsiniz.</div>' : t.squad.map((p, pIdx) => {
+                                let isGoalie = p.pos === 'KL';
+                                if (currentUser) {
+                                    return `
+                                        <div class="bg-dark-800/60 p-3 rounded-2xl border border-gray-700 space-y-2">
+                                            <div class="flex justify-between items-center">
+                                                <span class="font-bold text-sm text-white">${p.name} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${p.pos}</span></span>
+                                                <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Sil</button>
+                                            </div>
+                                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                                <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
+                                                <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" value="${p.assists}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
+                                                <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" value="${p.tackles}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
+                                                ${isGoalie ? `
+                                                    <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" value="${p.catches || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
+                                                    <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" value="${p.saves || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
+                                                ` : ''}
+                                            </div>
+                                            <button onclick="savePlayerStats(${t.id},${pIdx})" class="w-full mt-1 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg">Kaydet</button>
+                                        </div>
+                                    `;
+                                } else {
+                                    return `
+                                        <div class="flex items-center justify-between text-xs bg-dark-800/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium">
+                                            <div><span class="font-bold text-white">${p.name}</span> <span class="text-brand-400">(${p.pos})</span></div>
+                                            <div class="flex items-center space-x-2 text-[11px]">
+                                                <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded">Gol: ${p.goals}</span>
+                                                <span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded">Asist: ${p.assists}</span>
+                                                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">Tackle: ${p.tackles}</span>${isGoalie ? `
+                                                    <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded">Catch: ${p.catches || 0}</span>
+                                                    <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 rounded">Saves: ${p.saves || 0}</span>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAll() {
+            renderStandings();
+            renderFixtures();
+            renderStats();
+            renderTeams();
+            
+            if (currentUser) {
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                document.getElementById('admin-add-team-container').classList.remove('hidden');
+                document.getElementById('admin-active-banner').classList.remove('hidden');
+            } else {
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+                document.getElementById('admin-add-team-container').classList.add('hidden');
+                document.getElementById('admin-active-banner').classList.add('hidden');
+            }
+        }
+
+        // Action Functions
+        function saveMatchScoreDirect(id) {
+            let match = leagueData.fixtures.find(f => f.id === id);
+            match.homeScore = parseInt(document.getElementById(`fh-${id}`).value) || 0;
+            match.awayScore = parseInt(document.getElementById(`fa-${id}`).value) || 0;
+            match.played = true;
+            saveData();
+            renderStandings();
+            alert("Skor kaydedildi!");
+        }
+
+        function savePlayerStats(teamId, pIdx) {
+            let team = leagueData.teams.find(t => t.id === teamId);
+            let p = team.squad[pIdx];
+            p.goals = parseInt(document.getElementById(`p-g-${teamId}-${pIdx}`).value) || 0;
+            p.assists = parseInt(document.getElementById(`p-a-${teamId}-${pIdx}`).value) || 0;
+            p.tackles = parseInt(document.getElementById(`p-t-${teamId}-${pIdx}`).value) || 0;
+            if (p.pos === 'KL') {
+                p.catches = parseInt(document.getElementById(`p-c-${teamId}-${pIdx}`).value) || 0;
+                p.saves = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value) || 0;
+            }
+            saveData();
+            renderStats();
+            renderTeams();
+            alert("Oyuncu güncellendi!");
+        }
+
+        function editTeamPrompt(id) {
+            let team = leagueData.teams.find(t => t.id === id);
+            let newName = prompt("Takım Adı:", team.name);
+            let newLogo = prompt("Takım Emojisi:", team.logo);
+            if (newName) team.name = newName;
+            if (newLogo) team.logo = newLogo;
+            saveData();
+            renderAll();
+        }
+
+        function deleteTeam(id) {
+            if (confirm("Bu takımı silmek istediğinize emin misiniz?")) {
+                leagueData.teams = leagueData.teams.filter(t => t.id !== id);
+                saveData();
+                renderAll();
+            }
+        }
+
+        function addNewTeamPrompt() {
+            let name = prompt("Yeni Takım Adı:");
+            let logo = prompt("Takım Emojisi:", "⚽");
+            if (name) {
+                leagueData.teams.push({ id: Date.now(), name: name, logo: logo || "⚽", squad: [] });
+                saveData();
+                renderAll();
+            }
+        }
+
+        function addSquadPlayerPrompt(teamId) {
+            let name = prompt("Oyuncu Adı:");
+            let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
+            if (name) {
+                let team = leagueData.teams.find(t => t.id === teamId);
+                team.squad.push({
+                    name: name,
+                    pos: pos,
+                    goals: 0,
+                    assists: 0,
+                    tackles: 0,
+                    catches: pos === 'KL' ? 0 : 0,
+                    saves: pos === 'KL' ? 0 : 0
+                });
+                saveData();
+                renderTeams();
+            }
+        }
+
+        function removeSquadPlayer(teamId, pIdx) {
+            let team = leagueData.teams.find(t => t.id === teamId);
+            team.squad.splice(pIdx, 1);
+            saveData();
+            renderTeams();
+        }
+
+        function handleAdminLoginLogout() {
+            if (currentUser) {
+                currentUser = null;
+                document.getElementById('user-info').classList.add('hidden');
+                document.getElementById('admin-btn-text').innerText = "Yönetici Girişi";
+                renderAll();
+                alert("Çıkış yapıldı.");
+            } else {
+                toggleLoginModal();
+            }
+        }
+
+        function toggleLoginModal() {
+            document.getElementById('login-modal').classList.toggle('hidden');
+        }
+
+        function loginAdmin() {
+            const userInp = document.getElementById('login-username').value.trim();
+            const passInp = document.getElementById('login-password').value.trim();
+            const found = ADMIN_ACCOUNTS.find(a => a.username === userInp && a.password === passInp);
+
+            if (found) {
+                currentUser = found;
+                document.getElementById('user-info').classList.remove('hidden');
+                document.getElementById('user-info').innerText = `Yetkili: ${currentUser.name}`;
+                document.getElementById('admin-btn-text').innerText = "Çıkış Yap";
+                toggleLoginModal();
+                renderAll();
+                document.getElementById('login-username').value = '';
+                document.getElementById('login-password').value = '';
+                alert("Giriş Yapıldı! Kulüpler sekmesine geçerek takım kartlarının sağ üstündeki '+ Oyuncu Ekle' butonundan kadro oluşturmaya başlayabilirsiniz.");
+            } else {
+                alert("Hatalı kullanıcı adı veya şifre!");
+            }
+        }
+
+        window.onload = () => {
+            renderAll();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anadolu Süper Lig - Pro Soccer Online</title>
