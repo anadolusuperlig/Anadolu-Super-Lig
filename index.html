@@ -45,13 +45,13 @@
                     <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
                 </button>
                 <button onclick="switchTab('fixtures')" id="nav-fixtures" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
-                    <i data-lucide="calendar" class="w-4 h-4"></i><span>Fikstür (13 Hafta)</span>
+                    <i data-lucide="calendar" class="w-4 h-4"></i><span>Fikstür</span>
                 </button>
                 <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="award" class="w-4 h-4"></i><span>Krallıklar</span>
                 </button>
                 <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
-                    <i data-lucide="shield" class="w-4 h-4"></i><span>Takımlar & Kadrolar</span>
+                    <i data-lucide="shield" class="w-4 h-4"></i><span>Kulüpler & Oyuncular</span>
                 </button>
             </nav>
 
@@ -68,13 +68,13 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
         
-        <!-- YÖNETİCİ DÜZENLEME AÇIK UYARISI BANNER'I -->
+        <!-- Admin Active Banner -->
         <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <i data-lucide="edit-3" class="w-5 h-5 text-brand-400"></i>
-                <span class="text-sm font-bold text-white">Düzenleme Modu Aktif: Sayfaların üzerindeki butonları kullanarak skorları, takımları ve oyuncuları direkt değiştirebilirsiniz.</span>
+                <span class="text-sm font-bold text-white">Yönetici Modu Aktif: Kulüpler sekmesinden oyuncuların gol, asist, tackle, catch ve saves değerlerini direkt düzenleyebilirsiniz.</span>
             </div>
-            <button onclick="resetAllData()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Tüm Ligi Sıfırla</button>
+            <button onclick="resetAllData()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Sezonu Sıfırla</button>
         </div>
 
         <!-- Standings Tab -->
@@ -132,30 +132,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Gol Krallığı -->
                 <div class="glass rounded-3xl p-6 space-y-6">
-                    <div class="flex items-center justify-between border-b border-gray-800 pb-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="p-3 bg-amber-500/10 rounded-2xl text-amber-400"><i data-lucide="award" class="w-6 h-6"></i></div>
-                            <div>
-                                <h3 class="text-lg font-bold">Gol Krallığı</h3>
-                                <p class="text-xs text-gray-400">En golcü oyuncular</p>
-                            </div>
+                    <div class="flex items-center space-x-3 border-b border-gray-800 pb-4">
+                        <div class="p-3 bg-amber-500/10 rounded-2xl text-amber-400"><i data-lucide="award" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold">Gol Krallığı</h3>
+                            <p class="text-xs text-gray-400">Lig genelindeki en golcü oyuncular</p>
                         </div>
-                        <button onclick="addPlayerPrompt('scorer')" class="admin-only hidden px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl">+ Oyuncu Ekle</button>
                     </div>
                     <div id="scorers-list" class="space-y-4"></div>
                 </div>
 
                 <!-- Asist Krallığı -->
                 <div class="glass rounded-3xl p-6 space-y-6">
-                    <div class="flex items-center justify-between border-b border-gray-800 pb-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="p-3 bg-blue-500/10 rounded-2xl text-blue-400"><i data-lucide="zap" class="w-6 h-6"></i></div>
-                            <div>
-                                <h3 class="text-lg font-bold">Asist Krallığı</h3>
-                                <p class="text-xs text-gray-400">En çok asist yapanlar</p>
-                            </div>
+                    <div class="flex items-center space-x-3 border-b border-gray-800 pb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-2xl text-blue-400"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold">Asist Krallığı</h3>
+                            <p class="text-xs text-gray-400">Lig genelindeki en çok asist yapanlar</p>
                         </div>
-                        <button onclick="addPlayerPrompt('assist')" class="admin-only hidden px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl">+ Oyuncu Ekle</button>
                     </div>
                     <div id="assists-list" class="space-y-4"></div>
                 </div>
@@ -165,10 +159,10 @@
         <!-- Teams Tab -->
         <section id="tab-teams" class="tab-content hidden space-y-6">
             <div class="bg-dark-800/50 p-6 rounded-3xl border border-gray-800">
-                <h2 class="text-2xl font-black text-white">Kulüpler & Kadrolar</h2>
-                <p class="text-sm text-gray-400 mt-1">Ligdeki 14 Takımın Kadro Listeleri</p>
+                <h2 class="text-2xl font-black text-white">Kulüpler & Kadro İstatistikleri</h2>
+                <p class="text-sm text-gray-400 mt-1">Oyuncuların Gol, Asist, Tackle, Catch ve Saves bilgileri</p>
             </div>
-            <div id="teams-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="teams-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
         </section>
 
     </main>
@@ -214,25 +208,94 @@
 
         let currentUser = null;
 
-        // 14 Takımlı Varsayılan Şablon
+        // 14 Takımlı ve Oyuncu İstatistikli Varsayılan Şablon
         const defaultTeams = [
-            { id: 1, name: "Anadolu Gücü", logo: "🦅", squad: ["Burak (KL)", "Kerem (DF)", "Mert (OS)", "Emre (FV)"] },
-            { id: 2, name: "Cyber United", logo: "⚡", squad: ["Arda (KL)", "Can (DF)", "Tolga (OS)", "Berk (FV)"] },
-            { id: 3, name: "Anatolia Esports", logo: "🐺", squad: ["Volkan (KL)", "Oguz (DF)", "Sarp (OS)", "Kaan (FV)"] },
-            { id: 4, name: "Night Wolves", logo: "🌙", squad: ["Mete (KL)", "Taha (DF)", "Umut (OS)", "Ege (FV)"] },
-            { id: 5, name: "Pixel FC", logo: "🎮", squad: ["Doruk (KL)", "Alp (DF)", "Kuzey (OS)", "Deniz (FV)"] },
-            { id: 6, name: "Royal Titans", logo: "🛡️", squad: ["Poyraz (KL)", "Cem (DF)", "Baris (OS)", "Atakan (FV)"] },
-            { id: 7, name: "Bosphorus FC", logo: "🌊", squad: ["Eren (KL)", "Onur (DF)", "Bora (OS)", "Yiğit (FV)"] },
-            { id: 8, name: "Ankara City", logo: "🏛️", squad: ["Sinan (KL)", "Okan (DF)", "Kadir (OS)", "Serkan (FV)"] },
-            { id: 9, name: "Ege Yıldızları", logo: "⭐", squad: ["Kaan (KL)", "Sefa (DF)", "Görkem (OS)", "Batuhan (FV)"] },
-            { id: 10, name: "Karadeniz Gücü", logo: "⚓", squad: ["Hamza (KL)", "Emin (DF)", "Bilal (OS)", "Yasin (FV)"] },
-            { id: 11, name: "Toros Spor", logo: "🏔️", squad: ["Cemal (KL)", "Tarik (DF)", "Tayfun (OS)", "Nuri (FV)"] },
-            { id: 12, name: "Güneş FC", logo: "☀️", squad: ["Salih (KL)", "Efe (DF)", "Koray (OS)", "Semih (FV)"] },
-            { id: 13, name: "Fırtına Esports", logo: "🌪️", squad: ["Hakan (KL)", "Ferdi (DF)", "Mesut (OS)", "Cenk (FV)"] },
-            { id: 14, name: "Zirve United", logo: "👑", squad: ["Turgut (KL)", "Cihan (DF)", "Rıza (OS)", "Lütfi (FV)"] }
+            { id: 1, name: "Anadolu Gücü", logo: "🦅", squad: [
+                { name: "Burak", pos: "KL", goals: 0, assists: 0, tackles: 2, catches: 12, saves: 25 },
+                { name: "Kerem", pos: "DF", goals: 1, assists: 3, tackles: 18, catches: 0, saves: 0 },
+                { name: "Mert", pos: "OS", goals: 4, assists: 7, tackles: 14, catches: 0, saves: 0 },
+                { name: "Emre", pos: "FV", goals: 9, assists: 2, tackles: 5, catches: 0, saves: 0 }
+            ]},
+            { id: 2, name: "Cyber United", logo: "⚡", squad: [
+                { name: "Arda", pos: "KL", goals: 0, assists: 0, tackles: 1, catches: 9, saves: 20 },
+                { name: "Can", pos: "DF", goals: 0, assists: 2, tackles: 22, catches: 0, saves: 0 },
+                { name: "Tolga", pos: "OS", goals: 5, assists: 6, tackles: 11, catches: 0, saves: 0 },
+                { name: "Berk", pos: "FV", goals: 8, assists: 3, tackles: 4, catches: 0, saves: 0 }
+            ]},
+            { id: 3, name: "Anatolia Esports", logo: "🐺", squad: [
+                { name: "Volkan", pos: "KL", goals: 0, assists: 0, tackles: 3, catches: 10, saves: 22 },
+                { name: "Oguz", pos: "DF", goals: 2, assists: 1, tackles: 19, catches: 0, saves: 0 },
+                { name: "Sarp", pos: "OS", goals: 3, assists: 5, tackles: 15, catches: 0, saves: 0 },
+                { name: "Kaan", pos: "FV", goals: 7, assists: 4, tackles: 6, catches: 0, saves: 0 }
+            ]},
+            { id: 4, name: "Night Wolves", logo: "🌙", squad: [
+                { name: "Mete", pos: "KL", goals: 0, assists: 0, tackles: 1, catches: 8, saves: 19 },
+                { name: "Taha", pos: "DF", goals: 1, assists: 2, tackles: 16, catches: 0, saves: 0 },
+                { name: "Umut", pos: "OS", goals: 4, assists: 4, tackles: 12, catches: 0, saves: 0 },
+                { name: "Ege", pos: "FV", goals: 6, assists: 2, tackles: 5, catches: 0, saves: 0 }
+            ]},
+            { id: 5, name: "Pixel FC", logo: "🎮", squad: [
+                { name: "Doruk", pos: "KL", goals: 0, assists: 0, tackles: 0, catches: 7, saves: 15 },
+                { name: "Alp", pos: "DF", goals: 0, assists: 1, tackles: 14, catches: 0, saves: 0 },
+                { name: "Kuzey", pos: "OS", goals: 2, assists: 3, tackles: 10, catches: 0, saves: 0 },
+                { name: "Deniz", pos: "FV", goals: 5, assists: 1, tackles: 3, catches: 0, saves: 0 }
+            ]},
+            { id: 6, name: "Royal Titans", logo: "🛡️", squad: [
+                { name: "Poyraz", pos: "KL", goals: 0, assists: 0, tackles: 2, catches: 11, saves: 21 },
+                { name: "Cem", pos: "DF", goals: 1, assists: 1, tackles: 17, catches: 0, saves: 0 },
+                { name: "Baris", pos: "OS", goals: 2, assists: 4, tackles: 13, catches: 0, saves: 0 },
+                { name: "Atakan", pos: "FV", goals: 4, assists: 2, tackles: 4, catches: 0, saves: 0 }
+            ]},
+            { id: 7, name: "Bosphorus FC", logo: "🌊", squad: [
+                { name: "Eren", pos: "KL", goals: 0, assists: 0, tackles: 1, catches: 8, saves: 18 },
+                { name: "Onur", pos: "DF", goals: 0, assists: 2, tackles: 15, catches: 0, saves: 0 },
+                { name: "Bora", pos: "OS", goals: 3, assists: 3, tackles: 10, catches: 0, saves: 0 },
+                { name: "Yiğit", pos: "FV", goals: 5, assists: 2, tackles: 4, catches: 0, saves: 0 }
+            ]},
+            { id: 8, name: "Ankara City", logo: "🏛️", squad: [
+                { name: "Sinan", pos: "KL", goals: 0, assists: 0, tackles: 2, catches: 10, saves: 23 },
+                { name: "Okan", pos: "DF", goals: 1, assists: 0, tackles: 18, catches: 0, saves: 0 },
+                { name: "Kadir", pos: "OS", goals: 2, assists: 4, tackles: 11, catches: 0, saves: 0 },
+                { name: "Serkan", pos: "FV", goals: 6, assists: 1, tackles: 5, catches: 0, saves: 0 }
+            ]},
+            { id: 9, name: "Ege Yıldızları", logo: "⭐", squad: [
+                { name: "Kaan2", pos: "KL", goals: 0, assists: 0, tackles: 1, catches: 7, saves: 16 },
+                { name: "Sefa", pos: "DF", goals: 0, assists: 1, tackles: 14, catches: 0, saves: 0 },
+                { name: "Görkem", pos: "OS", goals: 3, assists: 2, tackles: 9, catches: 0, saves: 0 },
+                { name: "Batuhan", pos: "FV", goals: 5, assists: 3, tackles: 4, catches: 0, saves: 0 }
+            ]},
+            { id: 10, name: "Karadeniz Gücü", logo: "⚓", squad: [
+                { name: "Hamza", pos: "KL", goals: 0, assists: 0, tackles: 3, catches: 13, saves: 26 },
+                { name: "Emin", pos: "DF", goals: 2, assists: 1, tackles: 20, catches: 0, saves: 0 },
+                { name: "Bilal", pos: "OS", goals: 4, assists: 5, tackles: 14, catches: 0, saves: 0 },
+                { name: "Yasin", pos: "FV", goals: 7, assists: 2, tackles: 6, catches: 0, saves: 0 }
+            ]},
+            { id: 11, name: "Toros Spor", logo: "🏔️", squad: [
+                { name: "Cemal", pos: "KL", goals: 0, assists: 0, tackles: 1, catches: 9, saves: 19 },
+                { name: "Tarik", pos: "DF", goals: 0, assists: 2, tackles: 16, catches: 0, saves: 0 },
+                { name: "Tayfun", pos: "OS", goals: 2, assists: 3, tackles: 11, catches: 0, saves: 0 },
+                { name: "Nuri", pos: "FV", goals: 4, assists: 2, tackles: 3, catches: 0, saves: 0 }
+            ]},
+            { id: 12, name: "Güneş FC", logo: "☀️", squad: [
+                { name: "Salih", pos: "KL", goals: 0, assists: 0, tackles: 1, catches: 8, saves: 17 },
+                { name: "Efe", pos: "DF", goals: 1, assists: 1, tackles: 15, catches: 0, saves: 0 },
+                { name: "Koray", pos: "OS", goals: 3, assists: 4, tackles: 12, catches: 0, saves: 0 },
+                { name: "Semih", pos: "FV", goals: 6, assists: 3, tackles: 5, catches: 0, saves: 0 }
+            ]},
+            { id: 13, name: "Fırtına Esports", logo: "🌪️", squad: [
+                { name: "Hakan", pos: "KL", goals: 0, assists: 0, tackles: 2, catches: 10, saves: 21 },
+                { name: "Ferdi", pos: "DF", goals: 0, assists: 2, tackles: 17, catches: 0, saves: 0 },
+                { name: "Mesut", pos: "OS", goals: 4, assists: 6, tackles: 13, catches: 0, saves: 0 },
+                { name: "Cenk", pos: "FV", goals: 8, assists: 2, tackles: 6, catches: 0, saves: 0 }
+            ]},
+            { id: 14, name: "Zirve United", logo: "👑", squad: [
+                { name: "Turgut", pos: "KL", goals: 0, assists: 0, tackles: 3, catches: 14, saves: 28 },
+                { name: "Cihan", pos: "DF", goals: 2, assists: 2, tackles: 21, catches: 0, saves: 0 },
+                { name: "Rıza", pos: "OS", goals: 5, assists: 7, tackles: 16, catches: 0, saves: 0 },
+                { name: "Lütfi", pos: "FV", goals: 10, assists: 4, tackles: 7, catches: 0, saves: 0 }
+            ]}
         ];
 
-        // 13 Haftalık Fikstür Oluşturucu
         function generate13WeekFixtures(teams) {
             let fixtures = [];
             let matchId = 1;
@@ -258,32 +321,22 @@
 
         const defaultLeagueData = {
             teams: defaultTeams,
-            fixtures: generate13WeekFixtures(defaultTeams),
-            scorers: [
-                { id: 1, name: "Emre", team: "Anadolu Gücü", goals: 0 },
-                { id: 2, name: "Berk", team: "Cyber United", goals: 0 },
-                { id: 3, name: "Kaan", team: "Anatolia Esports", goals: 0 }
-            ],
-            assists: [
-                { id: 1, name: "Mert", team: "Anadolu Gücü", assists: 0 },
-                { id: 2, name: "Tolga", team: "Cyber United", assists: 0 },
-                { id: 3, name: "Sarp", team: "Anatolia Esports", assists: 0 }
-            ]
+            fixtures: generate13WeekFixtures(defaultTeams)
         };
 
-        let leagueData = JSON.parse(localStorage.getItem('pso_14team_data')) || defaultLeagueData;
+        let leagueData = JSON.parse(localStorage.getItem('pso_pro_stats_data')) || defaultLeagueData;
         let currentWeek = 1;
 
         function saveData() {
-            localStorage.setItem('pso_14team_data', JSON.stringify(leagueData));
+            localStorage.setItem('pso_pro_stats_data', JSON.stringify(leagueData));
         }
 
         function resetAllData() {
-            if (confirm("Tüm 14 takımlı sezonu sıfırlamak istediğinize emin misiniz?")) {
+            if (confirm("Tüm sezon verilerini sıfırlamak istediğinize emin misiniz?")) {
                 leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
                 saveData();
                 renderAll();
-                alert("Lig sıfırlandı!");
+                alert("Sezon sıfırlandı!");
             }
         }
 
@@ -428,45 +481,42 @@
         }
 
         function renderStats() {
-            leagueData.scorers.sort((a, b) => b.goals - a.goals);
+            let allPlayers = [];
+            leagueData.teams.forEach(t => {
+                t.squad.forEach(p => {
+                    allPlayers.push({ ...p, teamName: t.name });
+                });
+            });
+
+            // Gol Krallığı Sıralaması
+            let scorers = [...allPlayers].sort((a, b) => b.goals - a.goals);
             const scorersEl = document.getElementById('scorers-list');
-            scorersEl.innerHTML = leagueData.scorers.map((s, idx) => `
+            scorersEl.innerHTML = scorers.slice(0, 10).map((s, idx) => `
                 <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/40 border border-gray-800">
                     <div class="flex items-center space-x-3">
                         <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
                         <div>
-                            <div class="font-bold text-sm">${s.name}</div>
-                            <div class="text-xs text-gray-400">${s.team}</div>
+                            <div class="font-bold text-sm">${s.name} <span class="text-xs text-brand-400">(${s.pos})</span></div>
+                            <div class="text-xs text-gray-400">${s.teamName}</div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        ${currentUser ? `
-                            <input type="number" id="sc-val-${s.id}" value="${s.goals}" class="w-12 text-center bg-dark-900 border border-amber-500/40 rounded-lg py-0.5 text-xs font-bold text-amber-400">
-                            <button onclick="saveScorerDirect(${s.id})" class="px-2 py-1 bg-amber-600 text-white text-xs font-bold rounded-lg">Kaydet</button>
-                            <button onclick="deletePlayer('scorer', ${s.id})" class="px-2 py-1 bg-rose-600 text-white text-xs font-bold rounded-lg">Sil</button>
-                        ` : `<div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm">${s.goals} Gol</div>`}
-                    </div>
+                    <div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm">${s.goals} Gol</div>
                 </div>
             `).join('');
 
-            leagueData.assists.sort((a, b) => b.assists - a.assists);
+            // Asist Krallığı Sıralaması
+            let assists = [...allPlayers].sort((a, b) => b.assists - a.assists);
             const assistsEl = document.getElementById('assists-list');
-            assistsEl.innerHTML = leagueData.assists.map((a, idx) => `
+            assistsEl.innerHTML = assists.slice(0, 10).map((a, idx) => `
                 <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/40 border border-gray-800">
                     <div class="flex items-center space-x-3">
                         <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
                         <div>
-                            <div class="font-bold text-sm">${a.name}</div>
-                            <div class="text-xs text-gray-400">${a.team}</div>
+                            <div class="font-bold text-sm">${a.name} <span class="text-xs text-brand-400">(${a.pos})</span></div>
+                            <div class="text-xs text-gray-400">${a.teamName}</div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        ${currentUser ? `
-                            <input type="number" id="as-val-${a.id}" value="${a.assists}" class="w-12 text-center bg-dark-900 border border-blue-500/40 rounded-lg py-0.5 text-xs font-bold text-blue-400">
-                            <button onclick="saveAssistDirect(${a.id})" class="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded-lg">Kaydet</button>
-                            <button onclick="deletePlayer('assist', ${a.id})" class="px-2 py-1 bg-rose-600 text-white text-xs font-bold rounded-lg">Sil</button>
-                        ` : `<div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm">${a.assists} Asist</div>`}
-                    </div>
+                    <div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm">${a.assists} Asist</div>
                 </div>
             `).join('');
         }
@@ -483,16 +533,48 @@
                                 <span class="text-xs text-brand-400 font-semibold">Resmi Kulüp</span>
                             </div>
                         </div>
-                        ${currentUser ? `<button onclick="addSquadPlayerPrompt(${t.id})" class="px-2.5 py-1 bg-brand-600 text-xs font-bold rounded-lg text-white">+ Oyuncu</button>` : ''}
+                        ${currentUser ? `<button onclick="addSquadPlayerPrompt(${t.id})" class="px-3 py-1.5 bg-brand-600 text-xs font-bold rounded-xl text-white shadow">+ Oyuncu Ekle</button>` : ''}
                     </div>
-                    <div class="space-y-2">
-                        <div class="text-xs font-bold text-gray-400 uppercase">Kadro Listesi</div>
-                        <div class="space-y-1">
-                            ${t.squad.map((player, pIdx) => `
-                                <div class="flex items-center justify-between text-sm bg-dark-800/40 px-3 py-2 rounded-xl text-gray-300 font-medium">
-                                    <span>${player}</span>${currentUser ? `<button onclick="removeSquadPlayer(${t.id}, ${pIdx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Sil</button>` : ''}
-                                </div>
-                            `).join('')}
+                    <div class="space-y-3">
+                        <div class="text-xs font-bold text-gray-400 uppercase">Kadro & Detaylı İstatistikler</div>
+                        <div class="space-y-2">
+                            ${t.squad.map((p, pIdx) => {
+                                let isGoalie = p.pos === 'KL';
+                                if (currentUser) {
+                                    return `
+                                        <div class="bg-dark-800/60 p-3 rounded-2xl border border-gray-700 space-y-2">
+                                            <div class="flex justify-between items-center">
+                                                <span class="font-bold text-sm text-white">${p.name} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${p.pos}</span></span>
+                                                <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Oyuncuyu Sil</button>
+                                            </div>
+                                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                                <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
+                                                <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" value="${p.assists}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
+                                                <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" value="${p.tackles}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
+                                                ${isGoalie ? `
+                                                    <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" value="${p.catches || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
+                                                    <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" value="${p.saves || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
+                                                ` : ''}
+                                            </div>
+                                            <button onclick="savePlayerStats(${t.id},${pIdx})" class="w-full mt-1 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg">İstatistikleri Kaydet</button>
+                                        </div>
+                                    `;
+                                } else {
+                                    return `
+                                        <div class="flex items-center justify-between text-xs bg-dark-800/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium">
+                                            <div><span class="font-bold text-white">${p.name}</span> <span class="text-brand-400">(${p.pos})</span></div>
+                                            <div class="flex items-center space-x-2 text-[11px]">
+                                                <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded">Gol: ${p.goals}</span>
+                                                <span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded">Asist: ${p.assists}</span>
+                                                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">Tackle: ${p.tackles}</span>${isGoalie ? `
+                                                    <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded">Catch: ${p.catches || 0}</span>
+                                                    <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 rounded">Saves: ${p.saves || 0}</span>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            }).join('')}
                         </div>
                     </div>
                 </div>
@@ -516,7 +598,7 @@
             }
         }
 
-        // DÜZENLEME FONKSİYONLARI (Giriş Yapılınca Çalışır)
+        // DÜZENLEME FONKSİYONLARI
         function saveMatchScoreDirect(id) {
             let match = leagueData.fixtures.find(f => f.id === id);
             match.homeScore = parseInt(document.getElementById(`fh-${id}`).value) || 0;
@@ -527,10 +609,26 @@
             alert("Skor kaydedildi!");
         }
 
+        function savePlayerStats(teamId, pIdx) {
+            let team = leagueData.teams.find(t => t.id === teamId);
+            let p = team.squad[pIdx];
+            p.goals = parseInt(document.getElementById(`p-g-${teamId}-${pIdx}`).value) || 0;
+            p.assists = parseInt(document.getElementById(`p-a-${teamId}-${pIdx}`).value) || 0;
+            p.tackles = parseInt(document.getElementById(`p-t-${teamId}-${pIdx}`).value) || 0;
+            if (p.pos === 'KL') {
+                p.catches = parseInt(document.getElementById(`p-c-${teamId}-${pIdx}`).value) || 0;
+                p.saves = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value) || 0;
+            }
+            saveData();
+            renderStats();
+            renderTeams();
+            alert("Oyuncu istatistikleri güncellendi!");
+        }
+
         function editTeamPrompt(id) {
             let team = leagueData.teams.find(t => t.id === id);
             let newName = prompt("Takım Adı:", team.name);
-            let newLogo = prompt("Takım Emojisi/Logosu:", team.logo);
+            let newLogo = prompt("Takım Emojisi:", team.logo);
             if (newName) team.name = newName;
             if (newLogo) team.logo = newLogo;
             saveData();
@@ -547,71 +645,40 @@
 
         function addNewTeamPrompt() {
             let name = prompt("Yeni Takım Adı:");
-            let logo = prompt("Takım Emojisi (Örn: ⚽, 🦁, ⚡):", "⚽");
+            let logo = prompt("Takım Emojisi:", "⚽");
             if (name) {
-                let newId = Date.now();
-                leagueData.teams.push({ id: newId, name: name, logo: logo || "⚽", squad: [] });
+                leagueData.teams.push({ id: Date.now(), name: name, logo: logo || "⚽", squad: [] });
                 saveData();
                 renderAll();
             }
         }
 
-        function saveScorerDirect(id) {
-            let sc = leagueData.scorers.find(s => s.id === id);
-            sc.goals = parseInt(document.getElementById(`sc-val-${id}`).value) || 0;
-            saveData();
-            renderStats();
-        }
-
-        function saveAssistDirect(id) {
-            let as = leagueData.assists.find(a => a.id === id);
-            as.assists = parseInt(document.getElementById(`as-val-${id}`).value) || 0;
-            saveData();
-            renderStats();
-        }
-
-        function addPlayerPrompt(type) {
-            let name = prompt("Oyuncu Adı:");
-            let team = prompt("Takımı:");
-            if (name && team) {
-                if (type === 'scorer') {
-                    leagueData.scorers.push({ id: Date.now(), name: name, team: team, goals: 0 });
-                } else {
-                    leagueData.assists.push({ id: Date.now(), name: name, team: team, assists: 0 });
-                }
-                saveData();
-                renderStats();
-            }
-        }
-
-        function deletePlayer(type, id) {
-            if (type === 'scorer') {
-                leagueData.scorers = leagueData.scorers.filter(s => s.id !== id);
-            } else {
-                leagueData.assists = leagueData.assists.filter(a => a.id !== id);
-            }
-            saveData();
-            renderStats();
-        }
-
         function addSquadPlayerPrompt(teamId) {
-            let player = prompt("Eklenecek Oyuncunun Adı ve Mevkii (Örn: Ahmet (FV)):");
-            if (player) {
+            let name = prompt("Oyuncu Adı:");
+            let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
+            if (name) {
                 let team = leagueData.teams.find(t => t.id === teamId);
-                team.squad.push(player);
+                team.squad.push({
+                    name: name,
+                    pos: pos,
+                    goals: 0,
+                    assists: 0,
+                    tackles: 0,
+                    catches: pos === 'KL' ? 0 : undefined,
+                    saves: pos === 'KL' ? 0 : undefined
+                });
                 saveData();
                 renderTeams();
             }
         }
 
-        function removeSquadPlayer(teamId, playerIndex) {
+        function removeSquadPlayer(teamId, pIdx) {
             let team = leagueData.teams.find(t => t.id === teamId);
-            team.squad.splice(playerIndex, 1);
+            team.squad.splice(pIdx, 1);
             saveData();
             renderTeams();
         }
 
-        // Kimlik Doğrulama
         function handleAdminLoginLogout() {
             if (currentUser) {
                 currentUser = null;
@@ -642,7 +709,7 @@
                 renderAll();
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-password').value = '';
-                alert("Giriş yapıldı! Artık sayfalar üzerinden istediğiniz veriyi değiştirebilirsiniz.");
+                alert("Giriş yapıldı! Kulüpler sekmesinden oyuncu istatistiklerini düzenleyebilirsiniz.");
             } else {
                 alert("Hatalı kullanıcı adı veya şifre!");
             }
