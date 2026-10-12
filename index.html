@@ -82,8 +82,8 @@
         <!-- Admin Active Banner -->
         <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <i data-lucide="edit-3" class="w-5 h-5 text-brand-400"></i>
-                <span class="text-sm font-bold text-white">Yönetici Modu Açık: Haftanın Yıldızını ve Haftanın Takımı Kadrosunu doğrudan ayarlayabilirsiniz.</span>
+                <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
+                <span class="text-sm font-bold text-white">Güvenli Yönetici Modu Aktif (Anti-Spam / XSS Koruması Devrede)</span>
             </div>
             <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Tüm Verileri Sıfırla</button>
         </div>
@@ -140,7 +140,6 @@
 
         <!-- Stats & Highlights Tab -->
         <section id="tab-stats" class="tab-content hidden space-y-8">
-            <!-- Haftanın Özet Alanı (Haftanın Yıldızı ve Haftanın Takım Kadrosu) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Haftanın Yıldızı Kartı -->
                 <div class="glass rounded-3xl p-6 border border-gray-800 flex flex-col justify-between space-y-4">
@@ -240,7 +239,7 @@
         Anadolu Süper Lig &copy; 2026. Tüm hakları saklıdır.
     </footer>
 
-    <!-- Script Logics -->
+    <!-- Script Logics with Security Enhancements -->
     <script>
         const ADMIN_ACCOUNTS = [
             { username: "civciv", password: "1717OK", name: "Civciv" },
@@ -250,6 +249,28 @@
         ];
 
         let currentUser = null;
+        let lastActionTime = 0; // Flood/Rate limit için zamanlayıcı
+
+        // XSS Koruması için Girdi Temizleme Fonksiyonu
+        function sanitizeInput(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+
+        // Anti-Flood / Rate Limiting Kontrolü (Aşırı tıklama ve spam engeli)
+        function checkRateLimit() {
+            const now = Date.now();
+            if (now - lastActionTime < 400) { // 400 milisaniyeden hızlı işlemleri engelle
+                alert("Çok hızlı işlem yapıyorsunuz! Lütfen biraz yavaşlayın.");
+                return false;
+            }
+            lastActionTime = now;
+            return true;
+        }
 
         const defaultTeams = [
             { id: 1, name: "Anadolu Gücü", logo: "🦅", squad: [] },
@@ -299,15 +320,17 @@
             weeklyTeamPlayers: []
         };
 
-        let leagueData = JSON.parse(localStorage.getItem('asl_final_v11_data')) || defaultLeagueData;
+        let leagueData = JSON.parse(localStorage.getItem('asl_secure_v1_data')) || defaultLeagueData;
         let currentWeek = 1;
 
         function saveData() {
-            localStorage.setItem('asl_final_v11_data', JSON.stringify(leagueData));
+            localStorage.setItem('asl_secure_v1_data', JSON.stringify(leagueData));
         }
 
         function resetAllDataCompletely() {
-            if (confirm("Bütün veriler sıfırlanacak. Emin misiniz?")) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
+            if (confirm("Bütün veriler güvenli bir şekilde sıfırlanacak. Emin misiniz?")) {
                 localStorage.clear();
                 leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
                 saveData();
@@ -370,19 +393,21 @@
         function renderSiteLogo() {
             const display = document.getElementById('site-logo-display');
             if (leagueData.siteLogo && leagueData.siteLogo.trim() !== "") {
-                if (leagueData.siteLogo.startsWith('http') || leagueData.siteLogo.startsWith('data:')) {
-                    display.innerHTML = `<img src="${leagueData.siteLogo}" class="w-full h-full object-cover">`;
+                let cleanLogo = sanitizeInput(leagueData.siteLogo);
+                if (cleanLogo.startsWith('http') || cleanLogo.startsWith('data:')) {
+                    display.innerHTML = `<img src="${cleanLogo}" class="w-full h-full object-cover">`;
                 } else {
-                    display.innerHTML = `<span class="text-2xl">${leagueData.siteLogo}</span>`;
+                    display.innerHTML = `<span class="text-2xl">${cleanLogo}</span>`;
                 }
             }
         }
 
         function changeSiteLogoPrompt() {
             if (!currentUser) return;
-            let newLogo = prompt("Site logosu için resim URL'si veya Emoji girin:", leagueData.siteLogo || "");
+            if (!checkRateLimit()) return;
+            let newLogo = prompt("Site logosu için güvenli resim URL'si veya Emoji girin:", leagueData.siteLogo || "");
             if (newLogo !== null) {
-                leagueData.siteLogo = newLogo;
+                leagueData.siteLogo = sanitizeInput(newLogo.trim());
                 saveData();
                 renderSiteLogo();
                 alert("Site logosu güncellendi!");
@@ -400,13 +425,14 @@
                 if (index === 0) { badgeColor = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"; rowBorder = "bg-emerald-500/5"; }
                 else if (index >= leagueData.teams.length - 2) { badgeColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30"; rowBorder = "bg-rose-500/5"; }
 
-                let logoHtml = t.logo.startsWith('http') ? `<img src="${t.logo}" class="w-7 h-7 rounded-full object-cover">` : `<span class="text-xl">${t.logo}</span>`;
+                let cleanLogoStr = sanitizeInput(t.logo);
+                let logoHtml = cleanLogoStr.startsWith('http') ? `<img src="${cleanLogoStr}" class="w-7 h-7 rounded-full object-cover">` : `<span class="text-xl">${cleanLogoStr}</span>`;
 
                 const tr = document.createElement('tr');
                 tr.className = `hover:bg-dark-700/40 transition-colors ${rowBorder}`;
                 tr.innerHTML = `
                     <td class="py-4 px-6 text-center font-bold"><span class="inline-flex items-center justify-center w-7 h-7 rounded-xl ${badgeColor}">${index + 1}</span></td>
-                    <td class="py-4 px-6 font-bold flex items-center space-x-3">${logoHtml}<span>${t.name}</span></td>
+                    <td class="py-4 px-6 font-bold flex items-center space-x-3">${logoHtml}<span>${sanitizeInput(t.name)}</span></td>
                     <td class="py-4 px-4 text-center text-gray-300">${t.p}</td>
                     <td class="py-4 px-4 text-center text-emerald-400">${t.w}</td>
                     <td class="py-4 px-4 text-center text-amber-400">${t.d}</td>
@@ -445,8 +471,11 @@
                 let home = leagueData.teams.find(t => t.id === m.home);
                 let away = leagueData.teams.find(t => t.id === m.away);
 
-                let homeLogo = home && home.logo.startsWith('http') ? `<img src="${home.logo}" class="w-6 h-6 rounded-full object-cover">` : `<span>${home ? home.logo : ''}</span>`;
-                let awayLogo = away && away.logo.startsWith('http') ? `<img src="${away.logo}" class="w-6 h-6 rounded-full object-cover">` : `<span>${away ? away.logo : ''}</span>`;
+                let homeCleanLogo = sanitizeInput(home ? home.logo : '');
+                let awayCleanLogo = sanitizeInput(away ? away.logo : '');
+
+                let homeLogo = homeCleanLogo.startsWith('http') ? `<img src="${homeCleanLogo}" class="w-6 h-6 rounded-full object-cover">` : `<span>${homeCleanLogo}</span>`;
+                let awayLogo = awayCleanLogo.startsWith('http') ? `<img src="${awayCleanLogo}" class="w-6 h-6 rounded-full object-cover">` : `<span>${awayCleanLogo}</span>`;
 
                 const card = document.createElement('div');
                 card.className = 'glass p-5 rounded-2xl flex items-center justify-between border border-gray-800 shadow-lg';
@@ -456,9 +485,9 @@
                 if (currentUser) {
                     scoreArea = `
                         <div class="flex items-center space-x-2 bg-dark-900/90 p-1.5 rounded-xl border border-brand-500/40">
-                            <input type="number" id="fh-${m.id}" value="${m.homeScore}" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
+                            <input type="number" id="fh-${m.id}" value="${m.homeScore}" min="0" max="99" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
                             <span class="text-xs text-gray-400">-</span>
-                            <input type="number" id="fa-${m.id}" value="${m.awayScore}" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
+                            <input type="number" id="fa-${m.id}" value="${m.awayScore}" min="0" max="99" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
                             <button onclick="saveMatchScoreDirect(${m.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow">Kaydet</button>
                         </div>
                     `;
@@ -466,13 +495,13 @@
 
                 card.innerHTML = `
                     <div class="flex items-center space-x-3 w-1/3 justify-end">
-                        <span class="font-bold text-xs sm:text-sm text-right truncate">${home ? home.name : ''}</span>
+                        <span class="font-bold text-xs sm:text-sm text-right truncate">${sanitizeInput(home ? home.name : '')}</span>
                         ${homeLogo}
                     </div>
                     ${scoreArea}
                     <div class="flex items-center space-x-3 w-1/3">
                         ${awayLogo}
-                        <span class="font-bold text-xs sm:text-sm truncate">${away ? away.name : ''}</span>
+                        <span class="font-bold text-xs sm:text-sm truncate">${sanitizeInput(away ? away.name : '')}</span>
                     </div>
                 `;
                 container.appendChild(card);
@@ -480,11 +509,9 @@
         }
 
         function renderStats() {
-            // MVP
-            document.getElementById('weekly-mvp-name').innerText = leagueData.weeklyMVP.name;
-            document.getElementById('weekly-mvp-team').innerText = leagueData.weeklyMVP.team;
+            document.getElementById('weekly-mvp-name').innerText = sanitizeInput(leagueData.weeklyMVP.name);
+            document.getElementById('weekly-mvp-team').innerText = sanitizeInput(leagueData.weeklyMVP.team);
 
-            // Haftanın Takımı Oyuncuları
             const weeklyTeamEl = document.getElementById('weekly-team-players-list');
             if (!leagueData.weeklyTeamPlayers || leagueData.weeklyTeamPlayers.length === 0) {
                 weeklyTeamEl.innerHTML = '<div class="text-xs text-gray-500 italic col-span-2 p-3">Henüz haftanın kadrosuna oyuncu eklenmedi.</div>';
@@ -492,10 +519,10 @@
                 weeklyTeamEl.innerHTML = leagueData.weeklyTeamPlayers.map((p, idx) => `
                     <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/40 border border-gray-800">
                         <div class="flex items-center space-x-3">
-                            <span class="px-2 py-0.5 bg-brand-500/10 text-brand-400 font-extrabold text-xs rounded-md">${p.pos}</span>
+                            <span class="px-2 py-0.5 bg-brand-500/10 text-brand-400 font-extrabold text-xs rounded-md">${sanitizeInput(p.pos)}</span>
                             <div>
-                                <div class="font-bold text-sm text-white">${p.name}</div>
-                                <div class="text-xs text-gray-400">${p.team}</div>
+                                <div class="font-bold text-sm text-white">${sanitizeInput(p.name)}</div>
+                                <div class="text-xs text-gray-400">${sanitizeInput(p.team)}</div>
                             </div>
                         </div>
                         ${currentUser ? `<button onclick="removeWeeklyTeamPlayer(${idx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Sil</button>` : ''}
@@ -510,7 +537,6 @@
                 });
             });
 
-            // Gol Krallığı
             let scorers = [...allPlayers].filter(p => p.goals > 0).sort((a, b) => b.goals - a.goals);
             const scorersEl = document.getElementById('scorers-list');
             scorersEl.innerHTML = scorers.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz gol yok.</div>' : scorers.slice(0, 10).map((s, idx) => `
@@ -518,15 +544,14 @@
                     <div class="flex items-center space-x-3">
                         <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
                         <div>
-                            <div class="font-bold text-sm">${s.name} <span class="text-xs text-brand-400">(${s.pos})</span></div>
-                            <div class="text-xs text-gray-400">${s.teamName}</div>
+                            <div class="font-bold text-sm">${sanitizeInput(s.name)} <span class="text-xs text-brand-400">(${sanitizeInput(s.pos)})</span></div>
+                            <div class="text-xs text-gray-400">${sanitizeInput(s.teamName)}</div>
                         </div>
                     </div>
                     <div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm">${s.goals} Gol</div>
                 </div>
             `).join('');
 
-            // Asist Krallığı
             let assists = [...allPlayers].filter(p => p.assists > 0).sort((a, b) => b.assists - a.assists);
             const assistsEl = document.getElementById('assists-list');
             assistsEl.innerHTML = assists.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz asist yok.</div>' : assists.slice(0, 10).map((a, idx) => `
@@ -534,8 +559,8 @@
                     <div class="flex items-center space-x-3">
                         <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
                         <div>
-                            <div class="font-bold text-sm">${a.name} <span class="text-xs text-brand-400">(${a.pos})</span></div>
-                            <div class="text-xs text-gray-400">${a.teamName}</div>
+                            <div class="font-bold text-sm">${sanitizeInput(a.name)} <span class="text-xs text-brand-400">(${sanitizeInput(a.pos)})</span></div>
+                            <div class="text-xs text-gray-400">${sanitizeInput(a.teamName)}</div>
                         </div>
                     </div>
                     <div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm">${a.assists} Asist</div>
@@ -546,14 +571,15 @@
         function renderTeams() {
             const container = document.getElementById('teams-container');
             container.innerHTML = leagueData.teams.map(t => {
-                let logoHtml = t.logo.startsWith('http') ? `<img src="${t.logo}" class="w-10 h-10 rounded-2xl object-cover bg-dark-900 p-1">` : `<span class="text-3xl p-3 bg-dark-800 rounded-2xl">${t.logo}</span>`;
+                let cleanLogo = sanitizeInput(t.logo);
+                let logoHtml = cleanLogo.startsWith('http') ? `<img src="${cleanLogo}" class="w-10 h-10 rounded-2xl object-cover bg-dark-900 p-1">` : `<span class="text-3xl p-3 bg-dark-800 rounded-2xl">${cleanLogo}</span>`;
                 return `
                     <div class="glass p-6 rounded-3xl space-y-4 border border-gray-800">
                         <div class="flex items-center justify-between border-b border-gray-800 pb-4">
                             <div class="flex items-center space-x-4">
                                 ${logoHtml}
                                 <div>
-                                    <h3 class="font-extrabold text-lg">${t.name}</h3>
+                                    <h3 class="font-extrabold text-lg">${sanitizeInput(t.name)}</h3>
                                     <span class="text-xs text-brand-400 font-semibold">Resmi Kulüp</span>
                                 </div>
                             </div>
@@ -568,16 +594,16 @@
                                         return `
                                             <div class="bg-dark-800/60 p-3 rounded-2xl border border-gray-700 space-y-2">
                                                 <div class="flex justify-between items-center">
-                                                    <span class="font-bold text-sm text-white">${p.name} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${p.pos}</span></span>
+                                                    <span class="font-bold text-sm text-white">${sanitizeInput(p.name)} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${sanitizeInput(p.pos)}</span></span>
                                                     <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Sil</button>
                                                 </div>
                                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-                                                    <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
-                                                    <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" value="${p.assists}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
-                                                    <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" value="${p.tackles}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
+                                                    <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" min="0" max="999" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
+                                                    <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" min="0" max="999" value="${p.assists}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
+                                                    <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" min="0" max="999" value="${p.tackles}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
                                                     ${isGoalie ? `
-                                                        <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" value="${p.catches || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
-                                                        <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" value="${p.saves || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
+                                                        <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" min="0" max="999" value="${p.catches || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
+                                                        <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" min="0" max="999" value="${p.saves || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
                                                     ` : ''}
                                                 </div>
                                                 <button onclick="savePlayerStats(${t.id},${pIdx})" class="w-full mt-1 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg">Kaydet</button>
@@ -586,7 +612,7 @@
                                     } else {
                                         return `
                                             <div class="flex items-center justify-between text-xs bg-dark-800/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium">
-                                                <div><span class="font-bold text-white">${p.name}</span> <span class="text-brand-400">(${p.pos})</span></div>
+                                                <div><span class="font-bold text-white">${sanitizeInput(p.name)}</span> <span class="text-brand-400">(${sanitizeInput(p.pos)})</span></div>
                                                 <div class="flex items-center space-x-2 text-[11px]">
                                                     <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded">Gol: ${p.goals}</span>
                                                     <span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded">Asist: ${p.assists}</span>
@@ -624,44 +650,62 @@
             }
         }
 
-        // Action Functions
+        // Action Functions with Protections
         function saveMatchScoreDirect(id) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let match = leagueData.fixtures.find(f => f.id === id);
-            match.homeScore = parseInt(document.getElementById(`fh-${id}`).value) || 0;
-            match.awayScore = parseInt(document.getElementById(`fa-${id}`).value) || 0;
+            let hs = parseInt(document.getElementById(`fh-${id}`).value);
+            let as = parseInt(document.getElementById(`fa-${id}`).value);
+            match.homeScore = isNaN(hs) ? 0 : Math.max(0, Math.min(99, hs));
+            match.awayScore = isNaN(as) ? 0 : Math.max(0, Math.min(99, as));
             match.played = true;
             saveData();
             renderStandings();
-            alert("Skor kaydedildi!");
+            alert("Skor güvenle kaydedildi!");
         }
 
         function savePlayerStats(teamId, pIdx) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let team = leagueData.teams.find(t => t.id === teamId);
             let p = team.squad[pIdx];
-            p.goals = parseInt(document.getElementById(`p-g-${teamId}-${pIdx}`).value) || 0;
-            p.assists = parseInt(document.getElementById(`p-a-${teamId}-${pIdx}`).value) || 0;
-            p.tackles = parseInt(document.getElementById(`p-t-${teamId}-${pIdx}`).value) || 0;
+            
+            let g = parseInt(document.getElementById(`p-g-${teamId}-${pIdx}`).value);
+            let a = parseInt(document.getElementById(`p-a-${teamId}-${pIdx}`).value);
+            let tcl = parseInt(document.getElementById(`p-t-${teamId}-${pIdx}`).value);
+
+            p.goals = isNaN(g) ? 0 : Math.max(0, Math.min(999, g));
+            p.assists = isNaN(a) ? 0 : Math.max(0, Math.min(999, a));
+            p.tackles = isNaN(tcl) ? 0 : Math.max(0, Math.min(999, tcl));
+
             if (p.pos === 'KL') {
-                p.catches = parseInt(document.getElementById(`p-c-${teamId}-${pIdx}`).value) || 0;
-                p.saves = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value) || 0;
+                let c = parseInt(document.getElementById(`p-c-${teamId}-${pIdx}`).value);
+                let s = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value);
+                p.catches = isNaN(c) ? 0 : Math.max(0, Math.min(999, c));
+                p.saves = isNaN(s) ? 0 : Math.max(0, Math.min(999, s));
             }
             saveData();
             renderStats();
             renderTeams();
-            alert("Oyuncu güncellendi!");
+            alert("İstatistikler güvenle güncellendi!");
         }
 
         function editTeamPrompt(id) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let team = leagueData.teams.find(t => t.id === id);
             let newName = prompt("Takım Adı:", team.name);
-            let newLogo = prompt("Takım Logosu (Resim URL'si veya Emoji):", team.logo);
-            if (newName) team.name = newName;
-            if (newLogo !== null) team.logo = newLogo;
+            let newLogo = prompt("Takım Logosu (URL veya Emoji):", team.logo);
+            if (newName) team.name = sanitizeInput(newName.trim());
+            if (newLogo !== null) team.logo = sanitizeInput(newLogo.trim());
             saveData();
             renderAll();
         }
 
         function deleteTeam(id) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             if (confirm("Bu takımı silmek istediğinize emin misiniz?")) {
                 leagueData.teams = leagueData.teams.filter(t => t.id !== id);
                 saveData();
@@ -670,51 +714,74 @@
         }
 
         function addNewTeamPrompt() {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let name = prompt("Yeni Takım Adı:");
-            let logo = prompt("Takım Logosu (Resim URL veya Emoji):", "⚽");
-            if (name) {
-                leagueData.teams.push({ id: Date.now(), name: name, logo: logo || "⚽", squad: [] });
+            let logo = prompt("Takım Logosu (URL veya Emoji):", "⚽");
+            if (name && name.trim() !== "") {
+                leagueData.teams.push({ 
+                    id: Date.now(), 
+                    name: sanitizeInput(name.trim()), 
+                    logo: sanitizeInput((logo || "⚽").trim()), 
+                    squad: [] 
+                });
                 saveData();
                 renderAll();
             }
         }
 
         function editWeeklyMVP() {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let name = prompt("Haftanın Yıldızı (Oyuncu Adı):", leagueData.weeklyMVP.name);
             let team = prompt("Haftanın Yıldızı (Takımı):", leagueData.weeklyMVP.team);
             if (name) {
-                leagueData.weeklyMVP = { name, team };
+                leagueData.weeklyMVP = { 
+                    name: sanitizeInput(name.trim()), 
+                    team: sanitizeInput((team || "").trim()) 
+                };
                 saveData();
                 renderStats();
             }
         }
 
         function addWeeklyTeamPlayerPrompt() {
-            let name = prompt("Haftanın Takımına Eklenecek Oyuncunun Adı:");
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
+            let name = prompt("Haftanın Kadrosuna Eklenecek Oyuncu Adı:");
             let team = prompt("Oyuncunun Takımı:");
             let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
             if (name && team) {
                 if (!leagueData.weeklyTeamPlayers) leagueData.weeklyTeamPlayers = [];
-                leagueData.weeklyTeamPlayers.push({ name, team, pos });
+                leagueData.weeklyTeamPlayers.push({ 
+                    name: sanitizeInput(name.trim()), 
+                    team: sanitizeInput(team.trim()), 
+                    pos: sanitizeInput(pos.trim()) 
+                });
                 saveData();
                 renderStats();
             }
         }
 
         function removeWeeklyTeamPlayer(idx) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             leagueData.weeklyTeamPlayers.splice(idx, 1);
             saveData();
             renderStats();
         }
 
         function addSquadPlayerPrompt(teamId) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let name = prompt("Oyuncu Adı:");
             let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
-            if (name) {
+            if (name && name.trim() !== "") {
+                let cleanPos = ["KL", "DF", "OS", "FV"].includes(pos) ? pos : "OS";
                 let team = leagueData.teams.find(t => t.id === teamId);
                 team.squad.push({
-                    name: name,
-                    pos: pos,
+                    name: sanitizeInput(name.trim()),
+                    pos: cleanPos,
                     goals: 0,
                     assists: 0,
                     tackles: 0,
@@ -727,6 +794,8 @@
         }
 
         function removeSquadPlayer(teamId, pIdx) {
+            if (!currentUser) return;
+            if (!checkRateLimit()) return;
             let team = leagueData.teams.find(t => t.id === teamId);
             team.squad.splice(pIdx, 1);
             saveData();
@@ -739,7 +808,7 @@
                 document.getElementById('user-info').classList.add('hidden');
                 document.getElementById('admin-btn-text').innerText = "Yönetici Girişi";
                 renderAll();
-                alert("Çıkış yapıldı.");
+                alert("Güvenli çıkış yapıldı.");
             } else {
                 toggleLoginModal();
             }
@@ -750,6 +819,7 @@
         }
 
         function loginAdmin() {
+            if (!checkRateLimit()) return;
             const userInp = document.getElementById('login-username').value.trim();
             const passInp = document.getElementById('login-password').value.trim();
             const found = ADMIN_ACCOUNTS.find(a => a.username === userInp && a.password === passInp);
@@ -763,7 +833,7 @@
                 renderAll();
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-password').value = '';
-                alert("Giriş Yapıldı! Krallıklar sekmesine geçerek Haftanın 11'ini/Takımını doğrudan düzenleyebilirsiniz.");
+                alert("Güvenli Yönetici Girişi Başarılı!");
             } else {
                 alert("Hatalı kullanıcı adı veya şifre!");
             }
