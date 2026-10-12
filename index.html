@@ -90,6 +90,9 @@
                 <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="shield" class="w-4 h-4"></i><span>Kulüpler</span>
                 </button>
+                <button onclick="switchTab('transfers')" id="nav-transfers" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="arrow-left-right" class="w-4 h-4"></i><span>Transferler</span>
+                </button>
                 <button onclick="switchTab('history')" id="nav-history" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-amber-400 hover:text-amber-300">
                     <i data-lucide="history" class="w-4 h-4"></i><span>Tarihçemiz</span>
                 </button>
@@ -115,7 +118,7 @@
                     <button onclick="toggleThemeMenu()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
 
-                <!-- 🎨 Özel Renk Seçici (Color Picker) -->
+                <!-- 🎨 Özel Renk Seçici -->
                 <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
                     <span class="text-xs font-bold text-gray-200">Özel Renk Seçin:</span>
                     <input type="color" id="custom-color-picker" oninput="applyCustomColor(this.value)" class="w-10 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0">
@@ -161,7 +164,7 @@
         <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
-                <span class="text-sm font-bold text-white">Yönetici Modu Aktif: Tüm lig verilerini ve tarihçe ödüllerini yönetebilirsiniz.</span>
+                <span class="text-sm font-bold text-white">Yönetici Modu Aktif: Gelen transfer tekliflerini onaylayabilir veya reddedebilirsiniz.</span>
             </div>
             <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Tüm Verileri Sıfırla</button>
         </div>
@@ -284,6 +287,61 @@
             <div id="teams-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
         </section>
 
+        <!-- Transfers Tab (TRANSFER SİSTEMİ) -->
+        <section id="tab-transfers" class="tab-content hidden space-y-8">
+            <div class="glass p-6 rounded-3xl">
+                <h2 class="text-2xl font-black text-white flex items-center space-x-2">
+                    <i data-lucide="arrow-left-right" class="w-6 h-6 text-brand-400"></i>
+                    <span>TRANSFER TEKLİF MERKEZİ</span>
+                </h2>
+                <p class="text-sm text-gray-400 mt-1">Takımınızı seçip transfer etmek istediğiniz oyuncunun ismini yazarak teklif gönderin.</p>
+            </div>
+
+            <!-- Transfer Teklifi Gönderme Formu -->
+            <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30">
+                <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
+                    <i data-lucide="send" class="w-4 h-4 text-brand-400"></i>
+                    <span>Yeni Transfer Teklifi Gönder</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Hedef Takım (Kulüp)</label>
+                        <select id="transfer-target-team" class="w-full px-4 py-3 bg-dark-900/90 border border-brand-900/50 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500 text-sm">
+                            <!-- JS ile doldurulacak -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Oyuncu Adı Soyadı</label>
+                        <input type="text" id="transfer-player-name" placeholder="Örn: Hakan Çalhanoğlu" class="w-full px-4 py-3 bg-dark-900/90 border border-brand-900/50 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Mevkii</label>
+                        <select id="transfer-player-pos" class="w-full px-4 py-3 bg-dark-900/90 border border-brand-900/50 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500 text-sm">
+                            <option value="OS">Orta Saha (OS)</option>
+                            <option value="FV">Forvet (FV)</option>
+                            <option value="DF">Defans (DF)</option>
+                            <option value="KL">Kaleci (KL)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-2 text-right">
+                    <button onclick="submitTransferOffer()" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-2xl shadow-lg shadow-brand-600/30 flex items-center space-x-2 ml-auto">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        <span>Teklifi Gönder</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gelen & Yapılan Transfer Teklifleri Listesi -->
+            <div class="glass-card p-6 rounded-3xl space-y-4">
+                <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
+                    <i data-lucide="list" class="w-4 h-4 text-amber-400"></i>
+                    <span>Transfer Teklifleri & Onay Durumu</span>
+                </h3>
+                <div id="transfers-list-container" class="space-y-3"></div>
+            </div>
+        </section>
+
         <!-- History Tab -->
         <section id="tab-history" class="tab-content hidden space-y-8">
             <div class="glass p-6 rounded-3xl flex justify-between items-center">
@@ -337,7 +395,6 @@
 
     <!-- Script Logics -->
     <script>
-        // Yeni yönetici hesapları eklendi
         const ADMIN_ACCOUNTS = [
             { username: "civciv", password: "1717OK", name: "Civciv" },
             { username: "Noctra", password: "hahaytcano", name: "Noctra" },
@@ -354,7 +411,6 @@
             menu.classList.toggle('hidden');
         }
 
-        // TEMA VE RENK DEĞİŞTİRME MEKANİZMASI
         function updateThemeStyles(c1, c2, c3, cardBg, cardBorder) {
             document.documentElement.style.setProperty('--bg-color-1', c1);
             document.documentElement.style.setProperty('--bg-color-2', c2);
@@ -428,10 +484,12 @@
             weeklyTeamPlayers: [],
             historyRecords: [
                 { season: "1. Sezon", championTeamId: 1, ballondor: "Mert (Anadolu Gücü)", puskas: "Emre (Anadolu Gücü)", gkOfYear: "Burak (Anadolu Gücü)" }
-            ]
+            ],
+            transfers: []
         };
 
         let leagueData = JSON.parse(localStorage.getItem('asl_final_v2026_data')) || defaultLeagueData;
+        if (!leagueData.transfers) leagueData.transfers = [];
         let currentWeek = 1;
 
         function saveData() {
@@ -629,6 +687,127 @@
             `).join('');
         }
 
+        // TRANSFER SİSTEMİ MANTIĞI
+        function renderTransfers() {
+            // Takım Seçeneklerini Doldur
+            const teamSelect = document.getElementById('transfer-target-team');
+            teamSelect.innerHTML = leagueData.teams.map(t => `<option value="${t.id}">${sanitizeInput(t.logo)} ${sanitizeInput(t.name)}</option>`).join('');
+
+            // Teklifler Listesini Oluştur
+            const container = document.getElementById('transfers-list-container');
+            if (!leagueData.transfers || leagueData.transfers.length === 0) {
+                container.innerHTML = '<div class="text-xs text-gray-500 italic p-3">Henüz yapılmış bir transfer teklifi yok.</div>';
+                return;
+            }
+
+            container.innerHTML = leagueData.transfers.map((tr, idx) => {
+                let targetTeam = leagueData.teams.find(t => t.id === tr.targetTeamId);
+                let teamName = targetTeam ? targetTeam.name : "Kulüp";
+                let teamLogo = targetTeam ? targetTeam.logo : "⚽";
+
+                let statusBadge = "";
+                if (tr.status === "pending") {
+                    statusBadge = `<span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-xl font-bold text-xs flex items-center space-x-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i><span>Onay Bekliyor</span></span>`;
+                } else if (tr.status === "approved") {
+                    statusBadge = `<span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl font-bold text-xs flex items-center space-x-1"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Kabul Edildi</span></span>`;
+                } else if (tr.status === "rejected") {
+                    statusBadge = `<span class="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl font-bold text-xs flex items-center space-x-1"><i data-lucide="x" class="w-3.5 h-3.5"></i><span>Reddedildi</span></span>`;
+                }
+
+                let adminActions = "";
+                if (currentUser && tr.status === "pending") {
+                    adminActions = `
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <button onclick="approveTransfer(${idx})" title="Transferi Kabul Et" class="p-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg transition-transform transform hover:scale-110 active:scale-95 flex items-center space-x-1">
+                                <i data-lucide="check" class="w-5 h-5 font-black"></i>
+                            </button>
+                            <button onclick="rejectTransfer(${idx})" title="Transferi Reddet" class="p-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl shadow-lg transition-transform transform hover:scale-110 active:scale-95 flex items-center space-x-1">
+                                <i data-lucide="x" class="w-5 h-5 font-black"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/10 gap-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">${sanitizeInput(teamLogo)}</span>
+                            <div>
+                                <div class="font-bold text-sm text-white">${sanitizeInput(tr.playerName)} <span class="text-xs text-brand-400">(${sanitizeInput(tr.pos)})</span></div>
+                                <div class="text-xs text-gray-400">Hedef Takım: <span class="text-gray-200 font-semibold">${sanitizeInput(teamName)}</span></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                            ${statusBadge}
+                            ${adminActions}
+                        </div>
+                    </div>
+                `;
+            }).reverse().join('');
+            lucide.createIcons();
+        }
+
+        function submitTransferOffer() {
+            const teamId = parseInt(document.getElementById('transfer-target-team').value);
+            const playerName = document.getElementById('transfer-player-name').value.trim();
+            const pos = document.getElementById('transfer-player-pos').value;
+
+            if (!playerName) {
+                alert("Lütfen transfer edilecek oyuncunun adını yazın!");
+                return;
+            }
+
+            if (!leagueData.transfers) leagueData.transfers = [];
+            leagueData.transfers.push({
+                id: Date.now(),
+                targetTeamId: teamId,
+                playerName: sanitizeInput(playerName),
+                pos: pos,
+                status: "pending"
+            });
+
+            saveData();
+            document.getElementById('transfer-player-name').value = '';
+            renderTransfers();
+            alert("Transfer teklifiniz başarıyla gönderildi! Yöneticilerin onayı bekleniyor.");
+        }
+
+        function approveTransfer(indexInReversed) {
+            if (!currentUser) return;
+            let realIndex = leagueData.transfers.length - 1 - indexInReversed;
+            let tr = leagueData.transfers[realIndex];
+            tr.status = "approved";
+
+            // Takımın kadrosuna oyuncuyu otomatik ekle
+            let team = leagueData.teams.find(t => t.id === tr.targetTeamId);
+            if (team) {
+                team.squad.push({
+                    name: tr.playerName,
+                    pos: tr.pos,
+                    goals: 0,
+                    assists: 0,
+                    tackles: 0,
+                    catches: 0,
+                    saves: 0
+                });
+            }
+
+            saveData();
+            renderTransfers();
+            renderTeams();
+            alert(`Transfer kabul edildi! ${tr.playerName} isimli oyuncu ${team ? team.name : 'takımın'} kadrosuna eklendi.`);
+        }
+
+        function rejectTransfer(indexInReversed) {
+            if (!currentUser) return;
+            let realIndex = leagueData.transfers.length - 1 - indexInReversed;
+            leagueData.transfers[realIndex].status = "rejected";
+
+            saveData();
+            renderTransfers();
+            alert("Transfer teklifi reddedildi.");
+        }
+
         function renderHistory() {
             const container = document.getElementById('history-records-container');
             if (!leagueData.historyRecords || leagueData.historyRecords.length === 0) {
@@ -753,6 +932,7 @@
             renderFixtures();
             renderStats();
             renderTeams();
+            renderTransfers();
             renderHistory();
             
             if (currentUser) {
