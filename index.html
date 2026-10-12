@@ -21,23 +21,39 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
         
-        /* Bütüncül Tema Sınıfları */
-        body.theme-red { background: linear-gradient(135deg, #1f0307 0%, #120104 50%, #290409 100%); }
-        body.theme-maroon { background: linear-gradient(135deg, #170206 0%, #0a0103 50%, #1f0309 100%); }
-        body.theme-dark { background: linear-gradient(135deg, #09090b 0%, #121215 50%, #050507 100%); }
-        body.theme-blue { background: linear-gradient(135deg, #030a1c 0%, #020510 50%, #061333 100%); }
-        body.theme-emerald { background: linear-gradient(135deg, #021a12 0%, #010d09 50%, #03261b 100%); }
+        :root {
+            --bg-color-1: #1f0307;
+            --bg-color-2: #120104;
+            --bg-color-3: #290409;
+            --card-bg: rgba(36, 6, 10, 0.85);
+            --card-border: rgba(225, 29, 72, 0.3);
+        }
 
-        .glass { background: rgba(36, 6, 10, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(225, 29, 72, 0.2); }
-        .glass-card { background: linear-gradient(135deg, rgba(56, 9, 16, 0.6) 0%, rgba(20, 3, 5, 0.85) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(225, 29, 72, 0.25); }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 50%, var(--bg-color-3) 100%) !important;
+            background-attachment: fixed !important;
+            transition: all 0.3s ease;
+        }
+
+        .glass {
+            background: var(--card-bg) !important;
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--card-border) !important;
+        }
+
+        .glass-card {
+            background: var(--card-bg) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border) !important;
+        }
     </style>
 </head>
-<body id="app-body" class="theme-red text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20">
+<body id="app-body" class="text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20">
 
     <!-- Header / Navbar -->
-    <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl transition-all duration-300">
+    <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <!-- Vektörel Logo -->
@@ -89,43 +105,41 @@
         </div>
     </header>
 
-    <!-- SAĞ ALT KÖŞEYE SABİTLENMİŞ RENK PALETİ VE TEMA MENÜSÜ -->
+    <!-- SAĞ ALT KÖŞE RENK PALETİ PANENİ -->
     <div class="fixed bottom-6 right-6 z-50">
         <div class="relative">
-            <!-- Açılır Menü -->
+            <!-- Açılır Renk Menüsü -->
             <div id="theme-menu" class="hidden absolute bottom-16 right-0 w-64 glass rounded-2xl p-4 border border-brand-500/40 shadow-2xl space-y-3 mb-2">
-                <div class="flex items-center justify-between border-b border-brand-900/40 pb-2">
+                <div class="flex items-center justify-between border-b border-white/10 pb-2">
                     <span class="text-xs font-black text-white uppercase tracking-wider">Tema & Renk Paleti</span>
                     <button onclick="toggleThemeMenu()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
 
-                <!-- 🎨 Özel Renk Paleti (Color Picker) -->
-                <div class="p-2.5 bg-dark-800/80 rounded-xl border border-brand-900/50 flex items-center justify-between">
-                    <span class="text-xs font-bold text-gray-300">Özel Renk Seçin:</span>
-                    <div class="flex items-center space-x-2">
-                        <input type="color" id="custom-color-picker" onchange="applyCustomColor(this.value)" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0">
-                    </div>
+                <!-- 🎨 Özel Renk Seçici (Color Picker) -->
+                <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
+                    <span class="text-xs font-bold text-gray-200">Özel Renk Seçin:</span>
+                    <input type="color" id="custom-color-picker" oninput="applyCustomColor(this.value)" class="w-10 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0">
                 </div>
 
                 <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Hazır Temalar</div>
                 <div class="space-y-1">
-                    <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-400 transition-colors">
+                    <button onclick="setPresetTheme('red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-rose-400">
                         <span>Kırmızı (Varsayılan)</span>
                         <span class="w-3.5 h-3.5 rounded-full bg-rose-600 border border-white/50"></span>
                     </button>
-                    <button onclick="setTheme('theme-maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-300 transition-colors">
+                    <button onclick="setPresetTheme('maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-rose-300">
                         <span>Koyu Bordo</span>
                         <span class="w-3.5 h-3.5 rounded-full bg-rose-950 border border-white/50"></span>
                     </button>
-                    <button onclick="setTheme('theme-dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-gray-300 transition-colors">
+                    <button onclick="setPresetTheme('dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-gray-300">
                         <span>Siyah / Gece</span>
                         <span class="w-3.5 h-3.5 rounded-full bg-gray-900 border border-white/50"></span>
                     </button>
-                    <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-blue-400 transition-colors">
+                    <button onclick="setPresetTheme('blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-blue-400">
                         <span>Gece Mavisi</span>
                         <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white/50"></span>
                     </button>
-                    <button onclick="setTheme('theme-emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-emerald-400 transition-colors">
+                    <button onclick="setPresetTheme('emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-emerald-400">
                         <span>Zümrüt Yeşil</span>
                         <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 border border-white/50"></span>
                     </button>
@@ -323,11 +337,14 @@
 
     <!-- Script Logics -->
     <script>
+        // Yeni yönetici hesapları eklendi
         const ADMIN_ACCOUNTS = [
             { username: "civciv", password: "1717OK", name: "Civciv" },
             { username: "Noctra", password: "hahaytcano", name: "Noctra" },
             { username: "31cibalik", password: "Cinar.61", name: "31cibalik" },
-            { username: "egess", password: "ege1s0y!", name: "egess" }
+            { username: "egess", password: "ege1s0y!", name: "egess" },
+            { username: "alen123", password: "alentsmtsıvtsıv", name: "Alen" },
+            { username: "atlasakxs", password: "0549!wfIL", name: "Atlas" }
         ];
 
         let currentUser = null;
@@ -337,21 +354,34 @@
             menu.classList.toggle('hidden');
         }
 
-        function applyCustomColor(hexColor) {
-            const body = document.getElementById('app-body');
-            body.className = "text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20";
-            body.style.background = `linear-gradient(135deg, ${hexColor} 0%, #000000 100%)`;
-            localStorage.setItem('asl_custom_color', hexColor);
-            localStorage.removeItem('asl_theme');
-            document.getElementById('theme-menu').classList.add('hidden');
+        // TEMA VE RENK DEĞİŞTİRME MEKANİZMASI
+        function updateThemeStyles(c1, c2, c3, cardBg, cardBorder) {
+            document.documentElement.style.setProperty('--bg-color-1', c1);
+            document.documentElement.style.setProperty('--bg-color-2', c2);
+            document.documentElement.style.setProperty('--bg-color-3', c3);
+            document.documentElement.style.setProperty('--card-bg', cardBg);
+            document.documentElement.style.setProperty('--card-border', cardBorder);
         }
 
-        function setTheme(themeClass) {
-            const body = document.getElementById('app-body');
-            body.style.background = "";
-            body.className = themeClass + " text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20";
-            localStorage.setItem('asl_theme', themeClass);
-            localStorage.removeItem('asl_custom_color');
+        function applyCustomColor(hexColor) {
+            const cardBg = `rgba(15, 15, 20, 0.85)`;
+            const cardBorder = `${hexColor}66`;
+            updateThemeStyles(hexColor, '#0a0a0d', hexColor, cardBg, cardBorder);
+            localStorage.setItem('asl_custom_theme', JSON.stringify({ c1: hexColor, c2: '#0a0a0d', c3: hexColor, cardBg, cardBorder }));
+        }
+
+        function setPresetTheme(themeKey) {
+            const themes = {
+                'red': { c1: '#1f0307', c2: '#120104', c3: '#290409', cardBg: 'rgba(36, 6, 10, 0.85)', cardBorder: 'rgba(225, 29, 72, 0.3)' },
+                'maroon': { c1: '#170206', c2: '#0a0103', c3: '#1f0309', cardBg: 'rgba(25, 3, 8, 0.85)', cardBorder: 'rgba(159, 18, 57, 0.4)' },
+                'dark': { c1: '#09090b', c2: '#121215', c3: '#050507', cardBg: 'rgba(24, 24, 27, 0.85)', cardBorder: 'rgba(255, 255, 255, 0.15)' },
+                'blue': { c1: '#030a1c', c2: '#020510', c3: '#061333', cardBg: 'rgba(6, 19, 51, 0.85)', cardBorder: 'rgba(59, 130, 246, 0.3)' },
+                'emerald': { c1: '#021a12', c2: '#010d09', c3: '#03261b', cardBg: 'rgba(3, 38, 27, 0.85)', cardBorder: 'rgba(16, 185, 129, 0.3)' }
+            };
+
+            const t = themes[themeKey] || themes['red'];
+            updateThemeStyles(t.c1, t.c2, t.c3, t.cardBg, t.cardBorder);
+            localStorage.setItem('asl_custom_theme', JSON.stringify(t));
             document.getElementById('theme-menu').classList.add('hidden');
         }
 
@@ -470,7 +500,7 @@
                 else if (index >= leagueData.teams.length - 2) { badgeColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30"; rowBorder = "bg-rose-500/5"; }
 
                 const tr = document.createElement('tr');
-                tr.className = `hover:bg-brand-900/20 transition-colors ${rowBorder}`;
+                tr.className = `hover:bg-white/5 transition-colors ${rowBorder}`;
                 tr.innerHTML = `
                     <td class="py-4 px-6 text-center font-bold"><span class="inline-flex items-center justify-center w-7 h-7 rounded-xl ${badgeColor}">${index + 1}</span></td>
                     <td class="py-4 px-6 font-bold flex items-center space-x-3"><span class="text-xl">${sanitizeInput(t.logo)}</span><span>${sanitizeInput(t.name)}</span></td>
@@ -552,7 +582,7 @@
                 weeklyTeamEl.innerHTML = '<div class="text-xs text-gray-500 italic col-span-2 p-3">Henüz haftanın kadrosuna oyuncu eklenmedi.</div>';
             } else {
                 weeklyTeamEl.innerHTML = leagueData.weeklyTeamPlayers.map((p, idx) => `
-                    <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/60 border border-brand-900/30">
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10">
                         <div class="flex items-center space-x-3">
                             <span class="px-2 py-0.5 bg-brand-500/20 text-brand-400 font-extrabold text-xs rounded-md">${sanitizeInput(p.pos)}</span>
                             <div>
@@ -571,7 +601,7 @@
             let scorers = [...allPlayers].filter(p => p.goals > 0).sort((a, b) => b.goals - a.goals);
             const scorersEl = document.getElementById('scorers-list');
             scorersEl.innerHTML = scorers.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz gol yok.</div>' : scorers.slice(0, 10).map((s, idx) => `
-                <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/50 border border-brand-900/30">
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10">
                     <div class="flex items-center space-x-3">
                         <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
                         <div>
@@ -586,7 +616,7 @@
             let assists = [...allPlayers].filter(p => p.assists > 0).sort((a, b) => b.assists - a.assists);
             const assistsEl = document.getElementById('assists-list');
             assistsEl.innerHTML = assists.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz asist yok.</div>' : assists.slice(0, 10).map((a, idx) => `
-                <div class="flex items-center justify-between p-3 rounded-2xl bg-dark-800/50 border border-brand-900/30">
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10">
                     <div class="flex items-center space-x-3">
                         <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
                         <div>
@@ -630,21 +660,21 @@
                         </div>
 
                         <div class="grid grid-cols-1 gap-2.5 text-xs">
-                            <div class="p-3 bg-dark-800/80 rounded-xl border border-brand-900/40 flex items-center justify-between">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
                                 <div class="flex items-center space-x-2 text-amber-300 font-bold">
                                     <i data-lucide="award" class="w-4 h-4"></i><span>Ballon d'Or:</span>
                                 </div>
                                 <span class="font-extrabold text-white text-sm">${sanitizeInput(h.ballondor || '-')}</span>
                             </div>
 
-                            <div class="p-3 bg-dark-800/80 rounded-xl border border-brand-900/40 flex items-center justify-between">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
                                 <div class="flex items-center space-x-2 text-rose-400 font-bold">
                                     <i data-lucide="flame" class="w-4 h-4"></i><span>Puskás (Yılın Golü):</span>
                                 </div>
                                 <span class="font-extrabold text-white text-sm">${sanitizeInput(h.puskas || '-')}</span>
                             </div>
 
-                            <div class="p-3 bg-dark-800/80 rounded-xl border border-brand-900/40 flex items-center justify-between">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
                                 <div class="flex items-center space-x-2 text-emerald-400 font-bold">
                                     <i data-lucide="shield-check" class="w-4 h-4"></i><span>Yılın Kalecisi:</span>
                                 </div>
@@ -661,9 +691,9 @@
             container.innerHTML = leagueData.teams.map(t => {
                 return `
                     <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30">
-                        <div class="flex items-center justify-between border-b border-brand-900/40 pb-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
                             <div class="flex items-center space-x-4">
-                                <span class="text-3xl p-3 bg-dark-800/80 rounded-2xl border border-brand-900/30">${sanitizeInput(t.logo)}</span>
+                                <span class="text-3xl p-3 bg-black/40 rounded-2xl border border-white/10">${sanitizeInput(t.logo)}</span>
                                 <div>
                                     <h3 class="font-extrabold text-lg text-white">${sanitizeInput(t.name)}</h3>
                                     <span class="text-xs text-brand-400 font-semibold">Resmi Kulüp</span>
@@ -678,18 +708,18 @@
                                     let isGoalie = p.pos === 'KL';
                                     if (currentUser) {
                                         return `
-                                            <div class="bg-dark-800/80 p-3 rounded-2xl border border-brand-900/40 space-y-2">
+                                            <div class="bg-black/50 p-3 rounded-2xl border border-white/10 space-y-2">
                                                 <div class="flex justify-between items-center">
                                                     <span class="font-bold text-sm text-white">${sanitizeInput(p.name)} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${sanitizeInput(p.pos)}</span></span>
                                                     <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 font-bold">Sil</button>
                                                 </div>
                                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-                                                    <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" min="0" value="${p.goals}" class="w-full bg-dark-900 border border-brand-900/50 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
-                                                    <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" min="0" value="${p.assists}" class="w-full bg-dark-900 border border-brand-900/50 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
-                                                    <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" min="0" value="${p.tackles}" class="w-full bg-dark-900 border border-brand-900/50 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
+                                                    <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" min="0" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
+                                                    <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" min="0" value="${p.assists}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
+                                                    <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" min="0" value="${p.tackles}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
                                                     ${isGoalie ? `
-                                                        <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" min="0" value="${p.catches || 0}" class="w-full bg-dark-900 border border-brand-900/50 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
-                                                        <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" min="0" value="${p.saves || 0}" class="w-full bg-dark-900 border border-brand-900/50 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
+                                                        <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" min="0" value="${p.catches || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
+                                                        <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" min="0" value="${p.saves || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
                                                     ` : ''}
                                                 </div>
                                                 <button onclick="savePlayerStats(${t.id},${pIdx})" class="w-full mt-1 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg">Kaydet</button>
@@ -697,7 +727,7 @@
                                         `;
                                     } else {
                                         return `
-                                            <div class="flex items-center justify-between text-xs bg-dark-800/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium border border-brand-900/20">
+                                            <div class="flex items-center justify-between text-xs bg-black/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium border border-white/10">
                                                 <div><span class="font-bold text-white">${sanitizeInput(p.name)}</span> <span class="text-brand-400">(${sanitizeInput(p.pos)})</span></div>
                                                 <div class="flex items-center space-x-2 text-[11px]">
                                                     <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded">Gol: ${p.goals}</span>
@@ -925,13 +955,16 @@
         }
 
         window.onload = () => {
-            const savedCustomColor = localStorage.getItem('asl_custom_color');
-            const savedTheme = localStorage.getItem('asl_theme');
-            
-            if (savedCustomColor) {
-                applyCustomColor(savedCustomColor);
-            } else if (savedTheme) {
-                setTheme(savedTheme);
+            const savedTheme = localStorage.getItem('asl_custom_theme');
+            if (savedTheme) {
+                try {
+                    const t = JSON.parse(savedTheme);
+                    updateThemeStyles(t.c1, t.c2, t.c3, t.cardBg, t.cardBorder);
+                } catch (e) {
+                    setPresetTheme('red');
+                }
+            } else {
+                setPresetTheme('red');
             }
             
             renderAll();
