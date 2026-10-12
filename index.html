@@ -287,7 +287,7 @@
             <div id="teams-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
         </section>
 
-        <!-- Transfers Tab (TRANSFER SİSTEMİ) -->
+        <!-- Transfers Tab -->
         <section id="tab-transfers" class="tab-content hidden space-y-8">
             <div class="glass p-6 rounded-3xl">
                 <h2 class="text-2xl font-black text-white flex items-center space-x-2">
@@ -307,7 +307,6 @@
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Hedef Takım (Kulüp)</label>
                         <select id="transfer-target-team" class="w-full px-4 py-3 bg-dark-900/90 border border-brand-900/50 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500 text-sm">
-                            <!-- JS ile doldurulacak -->
                         </select>
                     </div>
                     <div>
@@ -488,8 +487,23 @@
             transfers: []
         };
 
-        let leagueData = JSON.parse(localStorage.getItem('asl_final_v2026_data')) || defaultLeagueData;
-        if (!leagueData.transfers) leagueData.transfers = [];
+        let leagueData = defaultLeagueData;
+
+        function loadSavedData() {
+            const rawData = localStorage.getItem('asl_final_v2026_data');
+            if (rawData) {
+                try {
+                    const parsed = JSON.parse(rawData);
+                    leagueData = { ...defaultLeagueData, ...parsed };
+                } catch (e) {
+                    leagueData = defaultLeagueData;
+                }
+            } else {
+                leagueData = defaultLeagueData;
+            }
+            if (!leagueData.transfers) leagueData.transfers = [];
+        }
+
         let currentWeek = 1;
 
         function saveData() {
@@ -499,7 +513,7 @@
         function resetAllDataCompletely() {
             if (!currentUser) return;
             if (confirm("Bütün veriler sıfırlanacak. Emin misiniz?")) {
-                localStorage.clear();
+                localStorage.removeItem('asl_final_v2026_data');
                 leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
                 saveData();
                 renderAll();
@@ -687,13 +701,10 @@
             `).join('');
         }
 
-        // TRANSFER SİSTEMİ MANTIĞI
         function renderTransfers() {
-            // Takım Seçeneklerini Doldur
             const teamSelect = document.getElementById('transfer-target-team');
             teamSelect.innerHTML = leagueData.teams.map(t => `<option value="${t.id}">${sanitizeInput(t.logo)} ${sanitizeInput(t.name)}</option>`).join('');
 
-            // Teklifler Listesini Oluştur
             const container = document.getElementById('transfers-list-container');
             if (!leagueData.transfers || leagueData.transfers.length === 0) {
                 container.innerHTML = '<div class="text-xs text-gray-500 italic p-3">Henüz yapılmış bir transfer teklifi yok.</div>';
@@ -769,7 +780,7 @@
             saveData();
             document.getElementById('transfer-player-name').value = '';
             renderTransfers();
-            alert("Transfer teklifiniz başarıyla gönderildi! Yöneticilerin onayı bekleniyor.");
+            alert("Transfer teklifiniz gönderildi!");
         }
 
         function approveTransfer(indexInReversed) {
@@ -778,7 +789,6 @@
             let tr = leagueData.transfers[realIndex];
             tr.status = "approved";
 
-            // Takımın kadrosuna oyuncuyu otomatik ekle
             let team = leagueData.teams.find(t => t.id === tr.targetTeamId);
             if (team) {
                 team.squad.push({
@@ -795,7 +805,7 @@
             saveData();
             renderTransfers();
             renderTeams();
-            alert(`Transfer kabul edildi! ${tr.playerName} isimli oyuncu ${team ? team.name : 'takımın'} kadrosuna eklendi.`);
+            alert(`Transfer kabul edildi! ${tr.playerName} isimli oyuncu kadroya eklendi.`);
         }
 
         function rejectTransfer(indexInReversed) {
@@ -1135,6 +1145,8 @@
         }
 
         window.onload = () => {
+            loadSavedData();
+
             const savedTheme = localStorage.getItem('asl_custom_theme');
             if (savedTheme) {
                 try {
