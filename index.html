@@ -21,12 +21,12 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.3s ease; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
         
-        /* Temalar */
+        /* Bütüncül Tema Sınıfları */
         body.theme-red { background: linear-gradient(135deg, #1f0307 0%, #120104 50%, #290409 100%); }
-        body.theme-dark { background: linear-gradient(135deg, #09090b 0%, #121215 50%, #050507 100%); }
         body.theme-maroon { background: linear-gradient(135deg, #170206 0%, #0a0103 50%, #1f0309 100%); }
+        body.theme-dark { background: linear-gradient(135deg, #09090b 0%, #121215 50%, #050507 100%); }
         body.theme-blue { background: linear-gradient(135deg, #030a1c 0%, #020510 50%, #061333 100%); }
         body.theme-emerald { background: linear-gradient(135deg, #021a12 0%, #010d09 50%, #03261b 100%); }
 
@@ -37,7 +37,7 @@
 <body id="app-body" class="theme-red text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20">
 
     <!-- Header / Navbar -->
-    <header class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
+    <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <!-- Vektörel Logo -->
@@ -89,38 +89,53 @@
         </div>
     </header>
 
-    <!-- SAĞ ALT KÖŞEYE SABİTLENMİŞ TEMA DEĞİŞTİRİCİ BUTONU -->
+    <!-- SAĞ ALT KÖŞEYE SABİTLENMİŞ RENK PALETİ VE TEMA MENÜSÜ -->
     <div class="fixed bottom-6 right-6 z-50">
         <div class="relative">
             <!-- Açılır Menü -->
-            <div id="theme-menu" class="hidden absolute bottom-14 right-0 w-52 glass rounded-2xl p-3 border border-brand-500/40 shadow-2xl space-y-1 mb-2">
-                <div class="text-[10px] font-black text-gray-400 uppercase px-2 py-1 border-b border-brand-900/40 mb-1">Arka Plan Rengi Seçin</div>
-                <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-400 transition-colors">
-                    <span>Kırmızı (Varsayılan)</span>
-                    <span class="w-3.5 h-3.5 rounded-full bg-rose-600 border border-white/50"></span>
-                </button>
-                <button onclick="setTheme('theme-maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-300 transition-colors">
-                    <span>Koyu Bordo</span>
-                    <span class="w-3.5 h-3.5 rounded-full bg-rose-950 border border-white/50"></span>
-                </button>
-                <button onclick="setTheme('theme-dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-gray-300 transition-colors">
-                    <span>Siyah / Gece</span>
-                    <span class="w-3.5 h-3.5 rounded-full bg-gray-900 border border-white/50"></span>
-                </button>
-                <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-blue-400 transition-colors">
-                    <span>Gece Mavisi</span>
-                    <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white/50"></span>
-                </button>
-                <button onclick="setTheme('theme-emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-emerald-400 transition-colors">
-                    <span>Zümrüt Yeşil</span>
-                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 border border-white/50"></span>
-                </button>
+            <div id="theme-menu" class="hidden absolute bottom-16 right-0 w-64 glass rounded-2xl p-4 border border-brand-500/40 shadow-2xl space-y-3 mb-2">
+                <div class="flex items-center justify-between border-b border-brand-900/40 pb-2">
+                    <span class="text-xs font-black text-white uppercase tracking-wider">Tema & Renk Paleti</span>
+                    <button onclick="toggleThemeMenu()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+
+                <!-- 🎨 Özel Renk Paleti (Color Picker) -->
+                <div class="p-2.5 bg-dark-800/80 rounded-xl border border-brand-900/50 flex items-center justify-between">
+                    <span class="text-xs font-bold text-gray-300">Özel Renk Seçin:</span>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="custom-color-picker" onchange="applyCustomColor(this.value)" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0">
+                    </div>
+                </div>
+
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Hazır Temalar</div>
+                <div class="space-y-1">
+                    <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-400 transition-colors">
+                        <span>Kırmızı (Varsayılan)</span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-rose-600 border border-white/50"></span>
+                    </button>
+                    <button onclick="setTheme('theme-maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-300 transition-colors">
+                        <span>Koyu Bordo</span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-rose-950 border border-white/50"></span>
+                    </button>
+                    <button onclick="setTheme('theme-dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-gray-300 transition-colors">
+                        <span>Siyah / Gece</span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-gray-900 border border-white/50"></span>
+                    </button>
+                    <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-blue-400 transition-colors">
+                        <span>Gece Mavisi</span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white/50"></span>
+                    </button>
+                    <button onclick="setTheme('theme-emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-emerald-400 transition-colors">
+                        <span>Zümrüt Yeşil</span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 border border-white/50"></span>
+                    </button>
+                </div>
             </div>
 
             <!-- Sağ Alt Buton -->
             <button onclick="toggleThemeMenu()" class="p-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white shadow-2xl shadow-brand-600/50 border border-white/30 flex items-center space-x-2 transition-all transform hover:scale-105 active:scale-95">
                 <i data-lucide="palette" class="w-5 h-5"></i>
-                <span class="text-xs font-black uppercase tracking-wider">Tema Değiştir</span>
+                <span class="text-xs font-black uppercase tracking-wider">Renk Paleti</span>
             </button>
         </div>
     </div>
@@ -322,9 +337,21 @@
             menu.classList.toggle('hidden');
         }
 
+        function applyCustomColor(hexColor) {
+            const body = document.getElementById('app-body');
+            body.className = "text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20";
+            body.style.background = `linear-gradient(135deg, ${hexColor} 0%, #000000 100%)`;
+            localStorage.setItem('asl_custom_color', hexColor);
+            localStorage.removeItem('asl_theme');
+            document.getElementById('theme-menu').classList.add('hidden');
+        }
+
         function setTheme(themeClass) {
-            document.getElementById('app-body').className = themeClass + " text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20";
+            const body = document.getElementById('app-body');
+            body.style.background = "";
+            body.className = themeClass + " text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20";
             localStorage.setItem('asl_theme', themeClass);
+            localStorage.removeItem('asl_custom_color');
             document.getElementById('theme-menu').classList.add('hidden');
         }
 
@@ -898,10 +925,15 @@
         }
 
         window.onload = () => {
+            const savedCustomColor = localStorage.getItem('asl_custom_color');
             const savedTheme = localStorage.getItem('asl_theme');
-            if (savedTheme) {
+            
+            if (savedCustomColor) {
+                applyCustomColor(savedCustomColor);
+            } else if (savedTheme) {
                 setTheme(savedTheme);
             }
+            
             renderAll();
             lucide.createIcons();
         };
