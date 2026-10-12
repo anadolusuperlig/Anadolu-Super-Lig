@@ -34,10 +34,10 @@
         .glass-card { background: linear-gradient(135deg, rgba(56, 9, 16, 0.6) 0%, rgba(20, 3, 5, 0.85) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(225, 29, 72, 0.25); }
     </style>
 </head>
-<body id="app-body" class="theme-red text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+<body id="app-body" class="theme-red text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20">
 
     <!-- Header / Navbar -->
-    <header class="glass sticky top-0 z-50 border-b border-brand-900/40 shadow-xl">
+    <header class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <!-- Vektörel Logo -->
@@ -79,39 +79,7 @@
                 </button>
             </nav>
 
-            <!-- Sağ Üst Köşe (Tema Değiştirici ve Admin Girişi) -->
             <div class="flex items-center space-x-3">
-                <!-- Renk Teması Seçici Açılır Menü -->
-                <div class="relative group">
-                    <button class="p-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-amber-400 flex items-center space-x-1.5 transition-all" title="Arka Plan Temasını Değiştir">
-                        <i data-lucide="palette" class="w-4 h-4"></i>
-                        <span class="text-xs font-bold hidden sm:inline">Tema</span>
-                    </button>
-                    <div class="absolute right-0 mt-2 w-48 glass rounded-2xl p-2 border border-brand-900/50 shadow-2xl hidden group-hover:block z-50">
-                        <div class="text-[10px] font-black text-gray-400 uppercase px-3 py-1">Arka Plan Rengi</div>
-                        <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-400">
-                            <span>Kırmızı (Varsayılan)</span>
-                            <span class="w-3 h-3 rounded-full bg-rose-600 border border-white/40"></span>
-                        </button>
-                        <button onclick="setTheme('theme-maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-300">
-                            <span>Koyu Bordo</span>
-                            <span class="w-3 h-3 rounded-full bg-rose-950 border border-white/40"></span>
-                        </button>
-                        <button onclick="setTheme('theme-dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-gray-300">
-                            <span>Siyah / Koyu Gece</span>
-                            <span class="w-3 h-3 rounded-full bg-gray-900 border border-white/40"></span>
-                        </button>
-                        <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-blue-400">
-                            <span>Gece Mavisi</span>
-                            <span class="w-3 h-3 rounded-full bg-blue-600 border border-white/40"></span>
-                        </button>
-                        <button onclick="setTheme('theme-emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-emerald-400">
-                            <span>Zümrüt Yeşil</span>
-                            <span class="w-3 h-3 rounded-full bg-emerald-600 border border-white/40"></span>
-                        </button>
-                    </div>
-                </div>
-
                 <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20"></div>
                 <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-4 py-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-sm font-bold flex items-center space-x-2 transition-all">
                     <i data-lucide="user" class="w-4 h-4 text-brand-400"></i>
@@ -120,6 +88,42 @@
             </div>
         </div>
     </header>
+
+    <!-- SAĞ ALT KÖŞEYE SABİTLENMİŞ TEMA DEĞİŞTİRİCİ BUTONU -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <div class="relative">
+            <!-- Açılır Menü -->
+            <div id="theme-menu" class="hidden absolute bottom-14 right-0 w-52 glass rounded-2xl p-3 border border-brand-500/40 shadow-2xl space-y-1 mb-2">
+                <div class="text-[10px] font-black text-gray-400 uppercase px-2 py-1 border-b border-brand-900/40 mb-1">Arka Plan Rengi Seçin</div>
+                <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-400 transition-colors">
+                    <span>Kırmızı (Varsayılan)</span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-rose-600 border border-white/50"></span>
+                </button>
+                <button onclick="setTheme('theme-maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-300 transition-colors">
+                    <span>Koyu Bordo</span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-rose-950 border border-white/50"></span>
+                </button>
+                <button onclick="setTheme('theme-dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-gray-300 transition-colors">
+                    <span>Siyah / Gece</span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-gray-900 border border-white/50"></span>
+                </button>
+                <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-blue-400 transition-colors">
+                    <span>Gece Mavisi</span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white/50"></span>
+                </button>
+                <button onclick="setTheme('theme-emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-emerald-400 transition-colors">
+                    <span>Zümrüt Yeşil</span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 border border-white/50"></span>
+                </button>
+            </div>
+
+            <!-- Sağ Alt Buton -->
+            <button onclick="toggleThemeMenu()" class="p-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white shadow-2xl shadow-brand-600/50 border border-white/30 flex items-center space-x-2 transition-all transform hover:scale-105 active:scale-95">
+                <i data-lucide="palette" class="w-5 h-5"></i>
+                <span class="text-xs font-black uppercase tracking-wider">Tema Değiştir</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
@@ -313,9 +317,15 @@
 
         let currentUser = null;
 
+        function toggleThemeMenu() {
+            const menu = document.getElementById('theme-menu');
+            menu.classList.toggle('hidden');
+        }
+
         function setTheme(themeClass) {
-            document.getElementById('app-body').className = themeClass + " text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white";
+            document.getElementById('app-body').className = themeClass + " text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20";
             localStorage.setItem('asl_theme', themeClass);
+            document.getElementById('theme-menu').classList.add('hidden');
         }
 
         function sanitizeInput(str) {
