@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: { 900: '#0f0507', 800: '#1a0a0d', 700: '#2b0f14', 600: '#42151d' },
+                        dark: { 900: '#140305', 800: '#24060a', 700: '#380910', 600: '#520d17' },
                         brand: { 500: '#e11d48', 600: '#be123c', 400: '#fb7185', 700: '#9f1239' }
                     }
                 }
@@ -21,29 +21,34 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass { background: rgba(26, 10, 13, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(225, 29, 72, 0.15); }
-        .glass-card { background: linear-gradient(135deg, rgba(43, 15, 20, 0.6) 0%, rgba(15, 5, 7, 0.8) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(225, 29, 72, 0.2); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.3s ease; }
+        
+        /* Temalar */
+        body.theme-red { background: linear-gradient(135deg, #1f0307 0%, #120104 50%, #290409 100%); }
+        body.theme-dark { background: linear-gradient(135deg, #09090b 0%, #121215 50%, #050507 100%); }
+        body.theme-maroon { background: linear-gradient(135deg, #170206 0%, #0a0103 50%, #1f0309 100%); }
+        body.theme-blue { background: linear-gradient(135deg, #030a1c 0%, #020510 50%, #061333 100%); }
+        body.theme-emerald { background: linear-gradient(135deg, #021a12 0%, #010d09 50%, #03261b 100%); }
+
+        .glass { background: rgba(36, 6, 10, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(225, 29, 72, 0.2); }
+        .glass-card { background: linear-gradient(135deg, rgba(56, 9, 16, 0.6) 0%, rgba(20, 3, 5, 0.85) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(225, 29, 72, 0.25); }
     </style>
 </head>
-<body class="bg-gradient-to-b from-dark-900 via-[#140608] to-dark-900 text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+<body id="app-body" class="theme-red text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
 
     <!-- Header / Navbar -->
     <header class="glass sticky top-0 z-50 border-b border-brand-900/40 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <!-- Birebir Anadolu Süper Lig Vektörel Logosu -->
+                <!-- Vektörel Logo -->
                 <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white/80 shadow-lg shadow-brand-500/40 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
                     <svg viewBox="0 0 200 200" class="w-full h-full">
                         <circle cx="100" cy="100" r="96" fill="#c90424" stroke="#ffffff" stroke-width="7"/>
                         <circle cx="100" cy="100" r="86" fill="none" stroke="#ffffff" stroke-width="2.5"/>
-                        <!-- Ay-Yıldız -->
                         <path d="M 88 38 A 36 36 0 1 0 132 90 A 44 44 0 1 1 88 38 Z" fill="#ffffff"/>
                         <polygon points="100,22 104,33 115,33 106,40 109,51 100,44 91,51 94,40 85,33 96,33" fill="#ffffff"/>
-                        <!-- Futbol Topu -->
                         <circle cx="100" cy="80" r="23" fill="#ffffff" stroke="#c90424" stroke-width="3"/>
                         <polygon points="100,68 110,75 106,87 94,87 90,75" fill="#c90424"/>
-                        <!-- Tipografi -->
                         <text x="100" y="131" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="21" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
                         <text x="100" y="153" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
                         <line x1="38" y1="165" x2="162" y2="165" stroke="#ffffff" stroke-width="2.5"/>
@@ -56,7 +61,7 @@
                 </div>
             </div>
 
-            <nav class="hidden md:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/30">
+            <nav class="hidden md:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40">
                 <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-lg shadow-brand-600/30">
                     <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
                 </button>
@@ -64,7 +69,7 @@
                     <i data-lucide="calendar" class="w-4 h-4"></i><span>Fikstür</span>
                 </button>
                 <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
-                    <i data-lucide="award" class="w-4 h-4"></i><span>Krallıklar & Haftanın Kadrosu</span>
+                    <i data-lucide="award" class="w-4 h-4"></i><span>Krallıklar & Kadro</span>
                 </button>
                 <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="shield" class="w-4 h-4"></i><span>Kulüpler</span>
@@ -74,7 +79,39 @@
                 </button>
             </nav>
 
+            <!-- Sağ Üst Köşe (Tema Değiştirici ve Admin Girişi) -->
             <div class="flex items-center space-x-3">
+                <!-- Renk Teması Seçici Açılır Menü -->
+                <div class="relative group">
+                    <button class="p-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-amber-400 flex items-center space-x-1.5 transition-all" title="Arka Plan Temasını Değiştir">
+                        <i data-lucide="palette" class="w-4 h-4"></i>
+                        <span class="text-xs font-bold hidden sm:inline">Tema</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 glass rounded-2xl p-2 border border-brand-900/50 shadow-2xl hidden group-hover:block z-50">
+                        <div class="text-[10px] font-black text-gray-400 uppercase px-3 py-1">Arka Plan Rengi</div>
+                        <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-400">
+                            <span>Kırmızı (Varsayılan)</span>
+                            <span class="w-3 h-3 rounded-full bg-rose-600 border border-white/40"></span>
+                        </button>
+                        <button onclick="setTheme('theme-maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-rose-300">
+                            <span>Koyu Bordo</span>
+                            <span class="w-3 h-3 rounded-full bg-rose-950 border border-white/40"></span>
+                        </button>
+                        <button onclick="setTheme('theme-dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-gray-300">
+                            <span>Siyah / Koyu Gece</span>
+                            <span class="w-3 h-3 rounded-full bg-gray-900 border border-white/40"></span>
+                        </button>
+                        <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-blue-400">
+                            <span>Gece Mavisi</span>
+                            <span class="w-3 h-3 rounded-full bg-blue-600 border border-white/40"></span>
+                        </button>
+                        <button onclick="setTheme('theme-emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-brand-600/30 flex items-center justify-between text-emerald-400">
+                            <span>Zümrüt Yeşil</span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-600 border border-white/40"></span>
+                        </button>
+                    </div>
+                </div>
+
                 <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20"></div>
                 <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-4 py-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-sm font-bold flex items-center space-x-2 transition-all">
                     <i data-lucide="user" class="w-4 h-4 text-brand-400"></i>
@@ -91,7 +128,7 @@
         <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
-                <span class="text-sm font-bold text-white">Yönetici Modu Aktif: Şampiyonlukları, Ballon d'Or, Puskás ve Yılın Kalecisi ödüllerini düzenleyebilirsiniz.</span>
+                <span class="text-sm font-bold text-white">Yönetici Modu Aktif: Tüm lig verilerini ve tarihçe ödüllerini yönetebilirsiniz.</span>
             </div>
             <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Tüm Verileri Sıfırla</button>
         </div>
@@ -139,7 +176,7 @@
             <div class="flex justify-between items-center glass p-6 rounded-3xl">
                 <div>
                     <h2 class="text-2xl font-black text-white">Fikstür & Maç Sonuçları</h2>
-                    <p class="text-sm text-gray-400 mt-1">13 Haftalık Sezon Programı</p>
+                    <p class="text-sm text-gray-400 mt-1">13 Haftalık Program</p>
                 </div>
                 <div class="flex flex-wrap gap-1.5" id="week-selector"></div>
             </div>
@@ -214,7 +251,7 @@
             <div id="teams-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
         </section>
 
-        <!-- History Tab (Tarihçemiz & Şampiyonluklar & Bireysel Ödüller) -->
+        <!-- History Tab -->
         <section id="tab-history" class="tab-content hidden space-y-8">
             <div class="glass p-6 rounded-3xl flex justify-between items-center">
                 <div>
@@ -230,7 +267,6 @@
                 </div>
             </div>
 
-            <!-- Geçmiş Sezonlar Listesi -->
             <div id="history-records-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </section>
 
@@ -276,18 +312,15 @@
         ];
 
         let currentUser = null;
-        let lastActionTime = 0;
+
+        function setTheme(themeClass) {
+            document.getElementById('app-body').className = themeClass + " text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white";
+            localStorage.setItem('asl_theme', themeClass);
+        }
 
         function sanitizeInput(str) {
             if (typeof str !== 'string') return str;
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function checkRateLimit() {
-            const now = Date.now();
-            if (now - lastActionTime < 300) return false;
-            lastActionTime = now;
-            return true;
         }
 
         const defaultTeams = [
@@ -315,7 +348,6 @@
                     let homeIdx = (week + i) % teams.length;
                     let awayIdx = (week + teams.length - 1 - i) % teams.length;
                     if (homeIdx === awayIdx) awayIdx = (awayIdx + 1) % teams.length;
-
                     fixtures.push({ id: matchId++, week: week, home: teams[homeIdx].id, away: teams[awayIdx].id, homeScore: 0, awayScore: 0, played: false });
                 }
             }
@@ -332,11 +364,11 @@
             ]
         };
 
-        let leagueData = JSON.parse(localStorage.getItem('asl_red_theme_data')) || defaultLeagueData;
+        let leagueData = JSON.parse(localStorage.getItem('asl_final_v2026_data')) || defaultLeagueData;
         let currentWeek = 1;
 
         function saveData() {
-            localStorage.setItem('asl_red_theme_data', JSON.stringify(leagueData));
+            localStorage.setItem('asl_final_v2026_data', JSON.stringify(leagueData));
         }
 
         function resetAllDataCompletely() {
@@ -552,7 +584,6 @@
                             ${currentUser ? `<button onclick="deleteHistoryRecord(${idx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Kayıt Sil</button>` : ''}
                         </div>
 
-                        <!-- Şampiyon Takım -->
                         <div class="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/30 flex items-center space-x-4">
                             <span class="text-3xl">${sanitizeInput(teamLogo)}</span>
                             <div>
@@ -561,7 +592,6 @@
                             </div>
                         </div>
 
-                        <!-- Bireysel Ödüller (Ballon d'Or, Puskas, Yılın Kalecisi) -->
                         <div class="grid grid-cols-1 gap-2.5 text-xs">
                             <div class="p-3 bg-dark-800/80 rounded-xl border border-brand-900/40 flex items-center justify-between">
                                 <div class="flex items-center space-x-2 text-amber-300 font-bold">
@@ -669,7 +699,7 @@
             }
         }
 
-        // Action Functions
+        // Actions
         function saveMatchScoreDirect(id) {
             if (!currentUser) return;
             let match = leagueData.fixtures.find(f => f.id === id);
@@ -851,13 +881,17 @@
                 renderAll();
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-password').value = '';
-                alert("Giriş Yapıldı! 'Tarihçemiz' sekmesine tıklayarak geçmiş sezon şampiyonlarını ve Ballon d'Or kazananlarını düzenleyebilirsiniz.");
+                alert("Giriş Yapıldı!");
             } else {
                 alert("Hatalı kullanıcı adı veya şifre!");
             }
         }
 
         window.onload = () => {
+            const savedTheme = localStorage.getItem('asl_theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
             renderAll();
             lucide.createIcons();
         };
