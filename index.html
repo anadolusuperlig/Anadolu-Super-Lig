@@ -35,6 +35,7 @@
             background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 50%, var(--bg-color-3) 100%) !important;
             background-attachment: fixed !important;
             transition: all 0.3s ease;
+            overflow-x: hidden;
         }
 
         .glass {
@@ -50,64 +51,67 @@
         }
     </style>
 </head>
-<body id="app-body" class="text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20">
+<body id="app-body" class="text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20 overflow-x-hidden">
 
     <!-- Header / Navbar -->
     <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white/80 shadow-lg shadow-brand-500/40 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-3 min-w-0">
+                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-lg shadow-brand-500/40 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
+                    <!-- GÖRSELDEKİ LOGO SVG FORMATINDA -->
                     <svg viewBox="0 0 200 200" class="w-full h-full">
-                        <circle cx="100" cy="100" r="96" fill="#c90424" stroke="#ffffff" stroke-width="7"/>
-                        <circle cx="100" cy="100" r="86" fill="none" stroke="#ffffff" stroke-width="2.5"/>
-                        <path d="M 88 38 A 36 36 0 1 0 132 90 A 44 44 0 1 1 88 38 Z" fill="#ffffff"/>
-                        <polygon points="100,22 104,33 115,33 106,40 109,51 100,44 91,51 94,40 85,33 96,33" fill="#ffffff"/>
-                        <circle cx="100" cy="80" r="23" fill="#ffffff" stroke="#c90424" stroke-width="3"/>
-                        <polygon points="100,68 110,75 106,87 94,87 90,75" fill="#c90424"/>
-                        <text x="100" y="131" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="21" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
-                        <text x="100" y="153" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
-                        <line x1="38" y1="165" x2="162" y2="165" stroke="#ffffff" stroke-width="2.5"/>
-                        <polygon points="100,160 102.5,166 108,166 103.5,170 105,176 100,172 95,176 96.5,170 92,166 97.5,166" fill="#ffffff"/>
+                        <circle cx="100" cy="100" r="95" fill="#d90429" stroke="#ffffff" stroke-width="6"/>
+                        <circle cx="100" cy="100" r="87" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        <polygon points="100,20 103,28 111,28 105,33 107,41 100,36 93,41 95,33 89,28 97,28" fill="#ffffff"/>
+                        <path d="M 70 50 C 45 75, 45 110, 75 130 C 55 115, 55 85, 75 60 Z" fill="#ffffff"/>
+                        <circle cx="100" cy="80" r="22" fill="#ffffff"/>
+                        <circle cx="100" cy="80" r="20" fill="#d90429"/>
+                        <polygon points="100,68 108,74 105,83 95,83 92,74" fill="#ffffff"/>
+                        <path d="M 85 110 Q 100 135 135 100 Q 115 125 85 110 Z" fill="#ffffff"/>
+                        <text x="100" y="148" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
+                        <text x="100" y="168" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="15" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
+                        <line x1="35" y1="178" x2="165" y2="178" stroke="#ffffff" stroke-width="2"/>
+                        <polygon points="100,174 102,178 106,178 103,181 104,185 100,182 96,185 97,181 94,178 98,178" fill="#ffffff"/>
                     </svg>
                 </div>
-                <div>
-                    <h1 class="font-black text-xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent">ANADOLU SÜPER LİG</h1>
-                    <span class="text-xs font-bold text-brand-400 tracking-wider uppercase">Pro Soccer Online Sezonu</span>
+                <div class="truncate">
+                    <h1 class="font-black text-lg sm:text-xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent truncate">ANADOLU SÜPER LİG</h1>
+                    <span class="text-[10px] sm:text-xs font-bold text-brand-400 tracking-wider uppercase block truncate">Pro Soccer Online Sezonu</span>
                 </div>
             </div>
 
             <nav class="hidden md:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40">
-                <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-lg shadow-brand-600/30">
+                <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-lg shadow-brand-600/30">
                     <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
                 </button>
-                <button onclick="switchTab('fixtures')" id="nav-fixtures" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                <button onclick="switchTab('fixtures')" id="nav-fixtures" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="calendar" class="w-4 h-4"></i><span>Fikstür</span>
                 </button>
-                <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="award" class="w-4 h-4"></i><span>Krallıklar & Kadro</span>
                 </button>
-                <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="shield" class="w-4 h-4"></i><span>Kulüpler</span>
                 </button>
-                <button onclick="switchTab('transfers')" id="nav-transfers" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                <button onclick="switchTab('transfers')" id="nav-transfers" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
                     <i data-lucide="arrow-left-right" class="w-4 h-4"></i><span>Transferler</span>
                 </button>
-                <button onclick="switchTab('history')" id="nav-history" class="nav-btn px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-amber-400 hover:text-amber-300">
+                <button onclick="switchTab('history')" id="nav-history" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-amber-400 hover:text-amber-300">
                     <i data-lucide="history" class="w-4 h-4"></i><span>Tarihçemiz</span>
                 </button>
             </nav>
 
-            <div class="flex items-center space-x-3">
-                <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20"></div>
-                <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-4 py-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-sm font-bold flex items-center space-x-2 transition-all">
+            <div class="flex items-center space-x-2 flex-shrink-0">
+                <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/20 truncate max-w-[120px]"></div>
+                <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-3 py-2 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-xs sm:text-sm font-bold flex items-center space-x-1.5 transition-all">
                     <i data-lucide="user" class="w-4 h-4 text-brand-400"></i>
-                    <span id="admin-btn-text" class="hidden sm:inline">Yönetici Girişi</span>
+                    <span id="admin-btn-text" class="inline">Yönetici Girişi</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- SAĞ ALT KÖŞE RENK PALETİ PANENİ -->
+    <!-- SAĞ ALT KÖŞE RENK PALETİ -->
     <div class="fixed bottom-6 right-6 z-50">
         <div class="relative">
             <div id="theme-menu" class="hidden absolute bottom-16 right-0 w-64 glass rounded-2xl p-4 border border-brand-500/40 shadow-2xl space-y-3 mb-2">
@@ -145,21 +149,21 @@
             </div>
             <button onclick="toggleThemeMenu()" class="p-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white shadow-2xl shadow-brand-600/50 border border-white/30 flex items-center space-x-2 transition-all transform hover:scale-105 active:scale-95">
                 <i data-lucide="palette" class="w-5 h-5"></i>
-                <span class="text-xs font-black uppercase tracking-wider">Renk Paleti</span>
+                <span class="text-xs font-black uppercase tracking-wider hidden sm:inline">Renk Paleti</span>
             </button>
         </div>
     </div>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full overflow-hidden">
         
         <!-- Admin Active Banner -->
-        <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex items-center justify-between">
+        <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
-                <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
-                <span class="text-sm font-bold text-white">Yönetici Modu Aktif: Takımları düzenleyebilir, maç skorlarını ve transferleri yönetebilirsiniz.</span>
+                <i data-lucide="shield-check" class="w-5 h-5 text-brand-400 flex-shrink-0"></i>
+                <span class="text-xs sm:text-sm font-bold text-white">Yönetici Modu Aktif: Takımları düzenleyebilir, maç skorlarını ve transferleri yönetebilirsiniz.</span>
             </div>
-            <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md">Tüm Verileri Sıfırla</button>
+            <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md flex-shrink-0">Tüm Verileri Sıfırla</button>
         </div>
 
         <!-- Standings Tab -->
@@ -177,24 +181,24 @@
             </div>
 
             <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                <div class="overflow-x-auto max-w-full">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
                         <thead>
                             <tr class="border-b border-brand-900/40 text-xs font-bold text-gray-400 uppercase tracking-wider bg-dark-800/60">
-                                <th class="py-4 px-6 text-center w-16">#</th>
-                                <th class="py-4 px-6">Takım</th>
-                                <th class="py-4 px-4 text-center">O</th>
-                                <th class="py-4 px-4 text-center">G</th>
-                                <th class="py-4 px-4 text-center">B</th>
-                                <th class="py-4 px-4 text-center">M</th>
-                                <th class="py-4 px-4 text-center">AG</th>
-                                <th class="py-4 px-4 text-center">YG</th>
-                                <th class="py-4 px-4 text-center">AV</th>
-                                <th class="py-4 px-6 text-center font-black text-white">Puan</th>
-                                <th class="admin-only hidden py-4 px-6 text-center">İşlem</th>
+                                <th class="py-4 px-4 sm:px-6 text-center w-12">#</th>
+                                <th class="py-4 px-4 sm:px-6">Takım</th>
+                                <th class="py-4 px-3 text-center">O</th>
+                                <th class="py-4 px-3 text-center">G</th>
+                                <th class="py-4 px-3 text-center">B</th>
+                                <th class="py-4 px-3 text-center">M</th>
+                                <th class="py-4 px-3 text-center">AG</th>
+                                <th class="py-4 px-3 text-center">YG</th>
+                                <th class="py-4 px-3 text-center">AV</th>
+                                <th class="py-4 px-4 sm:px-6 text-center font-black text-white">Puan</th>
+                                <th class="admin-only hidden py-4 px-4 text-center">İşlem</th>
                             </tr>
                         </thead>
-                        <tbody id="standings-tbody" class="divide-y divide-brand-900/30 text-sm font-medium"></tbody>
+                        <tbody id="standings-tbody" class="divide-y divide-brand-900/30 text-xs sm:text-sm font-medium"></tbody>
                     </table>
                 </div>
             </div>
@@ -202,12 +206,12 @@
 
         <!-- Fixtures Tab -->
         <section id="tab-fixtures" class="tab-content hidden space-y-6">
-            <div class="flex justify-between items-center glass p-6 rounded-3xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 glass p-6 rounded-3xl">
                 <div>
                     <h2 class="text-2xl font-black text-white">Fikstür & Maç Sonuçları</h2>
                     <p class="text-sm text-gray-400 mt-1">13 Haftalık Program</p>
                 </div>
-                <div class="flex flex-wrap gap-1.5" id="week-selector"></div>
+                <div class="flex flex-wrap gap-1.5 max-w-full overflow-x-auto pb-1" id="week-selector"></div>
             </div>
             <div id="fixtures-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </section>
@@ -221,8 +225,8 @@
                             <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i><span>Haftanın Yıldızı (MVP)</span>
                         </div>
                         <div class="p-4 bg-dark-800/80 rounded-2xl border border-amber-500/20 text-center space-y-1">
-                            <div id="weekly-mvp-name" class="text-2xl font-black text-white">Henüz Seçilmedi</div>
-                            <div id="weekly-mvp-team" class="text-xs text-brand-400 font-bold">-</div>
+                            <div id="weekly-mvp-name" class="text-xl sm:text-2xl font-black text-white truncate">Henüz Seçilmedi</div>
+                            <div id="weekly-mvp-team" class="text-xs text-brand-400 font-bold truncate">-</div>
                         </div>
                     </div>
                     <div class="admin-only hidden text-right">
@@ -287,7 +291,6 @@
                 <p class="text-sm text-gray-400 mt-1">Takımınızı seçip transfer etmek istediğiniz oyuncunun ismini yazarak teklif gönderin.</p>
             </div>
 
-            <!-- Transfer Teklifi Gönderme Formu -->
             <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30">
                 <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                     <i data-lucide="send" class="w-4 h-4 text-brand-400"></i>
@@ -321,7 +324,6 @@
                 </div>
             </div>
 
-            <!-- Transfer Teklifleri Listesi -->
             <div class="glass-card p-6 rounded-3xl space-y-4">
                 <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                     <i data-lucide="list" class="w-4 h-4 text-amber-400"></i>
@@ -563,17 +565,17 @@
                 const tr = document.createElement('tr');
                 tr.className = `hover:bg-white/5 transition-colors ${rowBorder}`;
                 tr.innerHTML = `
-                    <td class="py-4 px-6 text-center font-bold"><span class="inline-flex items-center justify-center w-7 h-7 rounded-xl ${badgeColor}">${index + 1}</span></td>
-                    <td class="py-4 px-6 font-bold flex items-center space-x-3"><span class="text-xl">${sanitizeInput(t.logo)}</span><span>${sanitizeInput(t.name)}</span></td>
-                    <td class="py-4 px-4 text-center text-gray-300">${t.p}</td>
-                    <td class="py-4 px-4 text-center text-emerald-400">${t.w}</td>
-                    <td class="py-4 px-4 text-center text-amber-400">${t.d}</td>
-                    <td class="py-4 px-4 text-center text-rose-400">${t.l}</td>
-                    <td class="py-4 px-4 text-center text-gray-300">${t.gf}</td>
-                    <td class="py-4 px-4 text-center text-gray-300">${t.ga}</td>
-                    <td class="py-4 px-4 text-center font-semibold ${(t.gf - t.ga) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${(t.gf - t.ga) > 0 ? '+' + (t.gf - t.ga) : (t.gf - t.ga)}</td>
-                    <td class="py-4 px-6 text-center font-black text-brand-400 text-base">${t.pts}</td>
-                    <td class="admin-only ${currentUser ? '' : 'hidden'} py-4 px-6 text-center">
+                    <td class="py-4 px-4 sm:px-6 text-center font-bold"><span class="inline-flex items-center justify-center w-7 h-7 rounded-xl ${badgeColor}">${index + 1}</span></td>
+                    <td class="py-4 px-4 sm:px-6 font-bold flex items-center space-x-3"><span class="text-xl">${sanitizeInput(t.logo)}</span><span class="truncate max-w-[140px] sm:max-w-none">${sanitizeInput(t.name)}</span></td>
+                    <td class="py-4 px-3 text-center text-gray-300">${t.p}</td>
+                    <td class="py-4 px-3 text-center text-emerald-400">${t.w}</td>
+                    <td class="py-4 px-3 text-center text-amber-400">${t.d}</td>
+                    <td class="py-4 px-3 text-center text-rose-400">${t.l}</td>
+                    <td class="py-4 px-3 text-center text-gray-300">${t.gf}</td>
+                    <td class="py-4 px-3 text-center text-gray-300">${t.ga}</td>
+                    <td class="py-4 px-3 text-center font-semibold ${(t.gf - t.ga) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${(t.gf - t.ga) > 0 ? '+' + (t.gf - t.ga) : (t.gf - t.ga)}</td>
+                    <td class="py-4 px-4 sm:px-6 text-center font-black text-brand-400 text-base">${t.pts}</td>
+                    <td class="admin-only ${currentUser ? '' : 'hidden'} py-4 px-4 text-center">
                         <div class="flex items-center justify-center space-x-2">
                             <button onclick="editTeamPrompt(${t.id})" class="px-2.5 py-1 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-lg text-white">Düzenle</button>
                             <button onclick="deleteTeam(${t.id})" class="px-2 py-1 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-lg text-white">Sil</button>
@@ -589,7 +591,7 @@
             weekSelector.innerHTML = '';
             for (let i = 1; i <= 13; i++) {
                 const btn = document.createElement('button');
-                btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${currentWeek === i ? 'bg-brand-600 text-white shadow-md' : 'bg-dark-800 text-gray-400 hover:bg-dark-700'}`;
+                btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex-shrink-0 ${currentWeek === i ? 'bg-brand-600 text-white shadow-md' : 'bg-dark-800 text-gray-400 hover:bg-dark-700'}`;
                 btn.innerText = i + '. Hafta';
                 btn.onclick = () => { currentWeek = i; renderFixtures(); };
                 weekSelector.appendChild(btn);
@@ -604,29 +606,29 @@
                 let away = leagueData.teams.find(t => t.id === m.away);
 
                 const card = document.createElement('div');
-                card.className = 'glass-card p-5 rounded-2xl flex items-center justify-between border border-brand-900/30 shadow-lg';
+                card.className = 'glass-card p-4 sm:p-5 rounded-2xl flex items-center justify-between border border-brand-900/30 shadow-lg gap-2 overflow-hidden';
                 
-                let scoreArea = `<div class="px-4 py-2 bg-dark-900/90 rounded-xl border border-brand-900/40 text-center font-black text-lg tracking-widest text-brand-400 min-w-[80px]">${m.played ? `${m.homeScore} -${m.awayScore}` : 'VS'}</div>`;
+                let scoreArea = `<div class="px-3 sm:px-4 py-2 bg-dark-900/90 rounded-xl border border-brand-900/40 text-center font-black text-sm sm:text-lg tracking-widest text-brand-400 min-w-[70px] sm:min-w-[80px] flex-shrink-0">${m.played ? `${m.homeScore} -${m.awayScore}` : 'VS'}</div>`;
 
                 if (currentUser) {
                     scoreArea = `
-                        <div class="flex items-center space-x-2 bg-dark-900/90 p-1.5 rounded-xl border border-brand-500/40">
-                            <input type="number" id="fh-${m.id}" value="${m.homeScore}" min="0" max="99" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
+                        <div class="flex items-center space-x-1 sm:space-x-2 bg-dark-900/90 p-1 sm:p-1.5 rounded-xl border border-brand-500/40 flex-shrink-0">
+                            <input type="number" id="fh-${m.id}" value="${m.homeScore}" min="0" max="99" class="w-8 sm:w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-xs sm:text-sm">
                             <span class="text-xs text-gray-400">-</span>
-                            <input type="number" id="fa-${m.id}" value="${m.awayScore}" min="0" max="99" class="w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-sm">
-                            <button onclick="saveMatchScoreDirect(${m.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow">Kaydet</button>
+                            <input type="number" id="fa-${m.id}" value="${m.awayScore}" min="0" max="99" class="w-8 sm:w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-xs sm:text-sm">
+                            <button onclick="saveMatchScoreDirect(${m.id})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-lg shadow">Kaydet</button>
                         </div>
                     `;
                 }
 
                 card.innerHTML = `
-                    <div class="flex items-center space-x-3 w-1/3 justify-end">
+                    <div class="flex items-center space-x-2 sm:space-x-3 w-1/3 justify-end min-w-0">
                         <span class="font-bold text-xs sm:text-sm text-right truncate">${sanitizeInput(home ? home.name : '')}</span>
-                        <span class="text-xl">${sanitizeInput(home ? home.logo : '')}</span>
+                        <span class="text-lg sm:text-xl flex-shrink-0">${sanitizeInput(home ? home.logo : '')}</span>
                     </div>
                     ${scoreArea}
-                    <div class="flex items-center space-x-3 w-1/3">
-                        <span class="text-xl">${sanitizeInput(away ? away.logo : '')}</span>
+                    <div class="flex items-center space-x-2 sm:space-x-3 w-1/3 min-w-0">
+                        <span class="text-lg sm:text-xl flex-shrink-0">${sanitizeInput(away ? away.logo : '')}</span>
                         <span class="font-bold text-xs sm:text-sm truncate">${sanitizeInput(away ? away.name : '')}</span>
                     </div>
                 `;
@@ -643,15 +645,15 @@
                 weeklyTeamEl.innerHTML = '<div class="text-xs text-gray-500 italic col-span-2 p-3">Henüz haftanın kadrosuna oyuncu eklenmedi.</div>';
             } else {
                 weeklyTeamEl.innerHTML = leagueData.weeklyTeamPlayers.map((p, idx) => `
-                    <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10">
-                        <div class="flex items-center space-x-3">
-                            <span class="px-2 py-0.5 bg-brand-500/20 text-brand-400 font-extrabold text-xs rounded-md">${sanitizeInput(p.pos)}</span>
-                            <div>
-                                <div class="font-bold text-sm text-white">${sanitizeInput(p.name)}</div>
-                                <div class="text-xs text-gray-400">${sanitizeInput(p.team)}</div>
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10 overflow-hidden gap-2">
+                        <div class="flex items-center space-x-3 min-w-0">
+                            <span class="px-2 py-0.5 bg-brand-500/20 text-brand-400 font-extrabold text-xs rounded-md flex-shrink-0">${sanitizeInput(p.pos)}</span>
+                            <div class="min-w-0">
+                                <div class="font-bold text-sm text-white truncate">${sanitizeInput(p.name)}</div>
+                                <div class="text-xs text-gray-400 truncate">${sanitizeInput(p.team)}</div>
                             </div>
                         </div>
-                        ${currentUser ? `<button onclick="removeWeeklyTeamPlayer(${idx})" class="text-xs text-rose-400 font-bold">Sil</button>` : ''}
+                        ${currentUser ? `<button onclick="removeWeeklyTeamPlayer(${idx})" class="text-xs text-rose-400 font-bold flex-shrink-0">Sil</button>` : ''}
                     </div>
                 `).join('');
             }
@@ -662,30 +664,30 @@
             let scorers = [...allPlayers].filter(p => p.goals > 0).sort((a, b) => b.goals - a.goals);
             const scorersEl = document.getElementById('scorers-list');
             scorersEl.innerHTML = scorers.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz gol yok.</div>' : scorers.slice(0, 10).map((s, idx) => `
-                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
-                        <div>
-                            <div class="font-bold text-sm">${sanitizeInput(s.name)} <span class="text-xs text-brand-400">(${sanitizeInput(s.pos)})</span></div>
-                            <div class="text-xs text-gray-400">${sanitizeInput(s.teamName)}</div>
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10 gap-2">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <span class="w-6 text-center font-bold text-xs text-gray-500 flex-shrink-0">#${idx+1}</span>
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">${sanitizeInput(s.name)} <span class="text-xs text-brand-400">(${sanitizeInput(s.pos)})</span></div>
+                            <div class="text-xs text-gray-400 truncate">${sanitizeInput(s.teamName)}</div>
                         </div>
                     </div>
-                    <div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm">${s.goals} Gol</div>
+                    <div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm flex-shrink-0">${s.goals} Gol</div>
                 </div>
             `).join('');
 
             let assists = [...allPlayers].filter(p => p.assists > 0).sort((a, b) => b.assists - a.assists);
             const assistsEl = document.getElementById('assists-list');
             assistsEl.innerHTML = assists.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz asist yok.</div>' : assists.slice(0, 10).map((a, idx) => `
-                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-6 text-center font-bold text-xs text-gray-500">#${idx+1}</span>
-                        <div>
-                            <div class="font-bold text-sm">${sanitizeInput(a.name)} <span class="text-xs text-brand-400">(${sanitizeInput(a.pos)})</span></div>
-                            <div class="text-xs text-gray-400">${sanitizeInput(a.teamName)}</div>
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10 gap-2">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <span class="w-6 text-center font-bold text-xs text-gray-500 flex-shrink-0">#${idx+1}</span>
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">${sanitizeInput(a.name)} <span class="text-xs text-brand-400">(${sanitizeInput(a.pos)})</span></div>
+                            <div class="text-xs text-gray-400 truncate">${sanitizeInput(a.teamName)}</div>
                         </div>
                     </div>
-                    <div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm">${a.assists} Asist</div>
+                    <div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm flex-shrink-0">${a.assists} Asist</div>
                 </div>
             `).join('');
         }
@@ -729,15 +731,15 @@
                 }
 
                 return `
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/10 gap-3">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">${sanitizeInput(teamLogo)}</span>
-                            <div>
-                                <div class="font-bold text-sm text-white">${sanitizeInput(tr.playerName)} <span class="text-xs text-brand-400">(${sanitizeInput(tr.pos)})</span></div>
-                                <div class="text-xs text-gray-400">Hedef Takım: <span class="text-gray-200 font-semibold">${sanitizeInput(teamName)}</span></div>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/10 gap-3 overflow-hidden">
+                        <div class="flex items-center space-x-3 min-w-0">
+                            <span class="text-2xl flex-shrink-0">${sanitizeInput(teamLogo)}</span>
+                            <div class="min-w-0">
+                                <div class="font-bold text-sm text-white truncate">${sanitizeInput(tr.playerName)} <span class="text-xs text-brand-400">(${sanitizeInput(tr.pos)})</span></div>
+                                <div class="text-xs text-gray-400 truncate">Hedef Takım: <span class="text-gray-200 font-semibold">${sanitizeInput(teamName)}</span></div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end flex-shrink-0">
                             ${statusBadge}
                             ${adminActions}
                         </div>
@@ -820,43 +822,43 @@
                 let teamLogo = champTeam ? champTeam.logo : "🏆";
 
                 return `
-                    <div class="glass-card p-6 rounded-3xl space-y-5 border border-amber-500/30 relative">
+                    <div class="glass-card p-6 rounded-3xl space-y-5 border border-amber-500/30 relative overflow-hidden">
                         <div class="flex justify-between items-center border-b border-amber-500/20 pb-3">
                             <span class="text-lg font-black text-amber-400 flex items-center space-x-2">
                                 <i data-lucide="crown" class="w-5 h-5"></i>
                                 <span>${sanitizeInput(h.season)}</span>
                             </span>
-                            ${currentUser ? `<button onclick="deleteHistoryRecord(${idx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Kayıт Sil</button>` : ''}
+                            ${currentUser ? `<button onclick="deleteHistoryRecord(${idx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Kayıt Sil</button>` : ''}
                         </div>
 
                         <div class="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/30 flex items-center space-x-4">
-                            <span class="text-3xl">${sanitizeInput(teamLogo)}</span>
-                            <div>
+                            <span class="text-3xl flex-shrink-0">${sanitizeInput(teamLogo)}</span>
+                            <div class="min-w-0">
                                 <div class="text-xs font-bold text-amber-400 uppercase">Sezon Şampiyonu</div>
-                                <div class="text-xl font-black text-white">${sanitizeInput(teamName)}</div>
+                                <div class="text-xl font-black text-white truncate">${sanitizeInput(teamName)}</div>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 gap-2.5 text-xs">
-                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
-                                <div class="flex items-center space-x-2 text-amber-300 font-bold">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2 text-amber-300 font-bold flex-shrink-0">
                                     <i data-lucide="award" class="w-4 h-4"></i><span>Ballon d'Or:</span>
                                 </div>
-                                <span class="font-extrabold text-white text-sm">${sanitizeInput(h.ballondor || '-')}</span>
+                                <span class="font-extrabold text-white text-sm truncate">${sanitizeInput(h.ballondor || '-')}</span>
                             </div>
 
-                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
-                                <div class="flex items-center space-x-2 text-rose-400 font-bold">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2 text-rose-400 font-bold flex-shrink-0">
                                     <i data-lucide="flame" class="w-4 h-4"></i><span>Puskás (Yılın Golü):</span>
                                 </div>
-                                <span class="font-extrabold text-white text-sm">${sanitizeInput(h.puskas || '-')}</span>
+                                <span class="font-extrabold text-white text-sm truncate">${sanitizeInput(h.puskas || '-')}</span>
                             </div>
 
-                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
-                                <div class="flex items-center space-x-2 text-emerald-400 font-bold">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2 text-emerald-400 font-bold flex-shrink-0">
                                     <i data-lucide="shield-check" class="w-4 h-4"></i><span>Yılın Kalecisi:</span>
                                 </div>
-                                <span class="font-extrabold text-white text-sm">${sanitizeInput(h.gkOfYear || '-')}</span>
+                                <span class="font-extrabold text-white text-sm truncate">${sanitizeInput(h.gkOfYear || '-')}</span>
                             </div>
                         </div>
                     </div>
@@ -868,16 +870,16 @@
             const container = document.getElementById('teams-container');
             container.innerHTML = leagueData.teams.map(t => {
                 return `
-                    <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                            <div class="flex items-center space-x-4">
-                                <span class="text-3xl p-3 bg-black/40 rounded-2xl border border-white/10">${sanitizeInput(t.logo)}</span>
-                                <div>
-                                    <h3 class="font-extrabold text-lg text-white">${sanitizeInput(t.name)}</h3>
+                    <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30 overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4 gap-2">
+                            <div class="flex items-center space-x-4 min-w-0">
+                                <span class="text-3xl p-3 bg-black/40 rounded-2xl border border-white/10 flex-shrink-0">${sanitizeInput(t.logo)}</span>
+                                <div class="min-w-0">
+                                    <h3 class="font-extrabold text-lg text-white truncate">${sanitizeInput(t.name)}</h3>
                                     <span class="text-xs text-brand-400 font-semibold">Resmi Kulüp</span>
                                 </div>
                             </div>
-                            ${currentUser ? `<button onclick="addSquadPlayerPrompt(${t.id})" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-xl text-white shadow">+ Oyuncu</button>` : ''}
+                            ${currentUser ? `<button onclick="addSquadPlayerPrompt(${t.id})" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-xl text-white shadow flex-shrink-0">+ Oyuncu</button>` : ''}
                         </div>
                         <div class="space-y-3">
                             <div class="text-xs font-bold text-gray-400 uppercase">Kadro & Oyuncu İstatistikleri</div>
@@ -887,9 +889,9 @@
                                     if (currentUser) {
                                         return `
                                             <div class="bg-black/50 p-3 rounded-2xl border border-white/10 space-y-2">
-                                                <div class="flex justify-between items-center">
-                                                    <span class="font-bold text-sm text-white">${sanitizeInput(p.name)} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${sanitizeInput(p.pos)}</span></span>
-                                                    <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 font-bold">Sil</button>
+                                                <div class="flex justify-between items-center gap-2">
+                                                    <span class="font-bold text-sm text-white truncate">${sanitizeInput(p.name)} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${sanitizeInput(p.pos)}</span></span>
+                                                    <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 font-bold flex-shrink-0">Sil</button>
                                                 </div>
                                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                                                     <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" min="0" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
@@ -905,14 +907,14 @@
                                         `;
                                     } else {
                                         return `
-                                            <div class="flex items-center justify-between text-xs bg-black/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium border border-white/10">
-                                                <div><span class="font-bold text-white">${sanitizeInput(p.name)}</span> <span class="text-brand-400">(${sanitizeInput(p.pos)})</span></div>
-                                                <div class="flex items-center space-x-2 text-[11px]">
-                                                    <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded">Gol: ${p.goals}</span>
-                                                    <span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded">Asist: ${p.assists}</span>
-                                                    <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">Tackle: ${p.tackles}</span>${isGoalie ? `
-                                                        <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded">Catch: ${p.catches || 0}</span>
-                                                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 rounded">Saves: ${p.saves || 0}</span>
+                                            <div class="flex items-center justify-between text-xs bg-black/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium border border-white/10 gap-2">
+                                                <div class="truncate"><span class="font-bold text-white">${sanitizeInput(p.name)}</span> <span class="text-brand-400">(${sanitizeInput(p.pos)})</span></div>
+                                                <div class="flex items-center space-x-1.5 text-[10px] sm:text-[11px] flex-shrink-0">
+                                                    <span class="px-1.5 py-0.5 bg-amber-500/10 text-amber-400 rounded">G: ${p.goals}</span>
+                                                    <span class="px-1.5 py-0.5 bg-blue-500/10 text-blue-400 rounded">A: ${p.assists}</span>
+                                                    <span class="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">T: ${p.tackles}</span>${isGoalie ? `
+                                                        <span class="px-1.5 py-0.5 bg-purple-500/10 text-purple-400 rounded">C: ${p.catches || 0}</span>
+                                                        <span class="px-1.5 py-0.5 bg-rose-500/10 text-rose-400 rounded">S: ${p.saves || 0}</span>
                                                     ` : ''}
                                                 </div>
                                             </div>
