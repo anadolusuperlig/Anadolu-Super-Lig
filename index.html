@@ -6,6 +6,9 @@
     <title>Anadolu Süper Lig - Pro Soccer Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Firebase SDK (Ortak Canlı Veritabanı) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -55,32 +58,39 @@
 
     <!-- Header / Navbar -->
     <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between gap-3">
             <div class="flex items-center space-x-3 min-w-0">
-                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-lg shadow-brand-500/40 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
-                    <!-- GÖRSELDEKİ LOGO SVG FORMATINDA -->
+                <!-- LOGO -->
+                <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-full overflow-hidden border-2 border-white shadow-xl shadow-brand-500/50 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
                     <svg viewBox="0 0 200 200" class="w-full h-full">
-                        <circle cx="100" cy="100" r="95" fill="#d90429" stroke="#ffffff" stroke-width="6"/>
-                        <circle cx="100" cy="100" r="87" fill="none" stroke="#ffffff" stroke-width="2"/>
-                        <polygon points="100,20 103,28 111,28 105,33 107,41 100,36 93,41 95,33 89,28 97,28" fill="#ffffff"/>
-                        <path d="M 70 50 C 45 75, 45 110, 75 130 C 55 115, 55 85, 75 60 Z" fill="#ffffff"/>
-                        <circle cx="100" cy="80" r="22" fill="#ffffff"/>
-                        <circle cx="100" cy="80" r="20" fill="#d90429"/>
-                        <polygon points="100,68 108,74 105,83 95,83 92,74" fill="#ffffff"/>
-                        <path d="M 85 110 Q 100 135 135 100 Q 115 125 85 110 Z" fill="#ffffff"/>
-                        <text x="100" y="148" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
-                        <text x="100" y="168" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="15" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
-                        <line x1="35" y1="178" x2="165" y2="178" stroke="#ffffff" stroke-width="2"/>
-                        <polygon points="100,174 102,178 106,178 103,181 104,185 100,182 96,185 97,181 94,178 98,178" fill="#ffffff"/>
+                        <circle cx="100" cy="100" r="96" fill="#d90429" stroke="#ffffff" stroke-width="6"/>
+                        <circle cx="100" cy="100" r="88" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        <polygon points="100,18 103,28 113,28 105,34 108,44 100,38 92,44 95,34 87,28 97,28" fill="#ffffff"/>
+                        <path d="M 65 42 A 42 42 0 1 0 115 110 A 50 50 0 1 1 65 42 Z" fill="#ffffff"/>
+                        <circle cx="100" cy="74" r="23" fill="#ffffff"/>
+                        <circle cx="100" cy="74" r="21" fill="#d90429"/>
+                        <polygon points="100,62 109,68 106,78 94,78 91,68" fill="#ffffff"/>
+                        <line x1="100" y1="62" x2="100" y2="53" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="109" y1="68" x2="117" y2="64" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="106" y1="78" x2="114" y2="83" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="94" y1="78" x2="86" y2="83" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="91" y1="68" x2="83" y2="64" stroke="#ffffff" stroke-width="2"/>
+                        <path d="M 88 108 Q 105 132 138 96 Q 115 125 88 108 Z" fill="#ffffff"/>
+                        <text x="100" y="146" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="21" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
+                        <text x="100" y="167" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
+                        <line x1="32" y1="176" x2="85" y2="176" stroke="#ffffff" stroke-width="2.5"/>
+                        <line x1="115" y1="176" x2="168" y2="176" stroke="#ffffff" stroke-width="2.5"/>
+                        <polygon points="100,170 102.5,176 108,176 103.5,180 105,186 100,182 95,186 96.5,180 92,176 97.5,176" fill="#ffffff"/>
                     </svg>
                 </div>
-                <div class="truncate">
-                    <h1 class="font-black text-lg sm:text-xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent truncate">ANADOLU SÜPER LİG</h1>
-                    <span class="text-[10px] sm:text-xs font-bold text-brand-400 tracking-wider uppercase block truncate">Pro Soccer Online Sezonu</span>
+                <div class="min-w-0">
+                    <h1 class="font-black text-base sm:text-xl md:text-2xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent whitespace-nowrap overflow-hidden text-ellipsis">ANADOLU SÜPER LİG</h1>
+                    <span class="text-[10px] sm:text-xs font-bold text-brand-400 tracking-wider uppercase block whitespace-nowrap overflow-hidden text-ellipsis">Pro Soccer Online Sezonu</span>
                 </div>
             </div>
 
-            <nav class="hidden md:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40">
+            <!-- Masaüstü Navigasyon -->
+            <nav class="hidden lg:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40">
                 <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-lg shadow-brand-600/30">
                     <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
                 </button>
@@ -103,65 +113,32 @@
 
             <div class="flex items-center space-x-2 flex-shrink-0">
                 <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/20 truncate max-w-[120px]"></div>
-                <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-3 py-2 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-xs sm:text-sm font-bold flex items-center space-x-1.5 transition-all">
+                <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-3 sm:px-4 py-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-xs sm:text-sm font-bold flex items-center space-x-1.5 transition-all">
                     <i data-lucide="user" class="w-4 h-4 text-brand-400"></i>
                     <span id="admin-btn-text" class="inline">Yönetici Girişi</span>
                 </button>
             </div>
         </div>
-    </header>
 
-    <!-- SAĞ ALT KÖŞE RENK PALETİ -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <div class="relative">
-            <div id="theme-menu" class="hidden absolute bottom-16 right-0 w-64 glass rounded-2xl p-4 border border-brand-500/40 shadow-2xl space-y-3 mb-2">
-                <div class="flex items-center justify-between border-b border-white/10 pb-2">
-                    <span class="text-xs font-black text-white uppercase tracking-wider">Tema & Renk Paleti</span>
-                    <button onclick="toggleThemeMenu()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-                </div>
-                <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
-                    <span class="text-xs font-bold text-gray-200">Özel Renk Seçin:</span>
-                    <input type="color" id="custom-color-picker" oninput="applyCustomColor(this.value)" class="w-10 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0">
-                </div>
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Hazır Temalar</div>
-                <div class="space-y-1">
-                    <button onclick="setPresetTheme('red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-rose-400">
-                        <span>Kırmızı (Varsayılan)</span>
-                        <span class="w-3.5 h-3.5 rounded-full bg-rose-600 border border-white/50"></span>
-                    </button>
-                    <button onclick="setPresetTheme('maroon')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-rose-300">
-                        <span>Koyu Bordo</span>
-                        <span class="w-3.5 h-3.5 rounded-full bg-rose-950 border border-white/50"></span>
-                    </button>
-                    <button onclick="setPresetTheme('dark')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-gray-300">
-                        <span>Siyah / Gece</span>
-                        <span class="w-3.5 h-3.5 rounded-full bg-gray-900 border border-white/50"></span>
-                    </button>
-                    <button onclick="setPresetTheme('blue')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-blue-400">
-                        <span>Gece Mavisi</span>
-                        <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white/50"></span>
-                    </button>
-                    <button onclick="setPresetTheme('emerald')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-emerald-400">
-                        <span>Zümrüt Yeşil</span>
-                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 border border-white/50"></span>
-                    </button>
-                </div>
-            </div>
-            <button onclick="toggleThemeMenu()" class="p-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white shadow-2xl shadow-brand-600/50 border border-white/30 flex items-center space-x-2 transition-all transform hover:scale-105 active:scale-95">
-                <i data-lucide="palette" class="w-5 h-5"></i>
-                <span class="text-xs font-black uppercase tracking-wider hidden sm:inline">Renk Paleti</span>
-            </button>
+        <!-- Mobil Navigasyon Barı -->
+        <div class="lg:hidden flex overflow-x-auto px-4 py-2 bg-dark-900/90 border-t border-brand-900/40 gap-1 space-x-1 scrollbar-none">
+            <button onclick="switchTab('standings')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-brand-600 text-white">Puan Durumu</button>
+            <button onclick="switchTab('fixtures')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Fikstür</button>
+            <button onclick="switchTab('stats')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Krallıklar & Kadro</button>
+            <button onclick="switchTab('teams')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Kulüpler</button>
+            <button onclick="switchTab('transfers')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Transferler</button>
+            <button onclick="switchTab('history')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-amber-400">Tarihçemiz</button>
         </div>
-    </div>
+    </header>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full overflow-hidden">
         
-        <!-- Admin Active Banner -->
+        <!-- Admin Banner -->
         <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
                 <i data-lucide="shield-check" class="w-5 h-5 text-brand-400 flex-shrink-0"></i>
-                <span class="text-xs sm:text-sm font-bold text-white">Yönetici Modu Aktif: Takımları düzenleyebilir, maç skorlarını ve transferleri yönetebilirsiniz.</span>
+                <span class="text-xs sm:text-sm font-bold text-white">Yönetici Modu Aktif: Gelen transfer tekliflerini onaylayabilir veya reddedebilirsiniz.</span>
             </div>
             <button onclick="resetAllDataCompletely()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-xl text-white shadow-md flex-shrink-0">Tüm Verileri Sıfırla</button>
         </div>
@@ -291,6 +268,7 @@
                 <p class="text-sm text-gray-400 mt-1">Takımınızı seçip transfer etmek istediğiniz oyuncunun ismini yazarak teklif gönderin.</p>
             </div>
 
+            <!-- Transfer Teklifi Gönderme Formu -->
             <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30">
                 <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                     <i data-lucide="send" class="w-4 h-4 text-brand-400"></i>
@@ -324,6 +302,7 @@
                 </div>
             </div>
 
+            <!-- Transfer Teklifleri Listesi -->
             <div class="glass-card p-6 rounded-3xl space-y-4">
                 <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                     <i data-lucide="list" class="w-4 h-4 text-amber-400"></i>
@@ -386,6 +365,13 @@
 
     <!-- Script Logics -->
     <script>
+        // CANLI GERÇEK ZAMANLI VERİTABANI BAĞLANTISI (FIREBASE)
+        const firebaseConfig = {
+            databaseURL: "https://anadolu-super-lig-default-rtdb.europe-west1.firebasedatabase.app"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         const ADMIN_ACCOUNTS = [
             { username: "civciv", password: "1717OK", name: "Civciv" },
             { username: "Noctra", password: "hahaytcano", name: "Noctra" },
@@ -396,6 +382,8 @@
         ];
 
         let currentUser = null;
+        let myClientId = localStorage.getItem('asl_client_id') || ('client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5));
+        localStorage.setItem('asl_client_id', myClientId);
 
         function checkSavedAdminSession() {
             const savedUser = localStorage.getItem('asl_admin_session');
@@ -409,41 +397,6 @@
                     currentUser = null;
                 }
             }
-        }
-
-        function toggleThemeMenu() {
-            const menu = document.getElementById('theme-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        function updateThemeStyles(c1, c2, c3, cardBg, cardBorder) {
-            document.documentElement.style.setProperty('--bg-color-1', c1);
-            document.documentElement.style.setProperty('--bg-color-2', c2);
-            document.documentElement.style.setProperty('--bg-color-3', c3);
-            document.documentElement.style.setProperty('--card-bg', cardBg);
-            document.documentElement.style.setProperty('--card-border', cardBorder);
-        }
-
-        function applyCustomColor(hexColor) {
-            const cardBg = `rgba(15, 15, 20, 0.85)`;
-            const cardBorder = `${hexColor}66`;
-            updateThemeStyles(hexColor, '#0a0a0d', hexColor, cardBg, cardBorder);
-            localStorage.setItem('asl_custom_theme', JSON.stringify({ c1: hexColor, c2: '#0a0a0d', c3: hexColor, cardBg, cardBorder }));
-        }
-
-        function setPresetTheme(themeKey) {
-            const themes = {
-                'red': { c1: '#1f0307', c2: '#120104', c3: '#290409', cardBg: 'rgba(36, 6, 10, 0.85)', cardBorder: 'rgba(225, 29, 72, 0.3)' },
-                'maroon': { c1: '#170206', c2: '#0a0103', c3: '#1f0309', cardBg: 'rgba(25, 3, 8, 0.85)', cardBorder: 'rgba(159, 18, 57, 0.4)' },
-                'dark': { c1: '#09090b', c2: '#121215', c3: '#050507', cardBg: 'rgba(24, 24, 27, 0.85)', cardBorder: 'rgba(255, 255, 255, 0.15)' },
-                'blue': { c1: '#030a1c', c2: '#020510', c3: '#061333', cardBg: 'rgba(6, 19, 51, 0.85)', cardBorder: 'rgba(59, 130, 246, 0.3)' },
-                'emerald': { c1: '#021a12', c2: '#010d09', c3: '#03261b', cardBg: 'rgba(3, 38, 27, 0.85)', cardBorder: 'rgba(16, 185, 129, 0.3)' }
-            };
-
-            const t = themes[themeKey] || themes['red'];
-            updateThemeStyles(t.c1, t.c2, t.c3, t.cardBg, t.cardBorder);
-            localStorage.setItem('asl_custom_theme', JSON.stringify(t));
-            document.getElementById('theme-menu').classList.add('hidden');
         }
 
         function sanitizeInput(str) {
@@ -493,21 +446,31 @@
             transfers: []
         };
 
-        let leagueData = JSON.parse(localStorage.getItem('asl_final_v2026_data')) || defaultLeagueData;
-        if (!leagueData.transfers) leagueData.transfers = [];
+        let leagueData = defaultLeagueData;
         let currentWeek = 1;
 
+        // VERİTABANINI DİNLE (ANINDA CANLI GÜNCELLEME)
+        db.ref('leagueData').on('value', (snapshot) => {
+            const val = snapshot.val();
+            if (val) {
+                leagueData = val;
+                if (!leagueData.transfers) leagueData.transfers = [];
+                if (!leagueData.teams) leagueData.teams = defaultTeams;
+            } else {
+                db.ref('leagueData').set(defaultLeagueData);
+            }
+            renderAll();
+        });
+
         function saveData() {
-            localStorage.setItem('asl_final_v2026_data', JSON.stringify(leagueData));
+            db.ref('leagueData').set(leagueData);
         }
 
         function resetAllDataCompletely() {
             if (!currentUser) return;
             if (confirm("Bütün veriler sıfırlanacak. Emin misiniz?")) {
-                localStorage.clear();
                 leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
                 saveData();
-                renderAll();
                 alert("Tüm veriler sıfırlandı!");
             }
         }
@@ -521,27 +484,31 @@
                 btn.classList.add('text-gray-400');
             });
             const activeBtn = document.getElementById('nav-' + tabId);
-            activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-lg');
-            activeBtn.classList.remove('text-gray-400');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-lg');
+                activeBtn.classList.remove('text-gray-400');
+            }
             lucide.createIcons();
         }
 
         function calculateStandings() {
             leagueData.teams.forEach(t => { t.p = 0; t.w = 0; t.d = 0; t.l = 0; t.gf = 0; t.ga = 0; t.pts = 0; });
-            leagueData.fixtures.forEach(f => {
-                if (!f.played) return;
-                let homeTeam = leagueData.teams.find(t => t.id === f.home);
-                let awayTeam = leagueData.teams.find(t => t.id === f.away);
-                if (!homeTeam || !awayTeam) return;
+            if (leagueData.fixtures) {
+                leagueData.fixtures.forEach(f => {
+                    if (!f.played) return;
+                    let homeTeam = leagueData.teams.find(t => t.id === f.home);
+                    let awayTeam = leagueData.teams.find(t => t.id === f.away);
+                    if (!homeTeam || !awayTeam) return;
 
-                homeTeam.p++; awayTeam.p++;
-                homeTeam.gf += f.homeScore; homeTeam.ga += f.awayScore;
-                awayTeam.gf += f.awayScore; awayTeam.ga += f.homeScore;
+                    homeTeam.p++; awayTeam.p++;
+                    homeTeam.gf += f.homeScore; homeTeam.ga += f.awayScore;
+                    awayTeam.gf += f.awayScore; awayTeam.ga += f.homeScore;
 
-                if (f.homeScore > f.awayScore) { homeTeam.w++; homeTeam.pts += 3; awayTeam.l++; }
-                else if (f.homeScore < f.awayScore) { awayTeam.w++; awayTeam.pts += 3; homeTeam.l++; }
-                else { homeTeam.d++; homeTeam.pts += 1; awayTeam.d++; awayTeam.pts += 1; }
-            });
+                    if (f.homeScore > f.awayScore) { homeTeam.w++; homeTeam.pts += 3; awayTeam.l++; }
+                    else if (f.homeScore < f.awayScore) { awayTeam.w++; awayTeam.pts += 3; homeTeam.l++; }
+                    else { homeTeam.d++; homeTeam.pts += 1; awayTeam.d++; awayTeam.pts += 1; }
+                });
+            }
 
             leagueData.teams.sort((a, b) => {
                 if (b.pts !== a.pts) return b.pts - a.pts;
@@ -600,7 +567,7 @@
             const container = document.getElementById('fixtures-container');
             container.innerHTML = '';
 
-            const weekMatches = leagueData.fixtures.filter(f => f.week === currentWeek);
+            const weekMatches = (leagueData.fixtures || []).filter(f => f.week === currentWeek);
             weekMatches.forEach(m => {
                 let home = leagueData.teams.find(t => t.id === m.home);
                 let away = leagueData.teams.find(t => t.id === m.away);
@@ -637,8 +604,8 @@
         }
 
         function renderStats() {
-            document.getElementById('weekly-mvp-name').innerText = sanitizeInput(leagueData.weeklyMVP.name);
-            document.getElementById('weekly-mvp-team').innerText = sanitizeInput(leagueData.weeklyMVP.team);
+            document.getElementById('weekly-mvp-name').innerText = sanitizeInput((leagueData.weeklyMVP && leagueData.weeklyMVP.name) || "Henüz Seçilmedi");
+            document.getElementById('weekly-mvp-team').innerText = sanitizeInput((leagueData.weeklyMVP && leagueData.weeklyMVP.team) || "-");
 
             const weeklyTeamEl = document.getElementById('weekly-team-players-list');
             if (!leagueData.weeklyTeamPlayers || leagueData.weeklyTeamPlayers.length === 0) {
@@ -659,7 +626,7 @@
             }
 
             let allPlayers = [];
-            leagueData.teams.forEach(t => { t.squad.forEach(p => { allPlayers.push({ ...p, teamName: t.name }); }); });
+            leagueData.teams.forEach(t => { if(t.squad) t.squad.forEach(p => { allPlayers.push({ ...p, teamName: t.name }); }); });
 
             let scorers = [...allPlayers].filter(p => p.goals > 0).sort((a, b) => b.goals - a.goals);
             const scorersEl = document.getElementById('scorers-list');
@@ -692,6 +659,7 @@
             `).join('');
         }
 
+        // TRANSFERLERİ CANLI VE İPTAL/ONAYLI RENDER ETME
         function renderTransfers() {
             const teamSelect = document.getElementById('transfer-target-team');
             teamSelect.innerHTML = leagueData.teams.map(t => `<option value="${t.id}">${sanitizeInput(t.logo)} ${sanitizeInput(t.name)}</option>`).join('');
@@ -716,18 +684,25 @@
                     statusBadge = `<span class="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl font-bold text-xs flex items-center space-x-1"><i data-lucide="x" class="w-3.5 h-3.5"></i><span>Reddedildi</span></span>`;
                 }
 
+                // YÖNETİCİ ONAY/RED BUTONLARI
                 let adminActions = "";
                 if (currentUser && tr.status === "pending") {
                     adminActions = `
-                        <div class="flex items-center space-x-2 ml-auto">
-                            <button onclick="approveTransfer(${idx})" title="Transferi Kabul Et" class="p-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg transition-transform transform hover:scale-110 active:scale-95 flex items-center space-x-1">
-                                <i data-lucide="check" class="w-5 h-5 font-black"></i>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="approveTransfer(${idx})" title="Transferi Kabul Et" class="p-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg transition-transform transform hover:scale-110 flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 font-black"></i>
                             </button>
-                            <button onclick="rejectTransfer(${idx})" title="Transferi Reddet" class="p-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl shadow-lg transition-transform transform hover:scale-110 active:scale-95 flex items-center space-x-1">
-                                <i data-lucide="x" class="w-5 h-5 font-black"></i>
+                            <button onclick="rejectTransfer(${idx})" title="Transferi Reddet" class="p-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl shadow-lg transition-transform transform hover:scale-110 flex items-center justify-center">
+                                <i data-lucide="x" class="w-4 h-4 font-black"></i>
                             </button>
                         </div>
                     `;
+                }
+
+                // TEKLİFİ VEREN KULLANICININ İPTAL ETME BUTONU
+                let cancelBtn = "";
+                if (tr.senderId === myClientId && tr.status === "pending") {
+                    cancelBtn = `<button onclick="cancelTransferOffer(${idx})" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/30 rounded-xl font-bold text-xs transition-all">İptal Et</button>`;
                 }
 
                 return `
@@ -741,6 +716,7 @@
                         </div>
                         <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end flex-shrink-0">
                             ${statusBadge}
+                            ${cancelBtn}
                             ${adminActions}
                         </div>
                     </div>
@@ -762,6 +738,7 @@
             if (!leagueData.transfers) leagueData.transfers = [];
             leagueData.transfers.push({
                 id: Date.now(),
+                senderId: myClientId,
                 targetTeamId: teamId,
                 playerName: sanitizeInput(playerName),
                 pos: pos,
@@ -770,8 +747,16 @@
 
             saveData();
             document.getElementById('transfer-player-name').value = '';
-            renderTransfers();
-            alert("Transfer teklifiniz başarıyla gönderildi!");
+            alert("Transfer teklifiniz başarıyla sunucuya gönderildi! Yöneticiler panellerinde görebilir.");
+        }
+
+        function cancelTransferOffer(indexInReversed) {
+            let realIndex = leagueData.transfers.length - 1 - indexInReversed;
+            if (confirm("Gönderdiğiniz transfer teklifini iptal etmek istiyor musunuz?")) {
+                leagueData.transfers.splice(realIndex, 1);
+                saveData();
+                alert("Teklifiniz iptal edildi.");
+            }
         }
 
         function approveTransfer(indexInReversed) {
@@ -782,6 +767,7 @@
 
             let team = leagueData.teams.find(t => t.id === tr.targetTeamId);
             if (team) {
+                if(!team.squad) team.squad = [];
                 team.squad.push({
                     name: tr.playerName,
                     pos: tr.pos,
@@ -794,8 +780,6 @@
             }
 
             saveData();
-            renderTransfers();
-            renderTeams();
             alert(`Transfer kabul edildi! ${tr.playerName} kadroya eklendi.`);
         }
 
@@ -805,7 +789,6 @@
             leagueData.transfers[realIndex].status = "rejected";
 
             saveData();
-            renderTransfers();
             alert("Transfer teklifi reddedildi.");
         }
 
@@ -869,6 +852,7 @@
         function renderTeams() {
             const container = document.getElementById('teams-container');
             container.innerHTML = leagueData.teams.map(t => {
+                if(!t.squad) t.squad = [];
                 return `
                     <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30 overflow-hidden">
                         <div class="flex items-center justify-between border-b border-white/10 pb-4 gap-2">
@@ -954,7 +938,6 @@
             match.awayScore = parseInt(document.getElementById(`fa-${id}`).value) || 0;
             match.played = true;
             saveData();
-            renderStandings();
             alert("Skor kaydedildi!");
         }
 
@@ -970,8 +953,6 @@
                 p.saves = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value) || 0;
             }
             saveData();
-            renderStats();
-            renderTeams();
             alert("İstatistikler kaydedildi!");
         }
 
@@ -1003,7 +984,6 @@
             });
 
             saveData();
-            renderHistory();
             alert("Sezon başarısı tarihçeye eklendi!");
         }
 
@@ -1012,7 +992,6 @@
             if (confirm("Bu tarihçe kaydını silmek istediğinize emin misiniz?")) {
                 leagueData.historyRecords.splice(idx, 1);
                 saveData();
-                renderHistory();
             }
         }
 
@@ -1024,7 +1003,6 @@
             if (newName) team.name = sanitizeInput(newName.trim());
             if (newLogo !== null) team.logo = sanitizeInput(newLogo.trim());
             saveData();
-            renderAll();
         }
 
         function deleteTeam(id) {
@@ -1032,7 +1010,6 @@
             if (confirm("Takımı silmek istediğinize emin misiniz?")) {
                 leagueData.teams = leagueData.teams.filter(t => t.id !== id);
                 saveData();
-                renderAll();
             }
         }
 
@@ -1043,18 +1020,16 @@
             if (name) {
                 leagueData.teams.push({ id: Date.now(), name: sanitizeInput(name.trim()), logo: sanitizeInput((logo || "⚽").trim()), squad: [] });
                 saveData();
-                renderAll();
             }
         }
 
         function editWeeklyMVP() {
             if (!currentUser) return;
-            let name = prompt("Haftanın Yıldızı (Oyuncu Adı):", leagueData.weeklyMVP.name);
-            let team = prompt("Haftanın Yıldızı (Takımı):", leagueData.weeklyMVP.team);
+            let name = prompt("Haftanın Yıldızı (Oyuncu Adı):", (leagueData.weeklyMVP && leagueData.weeklyMVP.name) || "");
+            let team = prompt("Haftanın Yıldızı (Takımı):", (leagueData.weeklyMVP && leagueData.weeklyMVP.team) || "");
             if (name) {
                 leagueData.weeklyMVP = { name: sanitizeInput(name.trim()), team: sanitizeInput((team || "").trim()) };
                 saveData();
-                renderStats();
             }
         }
 
@@ -1067,7 +1042,6 @@
                 if (!leagueData.weeklyTeamPlayers) leagueData.weeklyTeamPlayers = [];
                 leagueData.weeklyTeamPlayers.push({ name: sanitizeInput(name.trim()), team: sanitizeInput(team.trim()), pos: sanitizeInput(pos.trim()) });
                 saveData();
-                renderStats();
             }
         }
 
@@ -1075,7 +1049,6 @@
             if (!currentUser) return;
             leagueData.weeklyTeamPlayers.splice(idx, 1);
             saveData();
-            renderStats();
         }
 
         function addSquadPlayerPrompt(teamId) {
@@ -1084,9 +1057,9 @@
             let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
             if (name) {
                 let team = leagueData.teams.find(t => t.id === teamId);
+                if (!team.squad) team.squad = [];
                 team.squad.push({ name: sanitizeInput(name.trim()), pos: sanitizeInput(pos.trim()), goals: 0, assists: 0, tackles: 0, catches: 0, saves: 0 });
                 saveData();
-                renderTeams();
             }
         }
 
@@ -1095,7 +1068,6 @@
             let team = leagueData.teams.find(t => t.id === teamId);
             team.squad.splice(pIdx, 1);
             saveData();
-            renderTeams();
         }
 
         function handleAdminLoginLogout() {
@@ -1138,19 +1110,6 @@
 
         window.onload = () => {
             checkSavedAdminSession();
-
-            const savedTheme = localStorage.getItem('asl_custom_theme');
-            if (savedTheme) {
-                try {
-                    const t = JSON.parse(savedTheme);
-                    updateThemeStyles(t.c1, t.c2, t.c3, t.cardBg, t.cardBorder);
-                } catch (e) {
-                    setPresetTheme('red');
-                }
-            } else {
-                setPresetTheme('red');
-            }
-            
             renderAll();
             lucide.createIcons();
         };
