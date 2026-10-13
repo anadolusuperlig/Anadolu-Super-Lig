@@ -56,7 +56,6 @@
     <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <!-- Vektörel Logo -->
                 <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white/80 shadow-lg shadow-brand-500/40 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
                     <svg viewBox="0 0 200 200" class="w-full h-full">
                         <circle cx="100" cy="100" r="96" fill="#c90424" stroke="#ffffff" stroke-width="7"/>
@@ -111,19 +110,15 @@
     <!-- SAĞ ALT KÖŞE RENK PALETİ PANENİ -->
     <div class="fixed bottom-6 right-6 z-50">
         <div class="relative">
-            <!-- Açılır Renk Menüsü -->
             <div id="theme-menu" class="hidden absolute bottom-16 right-0 w-64 glass rounded-2xl p-4 border border-brand-500/40 shadow-2xl space-y-3 mb-2">
                 <div class="flex items-center justify-between border-b border-white/10 pb-2">
                     <span class="text-xs font-black text-white uppercase tracking-wider">Tema & Renk Paleti</span>
                     <button onclick="toggleThemeMenu()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
-
-                <!-- 🎨 Özel Renk Seçici -->
                 <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between">
                     <span class="text-xs font-bold text-gray-200">Özel Renk Seçin:</span>
                     <input type="color" id="custom-color-picker" oninput="applyCustomColor(this.value)" class="w-10 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0">
                 </div>
-
                 <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Hazır Temalar</div>
                 <div class="space-y-1">
                     <button onclick="setPresetTheme('red')" class="w-full text-left px-3 py-2 text-xs font-bold rounded-xl hover:bg-white/10 flex items-center justify-between text-rose-400">
@@ -148,8 +143,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Sağ Alt Buton -->
             <button onclick="toggleThemeMenu()" class="p-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white shadow-2xl shadow-brand-600/50 border border-white/30 flex items-center space-x-2 transition-all transform hover:scale-105 active:scale-95">
                 <i data-lucide="palette" class="w-5 h-5"></i>
                 <span class="text-xs font-black uppercase tracking-wider">Renk Paleti</span>
@@ -331,7 +324,7 @@
                 </div>
             </div>
 
-            <!-- Gelen & Yapılan Transfer Teklifleri Listesi -->
+            <!-- Transfer Teklifleri Listesi -->
             <div class="glass-card p-6 rounded-3xl space-y-4">
                 <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                     <i data-lucide="list" class="w-4 h-4 text-amber-400"></i>
@@ -404,6 +397,21 @@
         ];
 
         let currentUser = null;
+
+        // F5 YENİLEMESİNDE YÖNETİCİ OTURUMUNU KORUMA
+        function checkSavedAdminSession() {
+            const savedUser = localStorage.getItem('asl_admin_session');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    document.getElementById('user-info').classList.remove('hidden');
+                    document.getElementById('user-info').innerText = `Yetkili: ${currentUser.name}`;
+                    document.getElementById('admin-btn-text').innerText = "Çıkış Yap";
+                } catch(e) {
+                    currentUser = null;
+                }
+            }
+        }
 
         function toggleThemeMenu() {
             const menu = document.getElementById('theme-menu');
@@ -489,26 +497,39 @@
 
         let leagueData = defaultLeagueData;
 
-        function loadSavedData() {
-            const rawData = localStorage.getItem('asl_final_v2026_data');
-            if (rawData) {
-                try {
-                    const parsed = JSON.parse(rawData);
-                    leagueData = { ...defaultLeagueData, ...parsed };
-                } catch (e) {
-                    leagueData = defaultLeagueData;
+        // 2. HERKESE CANLI VERİ SAĞLAYAN API ENTEGRASYONU
+        const API_URL = "https://api.jsonbin.io/v3/b/6632bc1d155b737d099ea640"; 
+        
+        async function loadDataFromCloud() {
+            try {
+                const res = await fetch(API_URL + "/latest");
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.record) {
+                        leagueData = { ...defaultLeagueData, ...json.record };
+                        renderAll();
+                    }
                 }
-            } else {
-                leagueData = defaultLeagueData;
+            } catch (e) {
+                const rawData = localStorage.getItem('asl_final_v2026_data');
+                if (rawData) {
+                    try { leagueData = JSON.parse(rawData); } catch (err) {}
+                }
             }
-            if (!leagueData.transfers) leagueData.transfers = [];
+        }
+
+        async function saveData() {
+            localStorage.setItem('asl_final_v2026_data', JSON.stringify(leagueData));
+            try {
+                await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leagueData)
+                });
+            } catch(e){}
         }
 
         let currentWeek = 1;
-
-        function saveData() {
-            localStorage.setItem('asl_final_v2026_data', JSON.stringify(leagueData));
-        }
 
         function resetAllDataCompletely() {
             if (!currentUser) return;
@@ -758,7 +779,7 @@
             lucide.createIcons();
         }
 
-        function submitTransferOffer() {
+        async function submitTransferOffer() {
             const teamId = parseInt(document.getElementById('transfer-target-team').value);
             const playerName = document.getElementById('transfer-player-name').value.trim();
             const pos = document.getElementById('transfer-player-pos').value;
@@ -777,13 +798,13 @@
                 status: "pending"
             });
 
-            saveData();
+            await saveData();
             document.getElementById('transfer-player-name').value = '';
             renderTransfers();
-            alert("Transfer teklifiniz gönderildi!");
+            alert("Transfer teklifiniz başarıyla sunucuya gönderildi!");
         }
 
-        function approveTransfer(indexInReversed) {
+        async function approveTransfer(indexInReversed) {
             if (!currentUser) return;
             let realIndex = leagueData.transfers.length - 1 - indexInReversed;
             let tr = leagueData.transfers[realIndex];
@@ -802,18 +823,18 @@
                 });
             }
 
-            saveData();
+            await saveData();
             renderTransfers();
             renderTeams();
-            alert(`Transfer kabul edildi! ${tr.playerName} isimli oyuncu kadroya eklendi.`);
+            alert(`Transfer kabul edildi! ${tr.playerName} kadroya eklendi.`);
         }
 
-        function rejectTransfer(indexInReversed) {
+        async function rejectTransfer(indexInReversed) {
             if (!currentUser) return;
             let realIndex = leagueData.transfers.length - 1 - indexInReversed;
             leagueData.transfers[realIndex].status = "rejected";
 
-            saveData();
+            await saveData();
             renderTransfers();
             alert("Transfer teklifi reddedildi.");
         }
@@ -956,161 +977,10 @@
             }
         }
 
-        // Actions
-        function saveMatchScoreDirect(id) {
-            if (!currentUser) return;
-            let match = leagueData.fixtures.find(f => f.id === id);
-            match.homeScore = parseInt(document.getElementById(`fh-${id}`).value) || 0;
-            match.awayScore = parseInt(document.getElementById(`fa-${id}`).value) || 0;
-            match.played = true;
-            saveData();
-            renderStandings();
-            alert("Skor kaydedildi!");
-        }
-
-        function savePlayerStats(teamId, pIdx) {
-            if (!currentUser) return;
-            let team = leagueData.teams.find(t => t.id === teamId);
-            let p = team.squad[pIdx];
-            p.goals = parseInt(document.getElementById(`p-g-${teamId}-${pIdx}`).value) || 0;
-            p.assists = parseInt(document.getElementById(`p-a-${teamId}-${pIdx}`).value) || 0;
-            p.tackles = parseInt(document.getElementById(`p-t-${teamId}-${pIdx}`).value) || 0;
-            if (p.pos === 'KL') {
-                p.catches = parseInt(document.getElementById(`p-c-${teamId}-${pIdx}`).value) || 0;
-                p.saves = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value) || 0;
-            }
-            saveData();
-            renderStats();
-            renderTeams();
-            alert("İstatistikler kaydedildi!");
-        }
-
-        function addHistoryRecordPrompt() {
-            if (!currentUser) return;
-            let season = prompt("Sezon Adı (Örn: 1. Sezon):");
-            if (!season) return;
-
-            let teamNamesList = leagueData.teams.map((t, i) => `${i + 1}. ${t.name}`).join("\n");
-            let teamChoice = prompt(`Şampiyon Takımı Seçin (Numara Girin):\n${teamNamesList}`);
-            let chosenIdx = parseInt(teamChoice) - 1;
-
-            if (isNaN(chosenIdx) || !leagueData.teams[chosenIdx]) {
-                alert("Geçersiz takım seçimi!");
-                return;
-            }
-
-            let ballondor = prompt("Ballon d'Or Kazananı (İsim - Kulüp):");
-            let puskas = prompt("Puskas Kazananı (İsim - Kulüp):");
-            let gkOfYear = prompt("Yılın Kalecisi Kazananı (İsim - Kulüp):");
-
-            if (!leagueData.historyRecords) leagueData.historyRecords = [];
-            leagueData.historyRecords.push({
-                season: sanitizeInput(season.trim()),
-                championTeamId: leagueData.teams[chosenIdx].id,
-                ballondor: sanitizeInput(ballondor || '-'),
-                puskas: sanitizeInput(puskas || '-'),
-                gkOfYear: sanitizeInput(gkOfYear || '-')
-            });
-
-            saveData();
-            renderHistory();
-            alert("Sezon başarısı tarihçeye eklendi!");
-        }
-
-        function deleteHistoryRecord(idx) {
-            if (!currentUser) return;
-            if (confirm("Bu tarihçe kaydını silmek istediğinize emin misiniz?")) {
-                leagueData.historyRecords.splice(idx, 1);
-                saveData();
-                renderHistory();
-            }
-        }
-
-        function editTeamPrompt(id) {
-            if (!currentUser) return;
-            let team = leagueData.teams.find(t => t.id === id);
-            let newName = prompt("Takım Adı:", team.name);
-            let newLogo = prompt("Takım Emojisi:", team.logo);
-            if (newName) team.name = sanitizeInput(newName.trim());
-            if (newLogo !== null) team.logo = sanitizeInput(newLogo.trim());
-            saveData();
-            renderAll();
-        }
-
-        function deleteTeam(id) {
-            if (!currentUser) return;
-            if (confirm("Takımı silmek istediğinize emin misiniz?")) {
-                leagueData.teams = leagueData.teams.filter(t => t.id !== id);
-                saveData();
-                renderAll();
-            }
-        }
-
-        function addNewTeamPrompt() {
-            if (!currentUser) return;
-            let name = prompt("Yeni Takım Adı:");
-            let logo = prompt("Takım Emojisi:", "⚽");
-            if (name) {
-                leagueData.teams.push({ id: Date.now(), name: sanitizeInput(name.trim()), logo: sanitizeInput((logo || "⚽").trim()), squad: [] });
-                saveData();
-                renderAll();
-            }
-        }
-
-        function editWeeklyMVP() {
-            if (!currentUser) return;
-            let name = prompt("Haftanın Yıldızı (Oyuncu Adı):", leagueData.weeklyMVP.name);
-            let team = prompt("Haftanın Yıldızı (Takımı):", leagueData.weeklyMVP.team);
-            if (name) {
-                leagueData.weeklyMVP = { name: sanitizeInput(name.trim()), team: sanitizeInput((team || "").trim()) };
-                saveData();
-                renderStats();
-            }
-        }
-
-        function addWeeklyTeamPlayerPrompt() {
-            if (!currentUser) return;
-            let name = prompt("Oyuncu Adı:");
-            let team = prompt("Takımı:");
-            let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
-            if (name && team) {
-                if (!leagueData.weeklyTeamPlayers) leagueData.weeklyTeamPlayers = [];
-                leagueData.weeklyTeamPlayers.push({ name: sanitizeInput(name.trim()), team: sanitizeInput(team.trim()), pos: sanitizeInput(pos.trim()) });
-                saveData();
-                renderStats();
-            }
-        }
-
-        function removeWeeklyTeamPlayer(idx) {
-            if (!currentUser) return;
-            leagueData.weeklyTeamPlayers.splice(idx, 1);
-            saveData();
-            renderStats();
-        }
-
-        function addSquadPlayerPrompt(teamId) {
-            if (!currentUser) return;
-            let name = prompt("Oyuncu Adı:");
-            let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
-            if (name) {
-                let team = leagueData.teams.find(t => t.id === teamId);
-                team.squad.push({ name: sanitizeInput(name.trim()), pos: sanitizeInput(pos.trim()), goals: 0, assists: 0, tackles: 0, catches: 0, saves: 0 });
-                saveData();
-                renderTeams();
-            }
-        }
-
-        function removeSquadPlayer(teamId, pIdx) {
-            if (!currentUser) return;
-            let team = leagueData.teams.find(t => t.id === teamId);
-            team.squad.splice(pIdx, 1);
-            saveData();
-            renderTeams();
-        }
-
         function handleAdminLoginLogout() {
             if (currentUser) {
                 currentUser = null;
+                localStorage.removeItem('asl_admin_session');
                 document.getElementById('user-info').classList.add('hidden');
                 document.getElementById('admin-btn-text').innerText = "Yönetici Girişi";
                 renderAll();
@@ -1131,6 +1001,7 @@
 
             if (found) {
                 currentUser = found;
+                localStorage.setItem('asl_admin_session', JSON.stringify(currentUser));
                 document.getElementById('user-info').classList.remove('hidden');
                 document.getElementById('user-info').innerText = `Yetkili: ${currentUser.name}`;
                 document.getElementById('admin-btn-text').innerText = "Çıkış Yap";
@@ -1144,8 +1015,9 @@
             }
         }
 
-        window.onload = () => {
-            loadSavedData();
+        window.onload = async () => {
+            checkSavedAdminSession();
+            await loadDataFromCloud();
 
             const savedTheme = localStorage.getItem('asl_custom_theme');
             if (savedTheme) {
@@ -1158,6 +1030,9 @@
             } else {
                 setPresetTheme('red');
             }
+            
+            // HER 5 SANİYEDE BİR CANLI OLARAK SİTEYİ GÜNCELLE
+            setInterval(loadDataFromCloud, 5000);
             
             renderAll();
             lucide.createIcons();
