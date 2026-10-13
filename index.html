@@ -215,7 +215,6 @@
         <!-- Stats Tab -->
         <section id="tab-stats" class="tab-content hidden space-y-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Haftanın Yıldızı -->
                 <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
                     <div class="space-y-3">
                         <div class="flex items-center space-x-2 text-amber-400 font-extrabold text-xs uppercase tracking-wider">
@@ -231,7 +230,6 @@
                     </div>
                 </div>
 
-                <!-- Haftanın Takımı Kadrosu -->
                 <div class="lg:col-span-2 glass-card rounded-3xl p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-brand-900/40 pb-3">
                         <div class="flex items-center space-x-2 text-brand-400 font-extrabold text-xs uppercase tracking-wider">
@@ -245,7 +243,6 @@
                 </div>
             </div>
 
-            <!-- Gol ve Asist Krallığı -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="glass-card rounded-3xl p-6 space-y-6">
                     <div class="flex items-center space-x-3 border-b border-brand-900/40 pb-4">
@@ -398,7 +395,6 @@
 
         let currentUser = null;
 
-        // F5 YENİLEMESİNDE YÖNETİCİ OTURUMUNU KORUMA
         function checkSavedAdminSession() {
             const savedUser = localStorage.getItem('asl_admin_session');
             if (savedUser) {
@@ -497,36 +493,40 @@
 
         let leagueData = defaultLeagueData;
 
-        // 2. HERKESE CANLI VERİ SAĞLAYAN API ENTEGRASYONU
-        const API_URL = "https://api.jsonbin.io/v3/b/6632bc1d155b737d099ea640"; 
-        
+        // CANLI VERİTABANI SERVİSİ (AÇIK API - ŞİFRESİZ)
+        const API_URL = "https://jsonblob.com/api/jsonBlob/123567890000000000123456";
+
         async function loadDataFromCloud() {
             try {
-                const res = await fetch(API_URL + "/latest");
+                const res = await fetch(API_URL, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
                 if (res.ok) {
                     const json = await res.json();
-                    if (json.record) {
-                        leagueData = { ...defaultLeagueData, ...json.record };
+                    if (json && json.teams) {
+                        leagueData = json;
                         renderAll();
                     }
                 }
             } catch (e) {
-                const rawData = localStorage.getItem('asl_final_v2026_data');
-                if (rawData) {
-                    try { leagueData = JSON.parse(rawData); } catch (err) {}
-                }
+                console.log("Sunucudan okuma hatasi:", e);
             }
         }
 
         async function saveData() {
-            localStorage.setItem('asl_final_v2026_data', JSON.stringify(leagueData));
             try {
                 await fetch(API_URL, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify(leagueData)
                 });
-            } catch(e){}
+            } catch(e) {
+                console.log("Sunucuya kayit hatasi:", e);
+            }
         }
 
         let currentWeek = 1;
@@ -534,7 +534,6 @@
         function resetAllDataCompletely() {
             if (!currentUser) return;
             if (confirm("Bütün veriler sıfırlanacak. Emin misiniz?")) {
-                localStorage.removeItem('asl_final_v2026_data');
                 leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
                 saveData();
                 renderAll();
@@ -801,7 +800,7 @@
             await saveData();
             document.getElementById('transfer-player-name').value = '';
             renderTransfers();
-            alert("Transfer teklifiniz başarıyla sunucuya gönderildi!");
+            alert("Transfer teklifiniz başarıyla gönderildi!");
         }
 
         async function approveTransfer(indexInReversed) {
@@ -1031,8 +1030,8 @@
                 setPresetTheme('red');
             }
             
-            // HER 5 SANİYEDE BİR CANLI OLARAK SİTEYİ GÜNCELLE
-            setInterval(loadDataFromCloud, 5000);
+            // HER 3 SANİYEDE BİR TÙM EKANLARI VE TEKLİFLERİ CANLI GÜNCELLE
+            setInterval(loadDataFromCloud, 3000);
             
             renderAll();
             lucide.createIcons();
