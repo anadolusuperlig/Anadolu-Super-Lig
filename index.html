@@ -20,11 +20,12 @@
             background-color: var(--bg-dark);
             color: var(--text-light);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.3s, color 0.3s;
         }
 
         .navbar {
             background: linear-gradient(135deg, var(--dark-red), #000);
-            border-bottom: 2px solid var(--accent-gold);
+            border-bottom: 3px solid var(--accent-gold);
         }
 
         .site-logo {
@@ -36,10 +37,10 @@
         }
 
         .hero-banner {
-            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1350&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
-            padding: 60px 0;
+            padding: 50px 0;
             text-align: center;
             border-bottom: 4px solid var(--primary-red);
         }
@@ -47,7 +48,7 @@
         .nav-pills .nav-link {
             color: var(--text-light);
             background-color: var(--card-bg);
-            margin: 0 5px;
+            margin: 0 4px;
             border: 1px solid #333;
             font-weight: 600;
         }
@@ -61,8 +62,8 @@
         .card-custom {
             background-color: var(--card-bg);
             border: 1px solid #333;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
 
         .table-dark-custom {
@@ -77,8 +78,8 @@
         }
 
         .team-badge {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
@@ -98,7 +99,7 @@
             z-index: 1000;
             border-radius: 50px;
             padding: 12px 25px;
-            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.5);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.6);
             font-weight: bold;
         }
 
@@ -131,7 +132,7 @@
         }
 
         .tab-content {
-            padding-top: 25px;
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -148,9 +149,22 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2">
+                        <select id="themeSelector" class="form-select form-select-sm bg-dark text-light border-secondary" onchange="changeTheme(this.value)">
+                            <option value="redwhite">🔴 Kırmızı - Beyaz (Ana Tema)</option>
+                            <option value="modernblack">🖤 Modern Siyah & Kırmızı</option>
+                            <option value="goldred">👑 Altın Sarısı & Kırmızı</option>
+                            <option value="turkeyred">🇹🇷 Türk Bayrağı Kırmızısı</option>
+                        </select>
+                    </li>
                     <li class="nav-item">
-                        <button class="btn btn-outline-danger me-2 my-1" data-bs-toggle="modal" data-bs-target="#adminModal">
+                        <button class="btn btn-outline-warning btn-sm my-1 me-2" onclick="downloadBackup()">
+                            <i class="fa-solid fa-download me-1"></i> Değişiklikleri Kaydet
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-danger btn-sm my-1" data-bs-toggle="modal" data-bs-target="#adminModal">
                             <i class="fa-solid fa-user-gear me-1"></i> Yönetici Paneli
                         </button>
                     </li>
@@ -162,8 +176,8 @@
     <!-- HERO HEADER -->
     <div class="hero-banner">
         <div class="container">
-            <img id="heroLogo" src="" alt="Anadolu Süper Lig" class="mb-3 rounded-circle border border-3 border-light shadow d-none" style="width: 110px; height: 110px; object-fit: cover;">
-            <h1 class="display-4 fw-bold text-uppercase">ANADOLU SÜPER LİG</h1>
+            <img id="heroLogo" src="" alt="Anadolu Süper Lig" class="mb-3 rounded-circle border border-3 border-light shadow d-none" style="width: 100px; height: 100px; object-fit: cover;">
+            <h1 class="display-5 fw-bold text-uppercase">ANADOLU SÜPER LİG</h1>
             <p class="lead text-warning">Pro Soccer Online Resmi Topluluk & Lig Portalı</p>
             <div id="announcementText" class="badge bg-danger fs-6 p-2 shadow-sm">Sezon Tüm Hızıyla Devam Ediyor!</div>
         </div>
@@ -175,19 +189,19 @@
         <!-- NAV TABS -->
         <ul class="nav nav-pills nav-justified flex-column flex-sm-row mb-4" id="mainTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="puan-tab" data-bs-toggle="pill" data-bs-target="#puan" type="button"><i class="fa-solid fa-trophy me-2"></i>Puan Durumu</button>
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#puan" type="button"><i class="fa-solid fa-trophy me-2"></i>Puan Durumu</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="takimlar-tab" data-bs-toggle="pill" data-bs-target="#takimlar" type="button"><i class="fa-solid fa-shield-halved me-2"></i>Takımlar</button>
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#takimlar" type="button"><i class="fa-solid fa-shield-halved me-2"></i>Takımlar</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="kadro-tab" data-bs-toggle="pill" data-bs-target="#kadro" type="button"><i class="fa-solid fa-users me-2"></i>Kadro Merkezi</button>
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#kadro" type="button"><i class="fa-solid fa-users me-2"></i>Kadro Merkezi</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="fikstur-tab" data-bs-toggle="pill" data-bs-target="#fikstur" type="button"><i class="fa-solid fa-calendar-days me-2"></i>Fikstür & Sonuçlar</button>
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#fikstur" type="button"><i class="fa-solid fa-calendar-days me-2"></i>Fikstür & Sonuçlar</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tarihce-tab" data-bs-toggle="pill" data-bs-target="#tarihce" type="button"><i class="fa-solid fa-book-bookmark me-2"></i>Tarihçemiz</button>
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tarihce" type="button"><i class="fa-solid fa-book-bookmark me-2"></i>Tarihçemiz</button>
             </li>
         </ul>
 
@@ -214,9 +228,7 @@
                                     <th>P</th>
                                 </tr>
                             </thead>
-                            <tbody id="standingsBody">
-                                <!-- JS Dynamic Load -->
-                            </tbody>
+                            <tbody id="standingsBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -224,9 +236,7 @@
 
             <!-- 2. TAKIMLAR -->
             <div class="tab-pane fade" id="takimlar">
-                <div class="row" id="teamsGrid">
-                    <!-- JS Dynamic Load -->
-                </div>
+                <div class="row" id="teamsGrid"></div>
             </div>
 
             <!-- 3. KADRO MERKEZİ -->
@@ -254,9 +264,7 @@
                                     <th>Reyting</th>
                                 </tr>
                             </thead>
-                            <tbody id="playersBody">
-                                <!-- JS Dynamic Load -->
-                            </tbody>
+                            <tbody id="playersBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -264,18 +272,14 @@
 
             <!-- 4. FİKSTÜR -->
             <div class="tab-pane fade" id="fikstur">
-                <div class="row g-3" id="matchesList">
-                    <!-- JS Dynamic Load -->
-                </div>
+                <div class="row g-3" id="matchesList"></div>
             </div>
 
             <!-- 5. TARİHÇEMİZ -->
             <div class="tab-pane fade" id="tarihce">
                 <div class="card-custom p-4">
                     <h3 class="text-danger mb-3"><i class="fa-solid fa-monument me-2"></i>Anadolu Süper Lig Tarihçesi</h3>
-                    <p id="historyDisplay" class="lh-lg fs-5">
-                        Anadolu Süper Lig, Pro Soccer Online sahnesinde dostluk, rekabet ve yüksek yeteneği bir araya getirmek amacıyla kurulmuş en köklü topluluk ligidir. Türkiye'nin dört bir yanından yetenekli oyuncuları ve takımları aynı çatı altında toplayarak her sezon unutulmaz şampiyonluk mücadelelerine ev sahipliği yapmaktadır.
-                    </p>
+                    <p id="historyDisplay" class="lh-lg fs-5"></p>
                 </div>
             </div>
 
@@ -296,23 +300,12 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- ADMIN TABS -->
                     <ul class="nav nav-tabs border-secondary mb-3" id="adminTab">
-                        <li class="nav-item">
-                            <button class="nav-link active text-light" data-bs-toggle="tab" data-bs-target="#adminLogo">Logo</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminTeams">Takımlar & Puanlar</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminPlayers">Kadro Yönetimi</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminMatches">Fikstür Düzenle</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminText">Duyuru & Tarihçe</button>
-                        </li>
+                        <li class="nav-item"><button class="nav-link active text-light" data-bs-toggle="tab" data-bs-target="#adminLogo">Logo</button></li>
+                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminTeams">Takımlar & Puanlar</button></li>
+                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminPlayers">Kadro</button></li>
+                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminMatches">Fikstür</button></li>
+                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#adminText">Duyuru & Tarihçe</button></li>
                     </ul>
 
                     <div class="tab-content">
@@ -321,11 +314,10 @@
                             <div class="mb-3">
                                 <label class="form-label fw-bold text-warning">Masaüstünden Logo Seçin:</label>
                                 <input type="file" id="logoInput" class="form-control" accept="image/*" onchange="uploadLogo(event)">
-                                <small class="text-muted">Seçtiğiniz logo anında tüm sitede güncellenecek ve kaydedilecektir.</small>
+                                <small class="text-muted">Seçtiğiniz logo anında tüm sitede güncellenir.</small>
                             </div>
                             <div class="text-center my-3">
-                                <p>Mevcut Logo Önizleme:</p>
-                                <img id="previewLogo" src="" class="img-thumbnail bg-dark d-none" style="max-height: 120px;">
+                                <img id="previewLogo" src="" class="img-thumbnail bg-dark d-none" style="max-height: 100px;">
                             </div>
                         </div>
 
@@ -338,19 +330,9 @@
                             </div>
                             <hr class="border-secondary">
                             <h6 class="text-warning">Mevcut Takımları Düzenle</h6>
-                            <div class="table-responsive" style="max-height:300px; overflow-y:auto;">
+                            <div class="table-responsive" style="max-height:250px; overflow-y:auto;">
                                 <table class="table table-dark align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th>Takım</th>
-                                            <th>G</th>
-                                            <th>B</th>
-                                            <th>M</th>
-                                            <th>AG</th>
-                                            <th>YG</th>
-                                            <th>İşlem</th>
-                                        </tr>
-                                    </thead>
+                                    <thead><tr><th>Takım</th><th>G</th><th>B</th><th>M</th><th>AG</th><th>YG</th><th>Sil</th></tr></thead>
                                     <tbody id="adminTeamsBody"></tbody>
                                 </table>
                             </div>
@@ -361,25 +343,17 @@
                             <h6 class="text-warning">Yeni Oyuncu Ekle</h6>
                             <div class="row g-2 mb-3">
                                 <div class="col-md-4"><input type="text" id="pName" class="form-control" placeholder="Oyuncu Adı"></div>
-                                <div class="col-md-4">
-                                    <select id="pTeamSelect" class="form-select"></select>
-                                </div>
-                                <div class="col-md-4"><input type="text" id="pRole" class="form-control" placeholder="Mevki (ST, CM, GK...)"></div>
+                                <div class="col-md-4"><select id="pTeamSelect" class="form-select"></select></div>
+                                <div class="col-md-4"><input type="text" id="pRole" class="form-control" placeholder="Mevki (ST, CM...)"></div>
                                 <div class="col-md-3"><input type="number" id="pGoals" class="form-control" placeholder="Gol" value="0"></div>
                                 <div class="col-md-3"><input type="number" id="pAssists" class="form-control" placeholder="Asist" value="0"></div>
                                 <div class="col-md-3"><input type="text" id="pRating" class="form-control" placeholder="Reyting" value="7.0"></div>
                                 <div class="col-md-3"><button class="btn btn-success w-100" onclick="addPlayer()">Ekle</button></div>
                             </div>
                             <hr class="border-secondary">
-                            <div class="table-responsive" style="max-height:250px; overflow-y:auto;">
+                            <div class="table-responsive" style="max-height:200px; overflow-y:auto;">
                                 <table class="table table-dark align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th>Oyuncu</th>
-                                            <th>Takım</th>
-                                            <th>Sil</th>
-                                        </tr>
-                                    </thead>
+                                    <thead><tr><th>Oyuncu</th><th>Takım</th><th>Sil</th></tr></thead>
                                     <tbody id="adminPlayersBody"></tbody>
                                 </table>
                             </div>
@@ -387,7 +361,7 @@
 
                         <!-- FİKSTÜR DÜZENLEME -->
                         <div class="tab-pane fade" id="adminMatches">
-                            <h6 class="text-warning">Yeni Maç / Skor Güncelle</h6>
+                            <h6 class="text-warning">Yeni Maç / Skor Kaydet</h6>
                             <div class="row g-2 mb-3">
                                 <div class="col-md-4"><select id="mHome" class="form-select"></select></div>
                                 <div class="col-md-2"><input type="number" id="mHomeScore" class="form-control" placeholder="0"></div>
@@ -406,26 +380,26 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-warning">Tarihçe Metni:</label>
-                                <textarea id="historyInput" class="form-control" rows="5"></textarea>
+                                <textarea id="historyInput" class="form-control" rows="4"></textarea>
                             </div>
-                            <button class="btn btn-primary" onclick="saveTexts()">Metinleri Güncelle</button>
+                            <button class="btn btn-primary" onclick="saveTexts()">Güncellemeleri Uygula</button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    <button type="button" class="btn btn-danger" onclick="resetData()">Varsayılanlara Sıfırla</button>
+                    <button type="button" class="btn btn-danger" onclick="resetData()">Sıfırla</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- BOOTSTRAP & SCRIPT -->
+    <!-- SCRIPT -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // VARSAYILAN VERİLER
         const initialData = {
             logo: '',
+            theme: 'redwhite',
             announcement: 'Sezon Tüm Hızıyla Devam Ediyor!',
             history: 'Anadolu Süper Lig, Pro Soccer Online sahnesinde dostluk, rekabet ve yüksek yeteneği bir araya getirmek amacıyla kurulmuş en köklü topluluk ligidir. Türkiye\'nin dört bir yanından yetenekli oyuncuları ve takımları aynı çatı altında toplayarak her sezon unutulmaz şampiyonluk mücadelelerine ev sahipliği yapmaktadır.',
             teams: [
@@ -437,16 +411,13 @@
             players: [
                 { id: 1, name: 'Kaptan_06', teamId: 1, role: 'ST', goals: 8, assists: 2, rating: '8.4' },
                 { id: 2, name: 'Sniper_99', teamId: 1, role: 'CM', goals: 3, assists: 5, rating: '7.9' },
-                { id: 3, name: 'Wall_Keeper', teamId: 2, role: 'GK', goals: 0, assists: 1, rating: '8.1' },
-                { id: 4, name: 'FIRTINA_61', teamId: 4, role: 'LW', goals: 4, assists: 1, rating: '7.5' }
+                { id: 3, name: 'Wall_Keeper', teamId: 2, role: 'GK', goals: 0, assists: 1, rating: '8.1' }
             ],
             matches: [
-                { id: 1, week: '1. Hafta', homeId: 1, awayId: 2, homeScore: 2, awayScore: 1 },
-                { id: 2, week: '1. Hafta', homeId: 3, awayId: 4, homeScore: 3, awayScore: 0 }
+                { id: 1, week: '1. Hafta', homeId: 1, awayId: 2, homeScore: 2, awayScore: 1 }
             ]
         };
 
-        // LOCAL STORAGE YÜKLE
         let appData = JSON.parse(localStorage.getItem('asl_data')) || initialData;
 
         function saveData() {
@@ -454,7 +425,39 @@
             renderAll();
         }
 
-        // LOGO YÜKLEME (File Reader)
+        function changeTheme(theme) {
+            appData.theme = theme;
+            applyTheme(theme);
+            saveData();
+        }
+
+        function applyTheme(theme) {
+            const root = document.documentElement;
+            if (theme === 'redwhite') {
+                root.style.setProperty('--primary-red', '#d32f2f');
+                root.style.setProperty('--dark-red', '#990000');
+                root.style.setProperty('--bg-dark', '#121212');
+                root.style.setProperty('--card-bg', '#1e1e1e');
+            } else if (theme === 'modernblack') {
+                root.style.setProperty('--primary-red', '#ff1744');
+                root.style.setProperty('--dark-red', '#b71c1c');
+                root.style.setProperty('--bg-dark', '#0a0a0a');
+                root.style.setProperty('--card-bg', '#161616');
+            } else if (theme === 'goldred') {
+                root.style.setProperty('--primary-red', '#c62828');
+                root.style.setProperty('--dark-red', '#b71c1c');
+                root.style.setProperty('--accent-gold', '#ffd700');
+                root.style.setProperty('--bg-dark', '#141414');
+                root.style.setProperty('--card-bg', '#1f1f1f');
+            } else if (theme === 'turkeyred') {
+                root.style.setProperty('--primary-red', '#e30a17');
+                root.style.setProperty('--dark-red', '#b30006');
+                root.style.setProperty('--bg-dark', '#111111');
+                root.style.setProperty('--card-bg', '#1a1a1a');
+            }
+            document.getElementById('themeSelector').value = theme;
+        }
+
         function uploadLogo(event) {
             const file = event.target.files[0];
             if (file) {
@@ -467,9 +470,18 @@
             }
         }
 
-        // EKRANLARI GÜNCELLE
+        function downloadBackup() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'anadolu_super_lig.html';
+            a.click();
+        }
+
         function renderAll() {
-            // Logo Render
+            applyTheme(appData.theme || 'redwhite');
+
             const navLogo = document.getElementById('navLogo');
             const heroLogo = document.getElementById('heroLogo');
             const previewLogo = document.getElementById('previewLogo');
@@ -481,19 +493,14 @@
                 heroLogo.classList.remove('d-none');
                 previewLogo.src = appData.logo;
                 previewLogo.classList.remove('d-none');
-            } else {
-                navLogo.classList.add('d-none');
-                heroLogo.classList.add('d-none');
-                previewLogo.classList.add('d-none');
             }
 
-            // Text Render
             document.getElementById('announcementText').innerText = appData.announcement;
             document.getElementById('historyDisplay').innerText = appData.history;
             document.getElementById('announcementInput').value = appData.announcement;
             document.getElementById('historyInput').value = appData.history;
 
-            // Puan Durumu Hesaplama & Render
+            // Puan Durumu
             const sortedTeams = [...appData.teams].map(t => {
                 const o = t.g + t.b + t.m;
                 const av = t.ag - t.yg;
@@ -501,41 +508,32 @@
                 return { ...t, o, av, p };
             }).sort((a, b) => b.p - a.p || b.av - a.av);
 
-            const standingsBody = document.getElementById('standingsBody');
-            standingsBody.innerHTML = sortedTeams.map((t, idx) => `
+            document.getElementById('standingsBody').innerHTML = sortedTeams.map((t, idx) => `
                 <tr>
                     <td class="fw-bold text-warning">${idx + 1}</td>
                     <td><span class="team-badge ${idx === 0 ? 'badge-gold' : 'badge-red'}">${t.name[0]}</span><strong>${t.name}</strong></td>
-                    <td>${t.o}</td>
-                    <td>${t.g}</td>
-                    <td>${t.b}</td>
-                    <td>${t.m}</td>
-                    <td>${t.ag}</td>
-                    <td>${t.yg}</td>
+                    <td>${t.o}</td><td>${t.g}</td><td>${t.b}</td><td>${t.m}</td><td>${t.ag}</td><td>${t.yg}</td>
                     <td class="${t.av >= 0 ? 'text-success' : 'text-danger'}">${t.av > 0 ? '+' + t.av : t.av}</td>
                     <td class="fw-bold text-warning fs-5">${t.p}</td>
                 </tr>
             `).join('');
 
-            // Takımlar Kartları Render
-            const teamsGrid = document.getElementById('teamsGrid');
-            teamsGrid.innerHTML = appData.teams.map(t => `
+            // Takımlar
+            document.getElementById('teamsGrid').innerHTML = appData.teams.map(t => `
                 <div class="col-md-6 col-lg-3 mb-3">
                     <div class="card-custom p-3 text-center">
                         <div class="team-badge badge-gold mb-2 mx-auto" style="width:50px; height:50px; font-size:20px;">${t.name[0]}</div>
                         <h5 class="fw-bold text-white">${t.name}</h5>
-                        <p class="text-muted small mb-0">Toplam Oyuncu: ${appData.players.filter(p => p.teamId === t.id).length}</p>
+                        <p class="text-muted small mb-0">Oyuncu: ${appData.players.filter(p => p.teamId === t.id).length}</p>
                     </div>
                 </div>
             `).join('');
 
-            // Kadro & Filtreler
             renderPlayers();
             updateSelects();
             renderAdminTables();
         }
 
-        // Oyuncu Listesi Filtreli Render
         function renderPlayers() {
             const search = document.getElementById('playerSearch').value.toLowerCase();
             const teamId = document.getElementById('teamFilter').value;
@@ -546,30 +544,30 @@
                 return matchesSearch && matchesTeam;
             });
 
-            const playersBody = document.getElementById('playersBody');
-            playersBody.innerHTML = filtered.map(p => {
+            document.getElementById('playersBody').innerHTML = filtered.map(p => {
                 const team = appData.teams.find(t => t.id === p.teamId);
                 return `
                     <tr>
                         <td class="fw-bold text-white"><i class="fa-solid fa-user me-2 text-danger"></i>${p.name}</td>
                         <td>${team ? team.name : 'Serbest'}</td>
                         <td><span class="badge bg-secondary">${p.role}</span></td>
-                        <td>${p.goals}</td>
-                        <td>${p.assists}</td>
+                        <td>${p.goals}</td><td>${p.assists}</td>
                         <td><span class="badge bg-warning text-dark">${p.rating}</span></td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function filterPlayers() {
-            renderPlayers();
-        }
+        function filterPlayers() { renderPlayers(); }
 
-        // Fikstür Render
-        function renderMatches() {
-            const matchesList = document.getElementById('matchesList');
-            matchesList.innerHTML = appData.matches.map(m => {
+        function updateSelects() {
+            const teamOptions = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            document.getElementById('teamFilter').innerHTML = '<option value="ALL">Tüm Takımlar</option>' + teamOptions;
+            document.getElementById('pTeamSelect').innerHTML = teamOptions;
+            document.getElementById('mHome').innerHTML = teamOptions;
+            document.getElementById('mAway').innerHTML = teamOptions;
+
+            document.getElementById('matchesList').innerHTML = appData.matches.map(m => {
                 const home = appData.teams.find(t => t.id === m.homeId);
                 const away = appData.teams.find(t => t.id === m.awayId);
                 return `
@@ -587,22 +585,8 @@
             }).join('');
         }
 
-        // Admin Select seçenekleri
-        function updateSelects() {
-            const teamOptions = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
-            document.getElementById('teamFilter').innerHTML = '<option value="ALL">Tüm Takımlar</option>' + teamOptions;
-            document.getElementById('pTeamSelect').innerHTML = teamOptions;
-            document.getElementById('mHome').innerHTML = teamOptions;
-            document.getElementById('mAway').innerHTML = teamOptions;
-
-            renderMatches();
-        }
-
-        // Admin Tablolarını Doldur
         function renderAdminTables() {
-            // Takım Edit
-            const adminTeamsBody = document.getElementById('adminTeamsBody');
-            adminTeamsBody.innerHTML = appData.teams.map(t => `
+            document.getElementById('adminTeamsBody').innerHTML = appData.teams.map(t => `
                 <tr>
                     <td>${t.name}</td>
                     <td><input type="number" class="form-control form-control-sm" value="${t.g}" onchange="updateTeamData(${t.id}, 'g', this.value)"></td>
@@ -614,21 +598,15 @@
                 </tr>
             `).join('');
 
-            // Oyuncu Edit
-            const adminPlayersBody = document.getElementById('adminPlayersBody');
-            adminPlayersBody.innerHTML = appData.players.map(p => {
+            document.getElementById('adminPlayersBody').innerHTML = appData.players.map(p => {
                 const team = appData.teams.find(t => t.id === p.teamId);
                 return `
-                    <tr>
-                        <td>${p.name}</td>
-                        <td>${team ? team.name : '-'}</td>
-                        <td><button class="btn btn-sm btn-danger" onclick="deletePlayer(${p.id})"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>
+                    <tr><td>${p.name}</td><td>${team ? team.name : '-'}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="deletePlayer(${p.id})"><i class="fa-solid fa-trash"></i></button></td></tr>
                 `;
             }).join('');
         }
 
-        // İŞLEMLER
         function addTeam() {
             const name = document.getElementById('newTeamName').value.trim();
             if (name) {
@@ -640,10 +618,7 @@
 
         function updateTeamData(id, field, val) {
             const team = appData.teams.find(t => t.id === id);
-            if (team) {
-                team[field] = parseInt(val) || 0;
-                saveData();
-            }
+            if (team) { team[field] = parseInt(val) || 0; saveData(); }
         }
 
         function deleteTeam(id) {
@@ -682,7 +657,7 @@
                 appData.matches.push({ id: Date.now(), week, homeId, awayId, homeScore, awayScore });
                 saveData();
             } else {
-                alert("Aynı takımı birbiriyle maç yaptıramazsınız!");
+                alert("Aynı takım birbiriyle maç yapamaz!");
             }
         }
 
@@ -690,21 +665,18 @@
             appData.announcement = document.getElementById('announcementInput').value;
             appData.history = document.getElementById('historyInput').value;
             saveData();
-            alert("Metinler güncellendi!");
+            alert("Güncellendi!");
         }
 
         function resetData() {
-            if (confirm("Tüm veriler ilk haline döndürülecek. Onaylıyor musunuz?")) {
+            if (confirm("Varsayılan ayarlara dönülsün mü?")) {
                 localStorage.removeItem('asl_data');
                 appData = JSON.parse(JSON.stringify(initialData));
                 renderAll();
             }
         }
 
-        // İLK YÜKLEME
-        document.addEventListener('DOMContentLoaded', () => {
-            renderAll();
-        });
+        document.addEventListener('DOMContentLoaded', () => { renderAll(); });
     </script>
 </body>
 </html>
