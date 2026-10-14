@@ -8,7 +8,981 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-red: #d32f2f;
+            --primary-red: #d32f2f;a<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anadolu Süper Lig | Pro Soccer Online Ligi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & Orbitron -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--color-brand-50, #fef2f2)',
+                            100: 'var(--color-brand-100, #ffe1e1)',
+                            500: 'var(--color-brand-500, #ef4444)',
+                            600: 'var(--color-brand-600, #dc2626)',
+                            700: 'var(--color-brand-700, #b91c1c)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --brand-color: #ef4444;
+            --brand-glow: rgba(239, 68, 68, 0.35);
+        }
+
+        /* Tema Renk Değişkenleri */
+        .theme-red { --brand-color: #ef4444; --brand-glow: rgba(239, 68, 68, 0.4); }
+        .theme-lime { --brand-color: #84cc16; --brand-glow: rgba(132, 204, 22, 0.4); }
+        .theme-blue { --brand-color: #06b6d4; --brand-glow: rgba(6, 182, 212, 0.4); }
+        .theme-gold { --brand-color: #eab308; --brand-glow: rgba(234, 179, 8, 0.4); }
+        .theme-orange { --brand-color: #f97316; --brand-glow: rgba(249, 115, 22, 0.4); }
+
+        body {
+            background-color: #090a0f;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .brand-text {
+            color: var(--brand-color);
+        }
+
+        .brand-bg {
+            background-color: var(--brand-color);
+        }
+
+        .brand-border {
+            border-color: var(--brand-color);
+        }
+
+        .brand-glow-text {
+            text-shadow: 0 0 25px var(--brand-glow);
+        }
+
+        .brand-glow-box {
+            box-shadow: 0 0 20px var(--brand-glow);
+        }
+
+        /* Arka plan stadyum efekti */
+        .hero-bg {
+            background: linear-gradient(180deg, rgba(9, 10, 15, 0.65) 0%, rgba(9, 10, 15, 0.95) 80%, #090a0f 100%),
+                        url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass-panel {
+            background: rgba(18, 20, 29, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .glass-card {
+            background: rgba(24, 27, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Pulse Animasyonu */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+        .pulse-dot {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #26293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-color);
+        }
+    </style>
+</head>
+<body class="theme-red flex flex-col min-h-screen">
+
+    <!-- ÜST GEZİNTİ ÇUBUĞU (NAVBAR) -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- LOGO VE SİTE ADI -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div id="league-logo-container" class="w-12 h-12 rounded-xl flex items-center justify-center p-1 bg-black/40 border border-white/10 shadow-lg">
+                        <i class="fa-solid fa-trophy text-2xl brand-text"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-black text-2xl tracking-wider text-white block leading-none">
+                            ANADOLU <span class="brand-text">LİGİ</span>
+                        </span>
+                        <span class="text-[10px] tracking-widest uppercase text-gray-400 font-semibold">Pro Soccer Online</span>
+                    </div>
+                </div>
+
+                <!-- NAVİGASYON MENÜSÜ -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('standings')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 hover:bg-white/5">
+                        <i class="fa-solid fa-list-ol opacity-70"></i> Puan Durumu
+                    </button>
+                    <button onclick="switchTab('fixtures')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 hover:bg-white/5">
+                        <i class="fa-solid fa-calendar-days opacity-70"></i> Fikstür
+                    </button>
+                    <button onclick="switchTab('teams')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 hover:bg-white/5">
+                        <i class="fa-solid fa-shield-halved opacity-70"></i> Takımlar
+                    </button>
+                    <button onclick="switchTab('squads')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 hover:bg-white/5">
+                        <i class="fa-solid fa-users opacity-70"></i> Kadrolar
+                    </button>
+                    <button onclick="switchTab('stats')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 hover:bg-white/5">
+                        <i class="fa-solid fa-chart-simple opacity-70"></i> İstatistikler
+                    </button>
+                </nav>
+
+                <!-- SAĞ KISIM (TEMA, SEZON & ADMİN) -->
+                <div class="flex items-center gap-3">
+                    
+                    <!-- RENK PALETİ SEÇİCİ DROPDOWN -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-2 bg-black/40 border border-white/10 hover:border-white/30 text-xs px-3 py-2 rounded-lg font-semibold text-gray-300 transition-all">
+                            <span class="w-3 h-3 rounded-full brand-bg inline-block"></span>
+                            <span class="hidden sm:inline">Tema</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-slate-900 border border-white/10 rounded-xl shadow-2xl p-2 hidden group-hover:block z-50">
+                            <div class="text-[10px] font-bold text-gray-400 uppercase px-2 py-1 mb-1">Renk Paleti</div>
+                            <button onclick="setTheme('theme-red')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-gray-200 hover:bg-white/10 flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-red-500"></span> Kırmızı / Beyaz
+                            </button>
+                            <button onclick="setTheme('theme-lime')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-gray-200 hover:bg-white/10 flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-lime-500"></span> Fıstık Yeşili (Lime)
+                            </button>
+                            <button onclick="setTheme('theme-blue')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-gray-200 hover:bg-white/10 flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-cyan-500"></span> Elektrik Mavisi
+                            </button>
+                            <button onclick="setTheme('theme-gold')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-gray-200 hover:bg-white/10 flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-yellow-500"></span> Şampiyon Altını
+                            </button>
+                            <button onclick="setTheme('theme-orange')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-gray-200 hover:bg-white/10 flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-orange-500"></span> Cyber Orange
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ADMİN PANELİ BUTONU -->
+                    <button onclick="openAdminModal()" class="brand-bg hover:brightness-110 text-black font-extrabold text-xs px-4 py-2 rounded-lg tracking-wider uppercase transition-all shadow-md flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-xs"></i> Admin Girişi
+                    </button>
+
+                    <!-- MOBİL MENÜ BUTONU -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MOBİL MENÜ MÜŞTERİ -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="w-full text-left text-gray-200 py-2 text-sm font-semibold border-b border-white/5">Ana Sayfa</button>
+            <button onclick="switchTab('standings'); toggleMobileMenu();" class="w-full text-left text-gray-200 py-2 text-sm font-semibold border-b border-white/5">Puan Durumu</button>
+            <button onclick="switchTab('fixtures'); toggleMobileMenu();" class="w-full text-left text-gray-200 py-2 text-sm font-semibold border-b border-white/5">Fikstür</button>
+            <button onclick="switchTab('teams'); toggleMobileMenu();" class="w-full text-left text-gray-200 py-2 text-sm font-semibold border-b border-white/5">Takımlar</button>
+            <button onclick="switchTab('squads'); toggleMobileMenu();" class="w-full text-left text-gray-200 py-2 text-sm font-semibold border-b border-white/5">Kadrolar</button>
+            <button onclick="switchTab('stats'); toggleMobileMenu();" class="w-full text-left text-gray-200 py-2 text-sm font-semibold border-b border-white/5">İstatistikler</button>
+        </div>
+    </header>
+
+    <!-- CANLI CANLI DUYURU BANT (ANNOUNCEMENT BAR) -->
+    <div id="announcement-bar" class="bg-black/60 border-b border-white/5 py-2 px-4 text-center text-xs text-gray-300 flex items-center justify-center gap-2">
+        <span class="px-2 py-0.5 rounded text-[10px] font-black brand-bg text-black uppercase">DUYURU</span>
+        <span id="announcement-text" class="font-medium text-gray-200">Anadolu Süper Lig Sezon 01 kayıtları tüm hızıyla devam ediyor! Takımını kur, mücadeleye katıl.</span>
+    </div>
+
+    <!-- ANA İÇERİK ALANI -->
+    <main class="flex-grow">
+        
+        <!-- ================= HERO BÖLÜMÜ (JETLİG TARZI HEYBETLİ BAŞLIK) ================= -->
+        <section class="relative hero-bg pt-12 pb-20 px-4 sm:px-6 lg:px-8 border-b border-white/10">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- ETIKETLER VE SİNYAL -->
+                <div class="flex items-center justify-between mb-8">
+                    <div class="inline-flex items-center gap-2 bg-black/60 border border-white/10 rounded-full px-3.5 py-1.5 backdrop-blur-md">
+                        <span class="w-2.5 h-2.5 rounded-full brand-bg pulse-dot inline-block"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-white" id="active-season-label">SEZON 01 AKTİF</span>
+                    </div>
+                    <div class="text-xs font-mono font-semibold tracking-widest text-gray-400 uppercase hidden sm:block">
+                        // SPİKERLİ PRO SOCCER ONLİNE LİGİ
+                    </div>
+                </div>
+
+                <!-- BÜYÜK DEV LOGO / BAŞLIK -->
+                <div class="max-w-4xl">
+                    <h1 class="font-display font-black text-6xl sm:text-8xl lg:text-9xl tracking-tight text-white uppercase leading-none mb-6">
+                        ANADOLU <span class="brand-text brand-glow-text">SÜPER LİG</span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-300 max-w-2xl font-light leading-relaxed">
+                        Topluluk tutkusunun profesyonel düzeyde istatistik takibiyle buluştuğu yer. Her maç, her gol, her an kayıt altında.
+                    </p>
+                </div>
+
+                <!-- İSTATİSTİK SAYAÇLARI BANT (HERO STATS) -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/10 pt-8">
+                    <div>
+                        <div class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-1">Kayıtlı Takımlar</div>
+                        <div class="font-display text-3xl sm:text-4xl font-extrabold text-white" id="stat-teams-count">10 / 12</div>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-1">Aktif Oyuncular</div>
+                        <div class="font-display text-3xl sm:text-4xl font-extrabold text-white" id="stat-players-count">128</div>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-1">Atılan Goller</div>
+                        <div class="font-display text-3xl sm:text-4xl font-extrabold brand-text" id="stat-goals-count">355</div>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-1">Sonraki Maç Günü</div>
+                        <div class="font-display text-3xl sm:text-4xl font-extrabold text-white" id="stat-next-match">Bu Akşam 21:00</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB İÇERİKLERİ CONTAINER -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+            <!-- TAB 1: PUAN DURUMU (STANDINGS) -->
+            <div id="tab-standings" class="tab-content space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-display font-black text-white uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol brand-text"></i> Puan Durumu
+                        </h2>
+                        <p class="text-xs text-gray-400">Lig tablosu gerçek zamanlı olarak güncellenmektedir.</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-black/50 text-xs uppercase tracking-wider text-gray-400 border-b border-white/10">
+                                <tr>
+                                    <th class="py-4 px-4 text-center w-12">#</th>
+                                    <th class="py-4 px-4">Takım</th>
+                                    <th class="py-4 px-3 text-center">O</th>
+                                    <th class="py-4 px-3 text-center">G</th>
+                                    <th class="py-4 px-3 text-center">B</th>
+                                    <th class="py-4 px-3 text-center">M</th>
+                                    <th class="py-4 px-3 text-center hidden sm:table-cell">AG</th>
+                                    <th class="py-4 px-3 text-center hidden sm:table-cell">YG</th>
+                                    <th class="py-4 px-3 text-center">AV</th>
+                                    <th class="py-4 px-4 text-center font-bold text-white">PTS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standings-table-body" class="divide-y divide-white/5 font-medium">
+                                <!-- JS ile dinamik dolacak -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: FİKSTÜR VE SKORLAR (FIXTURES) -->
+            <div id="tab-fixtures" class="tab-content hidden space-y-6">
+                <div>
+                    <h2 class="text-2xl font-display font-black text-white uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days brand-text"></i> Fikstür & Maç Sonuçları
+                    </h2>
+                    <p class="text-xs text-gray-400">Oynanan ve yaklaşan tüm haftaların lig karşılaşmaları.</p>
+                </div>
+
+                <div id="fixtures-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- JS ile dinamik fikstür kartları -->
+                </div>
+            </div>
+
+            <!-- TAB 3: TAKIMLAR (TEAMS) -->
+            <div id="tab-teams" class="tab-content hidden space-y-6">
+                <div>
+                    <h2 class="text-2xl font-display font-black text-white uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved brand-text"></i> Mücadele Eden Takımlar
+                    </h2>
+                    <p class="text-xs text-gray-400">Ligde ter döken resmi PSO kulüpleri.</p>
+                </div>
+
+                <div id="teams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- JS ile dinamik takım kartları -->
+                </div>
+            </div>
+
+            <!-- TAB 4: KADRO MERKEZİ (SQUADS) -->
+            <div id="tab-squads" class="tab-content hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-display font-black text-white uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-users brand-text"></i> Oyuncu Kadroları
+                        </h2>
+                        <p class="text-xs text-gray-400">Takımların kayıtlı Pro Soccer Online oyuncuları.</p>
+                    </div>
+                    
+                    <!-- Takım Seçim Filtresi -->
+                    <div>
+                        <select id="squad-team-select" onchange="renderSquads()" class="bg-black/60 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none brand-border">
+                            <!-- JS ile takımlar eklenecek -->
+                        </select>
+                    </div>
+                </div>
+
+                <div id="squads-display" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- JS ile dinamik oyuncu listesi -->
+                </div>
+            </div>
+
+            <!-- TAB 5: İSTATİSTİKLER (STATS) -->
+            <div id="tab-stats" class="tab-content hidden space-y-6">
+                <div>
+                    <h2 class="text-2xl font-display font-black text-white uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-chart-simple brand-text"></i> Lig Liderleri & Krallıklar
+                    </h2>
+                    <p class="text-xs text-gray-400">Gol, asist ve en değerli oyuncu istatistikleri.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- GOL KRALLIĞI -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white uppercase mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                            <i class="fa-solid fa-futbol text-yellow-500"></i> Gol Krallığı
+                        </h3>
+                        <div id="top-scorers-list" class="space-y-3">
+                            <!-- JS ile dolacak -->
+                        </div>
+                    </div>
+
+                    <!-- ASİST KRALLIĞI -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white uppercase mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                            <i class="fa-solid fa-handshake brand-text"></i> Asist Krallığı
+                        </h3>
+                        <div id="top-assists-list" class="space-y-3">
+                            <!-- JS ile dolacak -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-panel border-t border-white/10 mt-12 py-8 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-display font-bold text-white">ANADOLU SÜPER LİGİ</span>
+                <span>&copy; 2026 Tüm Hakları Saklıdır.</span>
+            </div>
+            <div class="text-gray-400">
+                Pro Soccer Online (PSO) E-Spor Topluluğu
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= ADMİN MODAL & YÖNETİM PANENİ ================= -->
+    <div id="admin-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-panel max-w-4xl w-full rounded-2xl overflow-hidden border border-white/20 max-h-[90vh] flex flex-col shadow-2xl">
+            
+            <!-- MODAL HEADER -->
+            <div class="bg-black/80 p-5 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield brand-text text-xl"></i>
+                    <h3 class="font-display font-bold text-lg text-white">YÖNETİCİ PANELİ (ADMİN)</h3>
+                </div>
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white text-xl p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- GİRİŞ EKRANI (ŞİFRE SORGUSU) -->
+            <div id="admin-login-step" class="p-8 text-center space-y-4">
+                <i class="fa-solid fa-shield-halved text-5xl brand-text mb-2"></i>
+                <h4 class="text-xl font-bold text-white">Yönetici Girişi Yapın</h4>
+                <p class="text-xs text-gray-400">Değişikliklerin canlı veritabanına işlenmesi için yetki gereklidir.</p>
+                
+                <div class="max-w-xs mx-auto space-y-3 pt-2">
+                    <input type="password" id="admin-pass-input" placeholder="Admin Şifresi (Varsayılan: admin123)" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-center text-white focus:outline-none brand-border">
+                    <button onclick="verifyAdminPassword()" class="w-full brand-bg hover:brightness-110 text-black font-extrabold py-2.5 rounded-xl text-sm uppercase tracking-wider transition-all">
+                        Giriş Yap
+                    </button>
+                    <div id="login-error-msg" class="text-xs text-red-500 hidden font-bold">Hatalı Şifre! (İpucu: admin123)</div>
+                </div>
+            </div>
+
+            <!-- ADMİN YÖNETİM İÇERİĞİ (GİRİŞ YAPILINCA GÖRÜNÜR) -->
+            <div id="admin-dashboard-step" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
+                
+                <!-- SİTE AYARLARI & LOGO YÜKLEME -->
+                <div class="bg-black/40 border border-white/10 rounded-xl p-5 space-y-4">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-gear brand-text"></i> Genel Lig Ayarları & Logo Yükleme
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Duyuru Metni</label>
+                            <input type="text" id="admin-announcement-input" class="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Masaüstünden Logo Yükle (PNG/JPG)</label>
+                            <input type="file" id="admin-logo-file" accept="image/*" class="w-full bg-black/60 border border-white/10 rounded-lg p-1.5 text-xs text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20">
+                        </div>
+                    </div>
+                    <button onclick="saveGeneralSettings()" class="brand-bg hover:brightness-110 text-black font-bold text-xs px-4 py-2 rounded-lg uppercase">
+                        Genel Ayarları Kaydet
+                    </button>
+                </div>
+
+                <!-- YENİ TAKIM EKLEME -->
+                <div class="bg-black/40 border border-white/10 rounded-xl p-5 space-y-4">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-plus brand-text"></i> Yeni Takım Ekle
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input type="text" id="new-team-name" placeholder="Takım Adı (örn: Anadolu FC)" class="bg-black/60 border border-white/10 rounded-lg p-2.5 text-xs text-white">
+                        <input type="text" id="new-team-tag" placeholder="Kısaltma (örn: AFC)" class="bg-black/60 border border-white/10 rounded-lg p-2.5 text-xs text-white">
+                        <button onclick="addNewTeam()" class="brand-bg hover:brightness-110 text-black font-bold text-xs p-2.5 rounded-lg uppercase">
+                            Takımı Lige Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- YENİ MAÇ / SKOR EKLEME -->
+                <div class="bg-black/40 border border-white/10 rounded-xl p-5 space-y-4">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy brand-text"></i> Fikstür / Maç Skoru Gir
+                    </h4>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 items-center">
+                        <select id="fixture-home-team" class="bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-white"></select>
+                        <input type="number" id="fixture-home-score" placeholder="Ev Skor" class="bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-center text-white">
+                        <input type="number" id="fixture-away-score" placeholder="Dep Skor" class="bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-center text-white">
+                        <select id="fixture-away-team" class="bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-white"></select>
+                        <button onclick="addFixtureMatch()" class="col-span-2 sm:col-span-1 brand-bg hover:brightness-110 text-black font-bold text-xs p-2 rounded-lg uppercase">
+                            Maçı Kaydet
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAKIM DÜZENLEME & SİLME TABLOSU -->
+                <div class="bg-black/40 border border-white/10 rounded-xl p-5 space-y-4">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-list brand-text"></i> Mevcut Takımlar ve Puan Verileri</span>
+                        <span class="text-[10px] text-gray-400 font-normal">Düzenleyip "Kaydet" butonuna basın</span>
+                    </h4>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-black/60 text-gray-400 uppercase">
+                                <tr>
+                                    <th class="p-2">Takım</th>
+                                    <th class="p-2 text-center">O</th>
+                                    <th class="p-2 text-center">G</th>
+                                    <th class="p-2 text-center">B</th>
+                                    <th class="p-2 text-center">M</th>
+                                    <th class="p-2 text-center">AG</th>
+                                    <th class="p-2 text-center">YG</th>
+                                    <th class="p-2 text-center">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-teams-table" class="divide-y divide-white/5">
+                                <!-- JS ile dolacak -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FIREBASE MODÜL YÜKLEMESİ -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Yapılandırması
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : { apiKey: "demo-api-key", authDomain: "demo.firebaseapp.com", projectId: "demo-app" };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'anadolu-super-lig-default';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Firestore Ortak Veri Dokümanı Yolu
+        const LEAGUE_DOC_REF = doc(db, 'artifacts', appId, 'public', 'data', 'leagueData', 'mainDoc');
+
+        // VARSAYILAN BAŞLANGIÇ LİG VERİLERİ
+        let leagueState = {
+            theme: 'theme-red',
+            logoUrl: null,
+            announcement: 'Anadolu Süper Lig Sezon 01 kayıtları tüm hızıyla devam ediyor! Takımını kur, mücadeleye katıl.',
+            teams: [
+                { id: '1', name: 'Anadolu Kings', tag: 'ANK', played: 5, won: 4, drawn: 1, lost: 0, gf: 14, ga: 3, points: 13 },
+                { id: '2', name: 'Bosphorus Esports', tag: 'BOS', played: 5, won: 3, drawn: 2, lost: 0, gf: 11, ga: 5, points: 11 },
+                { id: '3', name: 'Ankara Vatan', tag: 'VAT', played: 5, won: 3, drawn: 0, lost: 2, gf: 9, ga: 7, points: 9 },
+                { id: '4', name: 'Ege Fırtınası', tag: 'EGE', played: 5, won: 2, drawn: 1, lost: 2, gf: 8, ga: 8, points: 7 },
+                { id: '5', name: 'Karadeniz Gücü', tag: 'KRD', played: 5, won: 1, drawn: 1, lost: 3, gf: 6, ga: 10, points: 4 },
+                { id: '6', name: 'Toros Kaplanları', tag: 'TOR', played: 5, won: 0, drawn: 1, lost: 4, gf: 4, ga: 19, points: 1 }
+            ],
+            fixtures: [
+                { id: 'f1', home: 'Anadolu Kings', away: 'Bosphorus Esports', homeScore: 2, awayScore: 2, played: true },
+                { id: 'f2', home: 'Ankara Vatan', away: 'Ege Fırtınası', homeScore: 3, awayScore: 1, played: true },
+                { id: 'f3', home: 'Karadeniz Gücü', away: 'Toros Kaplanları', homeScore: 4, awayScore: 1, played: true },
+                { id: 'f4', home: 'Anadolu Kings', away: 'Ankara Vatan', homeScore: null, awayScore: null, played: false }
+            ],
+            players: [
+                { name: 'Kaptan_06', team: 'Anadolu Kings', goals: 7, assists: 3 },
+                { name: 'StrikerPro', team: 'Bosphorus Esports', goals: 5, assists: 4 },
+                { name: 'AnadoluPanteri', team: 'Ankara Vatan', goals: 4, assists: 2 },
+                { name: 'EgeWizard', team: 'Ege Fırtınası', goals: 3, assists: 5 }
+            ]
+        };
+
+        // Oturum Açma ve Gerçek Zamanlı Dinleyici Başlatma
+        async function initApp() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Auth uyarısı:", err);
+            }
+
+            // Real-time Firestore Dinleyici (Tüm kullanıcılara anında veri basar)
+            onSnapshot(LEAGUE_DOC_REF, (docSnap) => {
+                if (docSnap.exists()) {
+                    leagueState = docSnap.data();
+                    renderAll();
+                } else {
+                    // İlk açılışta veritabanını varsayılan veriyle başlat
+                    saveStateToFirebase();
+                }
+            }, (error) => {
+                console.error("Firestore Dinleme Hatası:", error);
+                renderAll(); // Hata durumunda yerel veriyle devam
+            });
+        }
+
+        // Firebase'e Veri Kaydetme Fonksiyonu
+        window.saveStateToFirebase = async function() {
+            try {
+                await setDoc(LEAGUE_DOC_REF, leagueState);
+            } catch (err) {
+                console.error("Firebase kayıt hatası:", err);
+            }
+        };
+
+        // GLOBAL DİL DÜZEYİNDE TEMA DEĞİŞTİRME
+        window.setTheme = function(themeClass) {
+            leagueState.theme = themeClass;
+            document.body.className = themeClass + ' flex flex-col min-h-screen';
+            saveStateToFirebase();
+        };
+
+        // TÜM ARAYÜZÜ RENDER ETME
+        window.renderAll = function() {
+            // 1. Tema Uygulama
+            if (leagueState.theme) {
+                document.body.className = leagueState.theme + ' flex flex-col min-h-screen';
+            }
+
+            // 2. Logo ve Duyuru Güncelleme
+            if (leagueState.announcement) {
+                document.getElementById('announcement-text').innerText = leagueState.announcement;
+            }
+
+            const logoContainer = document.getElementById('league-logo-container');
+            if (leagueState.logoUrl) {
+                logoContainer.innerHTML = `<img src="${leagueState.logoUrl}" class="w-full h-full object-contain rounded-lg" alt="Lig Logosu">`;
+            } else {
+                logoContainer.innerHTML = `<i class="fa-solid fa-trophy text-2xl brand-text"></i>`;
+            }
+
+            // 3. Sayaçları Güncelle
+            document.getElementById('stat-teams-count').innerText = `${leagueState.teams.length} / 12`;
+            
+            const totalGoals = leagueState.fixtures.reduce((acc, f) => acc + (f.homeScore || 0) + (f.awayScore || 0), 0);
+            document.getElementById('stat-goals-count').innerText = totalGoals > 0 ? totalGoals : 355;
+
+            // 4. Puan Durumu Tablosunu Oluştur
+            renderStandings();
+
+            // 5. Fikstürü Oluştur
+            renderFixtures();
+
+            // 6. Takımları Oluştur
+            renderTeams();
+
+            // 7. Kadro Merkezini Doldur
+            populateSquadTeamSelect();
+            renderSquads();
+
+            // 8. Krallıkları Doldur
+            renderStats();
+
+            // 9. Admin Masasını Güncelle
+            renderAdminTable();
+        };
+
+        // PUAN DURUMU RENDER
+        function renderStandings() {
+            const tbody = document.getElementById('standings-table-body');
+            if (!tbody) return;
+
+            // Puan, Averaj ve Atılan Gol Sıralaması
+            const sortedTeams = [...leagueState.teams].sort((a, b) => {
+                const avA = a.gf - a.ga;
+                const avB = b.gf - b.ga;
+                if (b.points !== a.points) return b.points - a.points;
+                if (avB !== avA) return avB - avA;
+                return b.gf - a.gf;
+            });
+
+            tbody.innerHTML = sortedTeams.map((t, idx) => {
+                const av = t.gf - t.ga;
+                const isLeader = idx === 0;
+                return `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="py-3.5 px-4 text-center font-bold font-mono ${isLeader ? 'brand-text font-black' : 'text-gray-400'}">${idx + 1}</td>
+                        <td class="py-3.5 px-4 flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center text-[10px] font-bold uppercase brand-text">
+                                ${t.tag || 'FC'}
+                            </span>
+                            <span class="font-bold text-white">${t.name}</span>
+                        </td>
+                        <td class="py-3.5 px-3 text-center text-gray-300">${t.played}</td>
+                        <td class="py-3.5 px-3 text-center text-green-400">${t.won}</td>
+                        <td class="py-3.5 px-3 text-center text-yellow-400">${t.drawn}</td>
+                        <td class="py-3.5 px-3 text-center text-red-400">${t.lost}</td>
+                        <td class="py-3.5 px-3 text-center text-gray-400 hidden sm:table-cell">${t.gf}</td>
+                        <td class="py-3.5 px-3 text-center text-gray-400 hidden sm:table-cell">${t.ga}</td>
+                        <td class="py-3.5 px-3 text-center font-mono ${av > 0 ? 'text-green-400' : av < 0 ? 'text-red-400' : 'text-gray-400'}">${av > 0 ? '+' + av : av}</td>
+                        <td class="py-3.5 px-4 text-center font-display font-black text-base text-white">${t.points}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // FİKSTÜR RENDER
+        function renderFixtures() {
+            const container = document.getElementById('fixtures-container');
+            if (!container) return;
+
+            if (leagueState.fixtures.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center text-gray-500 py-8">Henüz maç fikstürü eklenmedi.</div>`;
+                return;
+            }
+
+            container.innerHTML = leagueState.fixtures.map(f => `
+                <div class="glass-panel p-4 rounded-xl flex items-center justify-between border border-white/5 hover:border-white/20 transition-all">
+                    <div class="flex-1 text-right font-bold text-white text-sm truncate">${f.home}</div>
+                    <div class="px-4 py-1.5 mx-3 bg-black/60 rounded-lg border border-white/10 text-center min-w-[70px]">
+                        ${f.played ? 
+                            `<span class="font-display font-black text-lg text-white">${f.homeScore} - ${f.awayScore}</span>` : 
+                            `<span class="text-[10px] uppercase font-bold text-gray-400">YAKINDA</span>`}
+                    </div>
+                    <div class="flex-1 text-left font-bold text-white text-sm truncate">${f.away}</div>
+                </div>
+            `).join('');
+        }
+
+        // TAKIMLAR RENDER
+        function renderTeams() {
+            const grid = document.getElementById('teams-grid');
+            if (!grid) return;
+
+            grid.innerHTML = leagueState.teams.map(t => `
+                <div class="glass-panel p-5 rounded-2xl border border-white/5 flex items-center gap-4 hover:border-white/20 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center font-display font-black text-xl brand-text shadow-lg">
+                        ${t.tag}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-base">${t.name}</h4>
+                        <p class="text-xs text-gray-400">Lig Derecesi: <span class="text-white font-bold">${t.points} Puan</span></p>
+                        <div class="mt-2 flex gap-1 text-[10px]">
+                            <span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded font-bold">${t.won} Galibiyet</span>
+                            <span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded font-bold">${t.lost} Yenilgi</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // KADROLAR RENDER
+        function populateSquadTeamSelect() {
+            const select = document.getElementById('squad-team-select');
+            if (!select) return;
+            select.innerHTML = leagueState.teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+        }
+
+        window.renderSquads = function() {
+            const display = document.getElementById('squads-display');
+            const select = document.getElementById('squad-team-select');
+            if (!display || !select) return;
+
+            const selectedTeam = select.value || (leagueState.teams[0] ? leagueState.teams[0].name : '');
+            const teamPlayers = leagueState.players.filter(p => p.team === selectedTeam);
+
+            if (teamPlayers.length === 0) {
+                display.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8">Bu takıma ait kayıtlı oyuncu bulunamadı.</div>`;
+                return;
+            }
+
+            display.innerHTML = teamPlayers.map(p => `
+                <div class="glass-panel p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center text-xs font-bold text-white">
+                            <i class="fa-solid fa-user brand-text"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">${p.name}</div>
+                            <div class="text-[10px] text-gray-400">${p.team}</div>
+                        </div>
+                    </div>
+                    <div class="text-right text-xs">
+                        <div class="font-bold text-white">${p.goals} Gol</div>
+                        <div class="text-[10px] text-gray-400">${p.assists} Asist</div>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        // İSTATİSTİKLER (KRALLIKLAR)
+        function renderStats() {
+            const scorersList = document.getElementById('top-scorers-list');
+            const assistsList = document.getElementById('top-assists-list');
+
+            if (scorersList) {
+                const topScorers = [...leagueState.players].sort((a,b) => b.goals - a.goals).slice(0, 5);
+                scorersList.innerHTML = topScorers.map((p, i) => `
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-black/30 border border-white/5">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-xs ${i===0 ? 'brand-text font-black text-sm' : 'text-gray-400'}">#${i+1}</span>
+                            <div>
+                                <div class="font-bold text-white text-sm">${p.name}</div>
+                                <div class="text-[10px] text-gray-400">${p.team}</div>
+                            </div>
+                        </div>
+                        <div class="font-display font-black text-lg text-white">${p.goals} <span class="text-xs font-normal text-gray-400">Gol</span></div>
+                    </div>
+                `).join('');
+            }
+
+            if (assistsList) {
+                const topAssists = [...leagueState.players].sort((a,b) => b.assists - a.assists).slice(0, 5);
+                assistsList.innerHTML = topAssists.map((p, i) => `
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-black/30 border border-white/5">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-xs ${i===0 ? 'brand-text font-black text-sm' : 'text-gray-400'}">#${i+1}</span>
+                            <div>
+                                <div class="font-bold text-white text-sm">${p.name}</div>
+                                <div class="text-[10px] text-gray-400">${p.team}</div>
+                            </div>
+                        </div>
+                        <div class="font-display font-black text-lg text-white">${p.assists} <span class="text-xs font-normal text-gray-400">Asist</span></div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ADMİN MASA TABLOSU
+        function renderAdminTable() {
+            const table = document.getElementById('admin-teams-table');
+            if (!table) return;
+
+            table.innerHTML = leagueState.teams.map(t => `
+                <tr>
+                    <td class="p-2 font-bold text-white">${t.name} (${t.tag})</td>
+                    <td class="p-2 text-center"><input type="number" value="${t.played}" onchange="updateTeamStat('${t.id}', 'played', this.value)" class="w-12 bg-black/80 border border-white/10 rounded text-center text-white py-1"></td>
+                    <td class="p-2 text-center"><input type="number" value="${t.won}" onchange="updateTeamStat('${t.id}', 'won', this.value)" class="w-12 bg-black/80 border border-white/10 rounded text-center text-white py-1"></td>
+                    <td class="p-2 text-center"><input type="number" value="${t.drawn}" onchange="updateTeamStat('${t.id}', 'drawn', this.value)" class="w-12 bg-black/80 border border-white/10 rounded text-center text-white py-1"></td>
+                    <td class="p-2 text-center"><input type="number" value="${t.lost}" onchange="updateTeamStat('${t.id}', 'lost', this.value)" class="w-12 bg-black/80 border border-white/10 rounded text-center text-white py-1"></td>
+                    <td class="p-2 text-center"><input type="number" value="${t.gf}" onchange="updateTeamStat('${t.id}', 'gf', this.value)" class="w-12 bg-black/80 border border-white/10 rounded text-center text-white py-1"></td>
+                    <td class="p-2 text-center"><input type="number" value="${t.ga}" onchange="updateTeamStat('${t.id}', 'ga', this.value)" class="w-12 bg-black/80 border border-white/10 rounded text-center text-white py-1"></td>
+                    <td class="p-2 text-center">
+                        <button onclick="deleteTeam('${t.id}')" class="text-red-400 hover:text-red-300 p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Fikstür Seçim Kutularını Doldur
+            const homeSelect = document.getElementById('fixture-home-team');
+            const awaySelect = document.getElementById('fixture-away-team');
+            if (homeSelect && awaySelect) {
+                const options = leagueState.teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+                homeSelect.innerHTML = options;
+                awaySelect.innerHTML = options;
+            }
+        }
+
+        // ADMİN FONKSİYONLARI
+        window.updateTeamStat = function(id, field, value) {
+            const team = leagueState.teams.find(t => t.id === id);
+            if (team) {
+                team[field] = parseInt(value) || 0;
+                // Puanı otomatik güncelle (G*3 + B*1)
+                team.points = (team.won * 3) + (team.drawn * 1);
+                saveStateToFirebase();
+            }
+        };
+
+        window.deleteTeam = function(id) {
+            leagueState.teams = leagueState.teams.filter(t => t.id !== id);
+            saveStateToFirebase();
+        };
+
+        window.addNewTeam = function() {
+            const nameInput = document.getElementById('new-team-name');
+            const tagInput = document.getElementById('new-team-tag');
+            if (!nameInput.value) return;
+
+            leagueState.teams.push({
+                id: Date.now().toString(),
+                name: nameInput.value,
+                tag: tagInput.value.toUpperCase() || 'FC',
+                played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, points: 0
+            });
+
+            nameInput.value = '';
+            tagInput.value = '';
+            saveStateToFirebase();
+        };
+
+        window.addFixtureMatch = function() {
+            const home = document.getElementById('fixture-home-team').value;
+            const away = document.getElementById('fixture-away-team').value;
+            const homeScore = document.getElementById('fixture-home-score').value;
+            const awayScore = document.getElementById('fixture-away-score').value;
+
+            if (home === away) {
+                alert('Aynı takım kendisiyle maç yapamaz!');
+                return;
+            }
+
+            const played = homeScore !== '' && awayScore !== '';
+
+            leagueState.fixtures.unshift({
+                id: Date.now().toString(),
+                home, away,
+                homeScore: played ? parseInt(homeScore) : null,
+                awayScore: played ? parseInt(awayScore) : null,
+                played
+            });
+
+            document.getElementById('fixture-home-score').value = '';
+            document.getElementById('fixture-away-score').value = '';
+            saveStateToFirebase();
+        };
+
+        window.saveGeneralSettings = function() {
+            const annInput = document.getElementById('admin-announcement-input');
+            if (annInput.value) {
+                leagueState.announcement = annInput.value;
+            }
+
+            const fileInput = document.getElementById('admin-logo-file');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    leagueState.logoUrl = e.target.result;
+                    saveStateToFirebase();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveStateToFirebase();
+            }
+        };
+
+        // Uygulamayı Başlat
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+
+    <!-- NAVİGASYON & MODAL JS KONTROLLERİ -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function verifyAdminPassword() {
+            const pass = document.getElementById('admin-pass-input').value;
+            const errorMsg = document.getElementById('login-error-msg');
+            
+            if (pass === 'admin123' || pass === 'admin') {
+                document.getElementById('admin-login-step').classList.add('hidden');
+                document.getElementById('admin-dashboard-step').classList.remove('hidden');
+                errorMsg.classList.add('hidden');
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
             --dark-red: #8b0000;
             --bg-dark: #121212;
             --card-bg: #1e1e1e;
