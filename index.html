@@ -10,164 +10,149 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #d32f2f;
-            --dark-color: #990000;
-            --bg-dark: #0a0a0c;
-            --card-bg: #141418;
-            --card-border: #26262e;
-            --accent-lime: #88d600;
-            --accent-gold: #ffc107;
-            --text-light: #f5f5f7;
+            --primary-red: #d32f2f;
+            --dark-red: #8b0000;
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --accent-gold: #ffb300;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-light);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            transition: background 0.3s, color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* NAVBAR */
         .navbar {
-            background: rgba(10, 10, 12, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--primary-color);
+            background: linear-gradient(135deg, var(--dark-red), #000);
+            border-bottom: 2px solid var(--accent-gold);
         }
 
         .site-logo {
-            max-height: 48px;
-            width: 48px;
+            max-height: 50px;
+            width: auto;
             border-radius: 50%;
-            border: 2px solid var(--primary-color);
+            border: 2px solid #fff;
             object-fit: cover;
         }
 
-        /* HERO HEADER */
         .hero-banner {
-            background: linear-gradient(180deg, rgba(10,10,12,0.6) 0%, rgba(10,10,12,1) 100%), 
-                        url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1600&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
-            padding: 60px 0 40px 0;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .badge-status {
-            background-color: rgba(136, 214, 0, 0.15);
-            color: var(--accent-lime);
-            border: 1px solid var(--accent-lime);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        /* CARDS & TABLES */
-        .card-custom {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            padding: 50px 0;
+            text-align: center;
+            border-bottom: 4px solid var(--primary-red);
         }
 
         .nav-pills .nav-link {
             color: var(--text-light);
             background-color: var(--card-bg);
             margin: 0 4px;
-            border: 1px solid var(--card-border);
+            border: 1px solid #333;
             font-weight: 600;
-            border-radius: 8px;
         }
 
         .nav-pills .nav-link.active {
-            background-color: var(--primary-color);
+            background-color: var(--primary-red);
             color: #fff;
-            border-color: var(--primary-color);
+            border-color: var(--accent-gold);
         }
 
-        .table-custom {
+        .card-custom {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .table-dark-custom {
             --bs-table-bg: var(--card-bg);
             --bs-table-color: var(--text-light);
-            border-color: var(--card-border);
+            border-color: #333;
         }
 
-        .table-custom th {
-            background-color: #1a1a20;
+        .table-dark-custom th {
+            background-color: var(--dark-red);
             color: var(--accent-gold);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
         }
 
-        .team-logo-small {
-            width: 30px;
-            height: 30px;
+        .team-badge {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            object-fit: cover;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
             margin-right: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
+            background-color: #333;
+            object-fit: cover;
         }
 
-        /* HAFTANIN TAKIMI SAHA SİSTEMİ */
+        .badge-gold { background-color: var(--accent-gold); color: #000; }
+        .badge-red { background-color: var(--primary-red); color: #fff; }
+
+        /* HAFTANIN 6'SI SAHA SİSTEMİ */
         .pitch-container {
-            background: linear-gradient(135deg, #1e4620 0%, #0d230e 100%);
-            border: 2px solid #2e7d32;
-            border-radius: 16px;
+            background: linear-gradient(135deg, #1b4332 0%, #081c15 100%);
+            border: 3px solid #2d6a4f;
+            border-radius: 15px;
             position: relative;
-            padding: 20px;
-            min-height: 480px;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.6);
+            padding: 30px 15px;
+            min-height: 450px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
         }
 
-        .pitch-player-card {
-            background: rgba(0, 0, 0, 0.75);
+        .pitch-card {
+            background: rgba(0, 0, 0, 0.85);
             border: 1px solid var(--accent-gold);
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 8px 12px;
             text-align: center;
             color: #fff;
-            min-width: 90px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            min-width: 130px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
 
-        /* FLOATING ADMIN BUTTON */
-        .btn-admin-floating {
+        .btn-admin {
             position: fixed;
             bottom: 25px;
             right: 25px;
             z-index: 1000;
             border-radius: 50px;
             padding: 12px 25px;
-            box-shadow: 0 4px 20px rgba(211, 47, 47, 0.6);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.5);
             font-weight: bold;
         }
 
         .modal-content {
             background-color: var(--card-bg);
             color: var(--text-light);
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--primary-red);
         }
 
         .form-control, .form-select {
-            background-color: #1a1a20;
+            background-color: #2b2b2b;
             color: #fff;
-            border: 1px solid var(--card-border);
+            border: 1px solid #444;
         }
 
         .form-control:focus, .form-select:focus {
-            background-color: #22222a;
+            background-color: #333;
             color: #fff;
-            border-color: var(--primary-color);
+            border-color: var(--primary-red);
             box-shadow: none;
         }
 
-        .award-card {
-            background: linear-gradient(145deg, #1c1c24 0%, #121216 100%);
-            border: 1px solid var(--accent-gold);
-            border-radius: 12px;
-            transition: transform 0.2s;
+        .modal-header {
+            border-bottom: 1px solid #333;
+            background-color: var(--dark-red);
         }
 
-        .award-card:hover {
-            transform: translateY(-5px);
+        .modal-footer {
+            border-top: 1px solid #333;
         }
     </style>
 </head>
@@ -178,7 +163,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <img id="navLogo" src="" alt="Logo" class="site-logo me-2 d-none">
-                <span class="fw-bold fs-4 text-uppercase tracking-wider text-white">ANADOLU SÜPER LİG</span>
+                <span class="fw-bold fs-4 text-uppercase tracking-wider">ANADOLU SÜPER LİG</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -186,21 +171,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item me-2 my-1">
-                        <select id="themeSelector" class="form-select form-select-sm" onchange="changeTheme(this.value)">
-                            <option value="red">🔴 Kırmızı & Beyaz (Ana Tema)</option>
-                            <option value="lime">🟢 Fıstık Yeşili (Lime)</option>
-                            <option value="gold">👑 Altın Sarısı (Gold)</option>
-                            <option value="blue">🔵 Elektrik Mavisi</option>
-                        </select>
-                    </li>
-                    <li class="nav-item my-1">
-                        <button class="btn btn-outline-light btn-sm me-2" onclick="downloadBackup()">
-                            <i class="fa-solid fa-download me-1"></i> Kodlara Kaydet
+                        <button class="btn btn-outline-warning btn-sm" onclick="downloadBackup()">
+                            <i class="fa-solid fa-download me-1"></i> Kodları İndir / Kaydet
                         </button>
                     </li>
                     <li class="nav-item my-1">
-                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
-                            <i class="fa-solid fa-user-gear me-1"></i> Yönetici Girişi
+                        <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="fa-solid fa-user-shield me-1"></i> Yönetici Girişi
                         </button>
                     </li>
                 </ul>
@@ -210,18 +187,15 @@
 
     <!-- HERO HEADER -->
     <div class="hero-banner">
-        <div class="container text-center">
-            <span class="badge badge-status mb-3 px-3 py-2"><i class="fa-solid fa-circle me-2 fs-6"></i>SEZON 01 AKTİF</span>
-            <div class="d-flex justify-content-center align-items-center my-2">
-                <img id="heroLogo" src="" alt="Logo" class="rounded-circle me-3 border border-3 border-danger shadow d-none" style="width: 90px; height: 90px; object-fit: cover;">
-                <h1 class="display-4 fw-bold text-uppercase tracking-wide m-0">ANADOLU SÜPER LİG</h1>
-            </div>
-            <p class="lead text-muted max-w-600 mx-auto mt-2">Spikerli Pro Soccer Online Ligi & Topluluk Portalı</p>
+        <div class="container">
+            <img id="heroLogo" src="" alt="Logo" class="mb-3 rounded-circle border border-3 border-light shadow d-none" style="width: 100px; height: 100px; object-fit: cover;">
+            <h1 class="display-5 fw-bold text-uppercase">ANADOLU SÜPER LİG</h1>
+            <p class="lead text-warning">Pro Soccer Online Resmi Topluluk & Lig Portalı</p>
             <div id="announcementText" class="badge bg-danger fs-6 p-2 shadow-sm">Sezon Tüm Hızıyla Devam Ediyor!</div>
         </div>
     </div>
 
-    <!-- MAIN CONTENT CONTAINER -->
+    <!-- MAIN CONTAINER -->
     <div class="container my-4">
 
         <!-- NAV TABS -->
@@ -229,9 +203,9 @@
             <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#puan"><i class="fa-solid fa-trophy me-2"></i>Puan Durumu</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#takimlar"><i class="fa-solid fa-shield-halved me-2"></i>Takımlar</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#kadro"><i class="fa-solid fa-users me-2"></i>Kadro Merkezi</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#haftanintakimi"><i class="fa-solid fa-star me-2"></i>Haftanın Takımı</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#fikstur"><i class="fa-solid fa-calendar-days me-2"></i>Fikstür & Maçlar</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tarihce"><i class="fa-solid fa-award me-2"></i>Tarihçe & Ödüller</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#haftaninalsisi"><i class="fa-solid fa-star me-2"></i>Haftanın 6'sı</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#fikstur"><i class="fa-solid fa-calendar-days me-2"></i>Fikstür</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tarihce"><i class="fa-solid fa-monument me-2"></i>Tarihçe & Ödüller</button></li>
         </ul>
 
         <!-- TAB CONTENTS -->
@@ -242,13 +216,9 @@
                 <div class="card-custom p-3">
                     <h4 class="text-warning mb-3"><i class="fa-solid fa-list-ol me-2"></i>Lig Puan Cetveli</h4>
                     <div class="table-responsive">
-                        <table class="table table-custom table-hover align-middle">
+                        <table class="table table-dark-custom table-hover align-middle">
                             <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Takım</th>
-                                    <th>O</th><th>G</th><th>B</th><th>M</th><th>AG</th><th>YG</th><th>AV</th><th>P</th>
-                                </tr>
+                                <tr><th>#</th><th>Takım</th><th>O</th><th>G</th><th>B</th><th>M</th><th>AG</th><th>YG</th><th>AV</th><th>P</th></tr>
                             </thead>
                             <tbody id="standingsBody"></tbody>
                         </table>
@@ -269,44 +239,27 @@
                         <div class="col-md-6"><select id="teamFilter" class="form-select" onchange="filterPlayers()"><option value="ALL">Tüm Takımlar</option></select></div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-custom table-striped align-middle">
-                            <thead>
-                                <tr><th>Oyuncu</th><th>Takım</th><th>Mevki</th><th>Gol</th><th>Asist</th><th>Reyting</th></tr>
-                            </thead>
+                        <table class="table table-dark-custom table-striped align-middle">
+                            <thead><tr><th>Oyuncu Adı</th><th>Takım</th><th>Mevki</th><th>Gol</th><th>Asist</th><th>Reyting</th></tr></thead>
                             <tbody id="playersBody"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. HAFTANIN TAKIMI -->
-            <div class="tab-pane fade" id="haftanintakimi">
-                <div class="row g-4">
-                    <div class="col-lg-8">
-                        <div class="card-custom p-3">
-                            <h4 class="text-warning mb-3"><i class="fa-solid fa-futbol me-2"></i>Haftanın 11'i</h4>
-                            <div class="pitch-container d-flex flex-column justify-content-between align-items-center">
-                                <!-- FW -->
-                                <div class="d-flex justify-content-around w-100" id="pitchFW"></div>
-                                <!-- MF -->
-                                <div class="d-flex justify-content-around w-100" id="pitchMF"></div>
-                                <!-- DF -->
-                                <div class="d-flex justify-content-around w-100" id="pitchDF"></div>
-                                <!-- GK -->
-                                <div class="d-flex justify-content-center w-100" id="pitchGK"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card-custom p-3 text-center">
-                            <h4 class="text-warning mb-3"><i class="fa-solid fa-crown me-2"></i>Haftanın Yıldızı (MVP)</h4>
-                            <div class="award-card p-4 my-3">
-                                <i class="fa-solid fa-user-astronaut text-warning display-1 mb-2"></i>
-                                <h3 id="totwMvpName" class="fw-bold text-white mb-1">-</h3>
-                                <p id="totwMvpTeam" class="text-muted mb-2">-</p>
-                                <span id="totwMvpRating" class="badge bg-warning text-dark fs-5">0.0</span>
-                            </div>
-                        </div>
+            <!-- 4. HAFTANIN 6'SI -->
+            <div class="tab-pane fade" id="haftaninalsisi">
+                <div class="card-custom p-4">
+                    <h4 class="text-warning mb-4 text-center"><i class="fa-solid fa-star me-2"></i>Haftanın En İyi 6 Oyuncusu (PSO 6v6)</h4>
+                    <div class="pitch-container d-flex flex-column justify-content-between align-items-center">
+                        <!-- Forvet -->
+                        <div class="d-flex justify-content-around w-100" id="pitchFW"></div>
+                        <!-- Orta Saha -->
+                        <div class="d-flex justify-content-around w-100" id="pitchMF"></div>
+                        <!-- Defans -->
+                        <div class="d-flex justify-content-around w-100" id="pitchDF"></div>
+                        <!-- Kaleci -->
+                        <div class="d-flex justify-content-center w-100" id="pitchGK"></div>
                     </div>
                 </div>
             </div>
@@ -316,43 +269,18 @@
                 <div class="row g-3" id="matchesList"></div>
             </div>
 
-            <!-- 6. TARİHÇE VE ÖDÜLLER -->
+            <!-- 6. TARİHÇEMİZ VE ÖDÜLLER -->
             <div class="tab-pane fade" id="tarihce">
                 <div class="card-custom p-4 mb-4">
                     <h3 class="text-danger mb-3"><i class="fa-solid fa-monument me-2"></i>Anadolu Süper Lig Tarihçesi</h3>
                     <p id="historyDisplay" class="lh-lg fs-5"></p>
                 </div>
-
-                <h3 class="text-warning mb-3"><i class="fa-solid fa-trophy me-2"></i>Sezon Ödülleri & Şampiyonlar Vitrini</h3>
-                <div class="row g-3" id="awardsGrid">
-                    <div class="col-md-3">
-                        <div class="award-card p-3 text-center">
-                            <i class="fa-solid fa-trophy text-warning display-4 mb-2"></i>
-                            <h6 class="text-muted">Şampiyon Takım</h6>
-                            <h5 id="awardChampion" class="fw-bold text-white">-</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="award-card p-3 text-center">
-                            <i class="fa-solid fa-medal text-warning display-4 mb-2"></i>
-                            <h6 class="text-muted">Ballon d'Or</h6>
-                            <h5 id="awardBallon" class="fw-bold text-white">-</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="award-card p-3 text-center">
-                            <i class="fa-solid fa-futbol text-warning display-4 mb-2"></i>
-                            <h6 class="text-muted">Puskás Ödülü</h6>
-                            <h5 id="awardPuskas" class="fw-bold text-white">-</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="award-card p-3 text-center">
-                            <i class="fa-solid fa-mitten text-warning display-4 mb-2"></i>
-                            <h6 class="text-muted">Yılın Kalecisi</h6>
-                            <h5 id="awardGk" class="fw-bold text-white">-</h5>
-                        </div>
-                    </div>
+                <h3 class="text-warning mb-3"><i class="fa-solid fa-trophy me-2"></i>Sezon Ödül Vitrini</h3>
+                <div class="row g-3">
+                    <div class="col-md-3"><div class="card-custom p-3 text-center"><i class="fa-solid fa-trophy text-warning display-5 mb-2"></i><h6>Şampiyon Takım</h6><h5 id="awardChampion" class="fw-bold text-white">-</h5></div></div>
+                    <div class="col-md-3"><div class="card-custom p-3 text-center"><i class="fa-solid fa-medal text-warning display-5 mb-2"></i><h6>Ballon d'Or</h6><h5 id="awardBallondor" class="fw-bold text-white">-</h5></div></div>
+                    <div class="col-md-3"><div class="card-custom p-3 text-center"><i class="fa-solid fa-futbol text-warning display-5 mb-2"></i><h6>Puskás Ödülü</h6><h5 id="awardPuskas" class="fw-bold text-white">-</h5></div></div>
+                    <div class="col-md-3"><div class="card-custom p-3 text-center"><i class="fa-solid fa-mitten text-warning display-5 mb-2"></i><h6>Yılın Kalecisi</h6><h5 id="awardGk" class="fw-bold text-white">-</h5></div></div>
                 </div>
             </div>
 
@@ -360,143 +288,110 @@
     </div>
 
     <!-- FLOATING ADMIN BUTTON -->
-    <button class="btn btn-danger btn-admin-floating d-none" id="btnAdminPanel" data-bs-toggle="modal" data-bs-target="#adminModal">
-        <i class="fa-solid fa-user-shield me-2"></i>Yönetici Paneli
+    <button class="btn btn-danger btn-admin d-none" id="btnAdmin" data-bs-toggle="modal" data-bs-target="#adminModal">
+        <i class="fa-solid fa-user-shield me-2"></i>Yönetim Paneli
     </button>
 
-    <!-- ADMIN LOGIN MODAL -->
+    <!-- LOGIN MODAL -->
     <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-lock me-2"></i>Yönetici Girişi</h5>
+                    <h5 class="modal-title fw-bold text-white">Yönetici Girişi</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label text-warning">Kullanıcı Adı</label>
-                        <input type="text" id="adminUser" class="form-control" placeholder="Kullanıcı adınızı girin">
+                        <input type="text" id="loginUser" class="form-control" placeholder="Kullanıcı adınızı girin">
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-warning">Şifre</label>
-                        <input type="password" id="adminPass" class="form-control" placeholder="Şifrenizi girin">
+                        <input type="password" id="loginPass" class="form-control" placeholder="Şifrenizi girin">
                     </div>
-                    <button class="btn btn-danger w-100 fw-bold" onclick="loginAdmin()">Giriş Yap</button>
+                    <button class="btn btn-danger w-100 fw-bold" onclick="tryLogin()">Giriş Yap</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ADMIN PANEL MODAL -->
+    <!-- ADMIN MODAL (YANDAN DÜZENLEMELİ) -->
     <div class="modal fade" id="adminModal" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-sliders me-2"></i>Yönetici Paneli</h5>
+                    <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-sliders me-2"></i>Anadolu Süper Lig - Hızlı Yönetim Paneli</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <!-- ADMIN TABS -->
-                    <ul class="nav nav-tabs border-secondary mb-3">
-                        <li class="nav-item"><button class="nav-link active text-light" data-bs-toggle="tab" data-bs-target="#admLogo">Ana Logo</button></li>
-                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#admTeams">Takımlar & Logolar</button></li>
-                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#admPlayers">Oyuncu Ekle/Düzenle</button></li>
-                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#admTotw">Haftanın 11'i & MVP</button></li>
-                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#admMatches">Fikstür / Maç Ekle</button></li>
-                        <li class="nav-item"><button class="nav-link text-light" data-bs-toggle="tab" data-bs-target="#admAwards">Ödüller & Tarihçe</button></li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <!-- 1. LOGO -->
-                        <div class="tab-pane fade show active" id="admLogo">
-                            <div class="mb-3">
-                                <label class="form-label text-warning">Masaüstünden Ana Lig Logosunu Seçin:</label>
-                                <input type="file" class="form-control" accept="image/*" onchange="uploadMainLogo(event)">
-                            </div>
+                <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+                    
+                    <!-- LİG LOGOSU & DUYURU & ÖDÜLLER -->
+                    <h5 class="text-warning mb-2">Genel Ayarlar & Ödüller</h5>
+                    <div class="row g-2 mb-4">
+                        <div class="col-md-4">
+                            <label class="small text-muted">Ana Lig Logosu:</label>
+                            <input type="file" class="form-control form-control-sm" accept="image/*" onchange="uploadMainLogo(event)">
                         </div>
-
-                        <!-- 2. TAKIMLAR -->
-                        <div class="tab-pane fade" id="admTeams">
-                            <h6 class="text-warning">Yeni Takım Ekle</h6>
-                            <div class="input-group mb-3">
-                                <input type="text" id="newTeamName" class="form-control" placeholder="Takım Adı">
-                                <button class="btn btn-success" onclick="addTeam()">Ekle</button>
-                            </div>
-                            <hr class="border-secondary">
-                            <h6 class="text-warning">Mevcut Takımlar, Logolar ve Skorlar</h6>
-                            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                                <table class="table table-dark align-middle">
-                                    <thead><tr><th>Logo</th><th>Takım Adı</th><th>G</th><th>B</th><th>M</th><th>AG</th><th>YG</th><th>İşlem</th></tr></thead>
-                                    <tbody id="admTeamsBody"></tbody>
-                                </table>
-                            </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted">Duyuru Metni:</label>
+                            <input type="text" id="admAnnouncement" class="form-control form-control-sm" onchange="appData.announcement=this.value; saveData()">
                         </div>
-
-                        <!-- 3. OYUNCULAR -->
-                        <div class="tab-pane fade" id="admPlayers">
-                            <h6 class="text-warning">Yeni Oyuncu Ekle</h6>
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-3"><input type="text" id="pName" class="form-control" placeholder="Oyuncu Adı"></div>
-                                <div class="col-md-3"><select id="pTeamSelect" class="form-select"></select></div>
-                                <div class="col-md-2"><input type="text" id="pRole" class="form-control" placeholder="Mevki (ST, GK)"></div>
-                                <div class="col-md-2"><input type="number" id="pGoals" class="form-control" placeholder="Gol" value="0"></div>
-                                <div class="col-md-2"><button class="btn btn-success w-100" onclick="addPlayer()">Ekle</button></div>
-                            </div>
-                            <hr class="border-secondary">
-                            <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-                                <table class="table table-dark align-middle">
-                                    <thead><tr><th>Oyuncu</th><th>Takım</th><th>Mevki</th><th>Sil</th></tr></thead>
-                                    <tbody id="admPlayersBody"></tbody>
-                                </table>
-                            </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted">Şampiyon:</label>
+                            <input type="text" id="admChamp" class="form-control form-control-sm" onchange="appData.awards.champion=this.value; saveData()">
                         </div>
-
-                        <!-- 4. HAFTANIN 11'İ -->
-                        <div class="tab-pane fade" id="admTotw">
-                            <h6 class="text-warning">Haftanın Yıldızı (MVP)</h6>
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-4"><input type="text" id="totwMvpNameInput" class="form-control" placeholder="Oyuncu Adı"></div>
-                                <div class="col-md-4"><select id="totwMvpTeamSelect" class="form-select"></select></div>
-                                <div class="col-md-4"><input type="text" id="totwMvpRatingInput" class="form-control" placeholder="Reyting (Örn: 9.8)"></div>
-                            </div>
-                            <hr class="border-secondary">
-                            <h6 class="text-warning">Haftanın 11 Pozisyonları</h6>
-                            <div class="row g-2" id="totwPositionsInputs"></div>
-                            <button class="btn btn-primary mt-3" onclick="saveTotw()">Haftanın Takımını Kaydet</button>
+                        <div class="col-md-4">
+                            <label class="small text-muted">Ballon d'Or:</label>
+                            <input type="text" id="admBallon" class="form-control form-control-sm" onchange="appData.awards.ballondor=this.value; saveData()">
                         </div>
-
-                        <!-- 5. FİKSTÜR -->
-                        <div class="tab-pane fade" id="admMatches">
-                            <h6 class="text-warning">Maç Ekle / Skor Gir</h6>
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-4"><select id="mHome" class="form-select"></select></div>
-                                <div class="col-md-2"><input type="number" id="mHomeScore" class="form-control" placeholder="0"></div>
-                                <div class="col-md-2"><input type="number" id="mAwayScore" class="form-control" placeholder="0"></div>
-                                <div class="col-md-4"><select id="mAway" class="form-select"></select></div>
-                                <div class="col-md-6"><input type="text" id="mWeek" class="form-control" placeholder="Hafta (Örn: 1. Hafta)"></div>
-                                <div class="col-md-6"><button class="btn btn-success w-100" onclick="addMatch()">Kaydet</button></div>
-                            </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted">Puskás Ödülü:</label>
+                            <input type="text" id="admPuskas" class="form-control form-control-sm" onchange="appData.awards.puskas=this.value; saveData()">
                         </div>
-
-                        <!-- 6. ÖDÜLLER VE TARİHÇE -->
-                        <div class="tab-pane fade" id="admAwards">
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-6"><label class="text-warning">Şampiyon Takım:</label><input type="text" id="awardChampionInput" class="form-control"></div>
-                                <div class="col-md-6"><label class="text-warning">Ballon d'Or Sahibi:</label><input type="text" id="awardBallonInput" class="form-control"></div>
-                                <div class="col-md-6"><label class="text-warning">Puskás Ödülü Sahibi:</label><input type="text" id="awardPuskasInput" class="form-control"></div>
-                                <div class="col-md-6"><label class="text-warning">Yılın Kalecisi:</label><input type="text" id="awardGkInput" class="form-control"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="text-warning">Duyuru Metni:</label>
-                                <input type="text" id="announcementInput" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="text-warning">Tarihçe Metni:</label>
-                                <textarea id="historyInput" class="form-control" rows="3"></textarea>
-                            </div>
-                            <button class="btn btn-primary" onclick="saveAwardsAndText()">Ödülleri ve Metinleri Güncelle</button>
+                        <div class="col-md-4">
+                            <label class="small text-muted">Yılın Kalecisi:</label>
+                            <input type="text" id="admGk" class="form-control form-control-sm" onchange="appData.awards.bestGk=this.value; saveData()">
                         </div>
                     </div>
+
+                    <!-- TAKIMLAR VE LOGOLARI -->
+                    <h5 class="text-warning mb-2">Takımlar ve Logoları Düzenle</h5>
+                    <div class="input-group mb-2">
+                        <input type="text" id="newTeamName" class="form-control form-control-sm" placeholder="Yeni Takım Adı">
+                        <button class="btn btn-success btn-sm" onclick="addTeam()">Takım Ekle</button>
+                    </div>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-dark table-sm align-middle">
+                            <thead><tr><th>Logo Seç</th><th>Takım Adı</th><th>G</th><th>B</th><th>M</th><th>AG</th><th>YG</th><th>İşlem</th></tr></thead>
+                            <tbody id="admTeamsBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- OYUNCU EKLE / DÜZENLE -->
+                    <h5 class="text-warning mb-2">Kadroya Oyuncu Ekle</h5>
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-3"><input type="text" id="pName" class="form-control form-control-sm" placeholder="Oyuncu Adı"></div>
+                        <div class="col-md-3"><select id="pTeamSelect" class="form-select form-select-sm"></select></div>
+                        <div class="col-md-2"><input type="text" id="pRole" class="form-control form-control-sm" placeholder="Mevki (FW, GK...)"></div>
+                        <div class="col-md-2"><input type="number" id="pGoals" class="form-control form-control-sm" placeholder="Gol" value="0"></div>
+                        <div class="col-md-2"><button class="btn btn-success btn-sm w-100" onclick="addPlayer()">Oyuncu Ekle</button></div>
+                    </div>
+                    <div class="table-responsive mb-4" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-dark table-sm align-middle">
+                            <thead><tr><th>Oyuncu</th><th>Takım</th><th>Mevki</th><th>Gol</th><th>İşlem</th></tr></thead>
+                            <tbody id="admPlayersBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- HAFTANIN 6'SI KADRO SEÇİMİ -->
+                    <h5 class="text-warning mb-2">Haftanın 6'sı Kadrosunu Düzenle</h5>
+                    <div class="row g-2 mb-4" id="admTotwInputs"></div>
+
+                    <!-- SIFIRLAMA BUTONU -->
+                    <div class="text-center mt-4 pt-3 border-top border-secondary">
+                        <button class="btn btn-outline-danger btn-sm" onclick="resetToDefaults()"><i class="fa-solid fa-rotate-right me-1"></i> Tüm Verileri İlk Haline Sıfırla</button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -505,7 +400,6 @@
     <!-- SCRIPT -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // YÖNETİCİ KULLANICI LİSTESİ
         const adminAccounts = [
             { user: "atlasakxs", pass: "0549!wfIL" },
             { user: "Noctra", pass: "hahaytcano" },
@@ -517,117 +411,91 @@
 
         const initialData = {
             logo: '',
-            theme: 'red',
             announcement: 'Sezon Tüm Hızıyla Devam Ediyor!',
             history: 'Anadolu Süper Lig, Pro Soccer Online arena liginde rekabeti ve topluluk ruhunu en üst seviyeye taşımak amacıyla kurulmuştur.',
-            champion: 'Anadolu Aslanları',
-            ballondor: 'Kaptan_06',
-            puskas: 'Sniper_99',
-            bestGk: 'Wall_Keeper',
+            awards: { champion: 'Anadolu Aslanları', ballondor: 'Kaptan_06', puskas: 'Sniper_99', bestGk: 'Wall_Keeper' },
             teams: [
                 { id: 1, name: 'Anadolu Aslanları', logo: '', g: 5, b: 1, m: 0, ag: 14, yg: 4 },
                 { id: 2, name: 'Bozkurtlar SK', logo: '', g: 4, b: 1, m: 1, ag: 12, yg: 6 },
                 { id: 3, name: 'Efe F.K.', logo: '', g: 3, b: 0, m: 3, ag: 9, yg: 10 }
             ],
             players: [
-                { id: 1, name: 'Kaptan_06', teamId: 1, role: 'ST', goals: 8, assists: 2, rating: '8.4' },
-                { id: 2, name: 'Sniper_99', teamId: 1, role: 'CM', goals: 3, assists: 5, rating: '7.9' }
+                { id: 1, name: 'Kaptan_06', teamId: 1, role: 'FW', goals: 8, assists: 2, rating: '8.4' },
+                { id: 2, name: 'Sniper_99', teamId: 1, role: 'MF', goals: 3, assists: 5, rating: '7.9' },
+                { id: 3, name: 'Wall_Keeper', teamId: 2, role: 'GK', goals: 0, assists: 1, rating: '8.1' }
             ],
             totw: {
-                mvpName: 'Kaptan_06', mvpTeamId: 1, mvpRating: '9.8',
-                positions: {
-                    ST: { name: 'Kaptan_06', teamId: 1 },
-                    LW: { name: 'FIRTINA_61', teamId: 2 },
-                    RW: { name: 'Sniper_99', teamId: 1 },
-                    CM1: { name: 'OrtaSaha_1', teamId: 1 },
-                    CM2: { name: 'OrtaSaha_2', teamId: 3 },
-                    CAM: { name: 'OyunKuran', teamId: 2 },
-                    LB: { name: 'Bek_Sol', teamId: 2 },
-                    CB1: { name: 'Stoper_1', teamId: 1 },
-                    CB2: { name: 'Stoper_2', teamId: 3 },
-                    RB: { name: 'Bek_Sag', teamId: 1 },
-                    GK: { name: 'Wall_Keeper', teamId: 2 }
-                }
+                FW: { name: 'Kaptan_06', teamId: 1 },
+                MF1: { name: 'Sniper_99', teamId: 1 },
+                MF2: { name: 'OyunKuran', teamId: 2 },
+                DF1: { name: 'Stoper_1', teamId: 1 },
+                DF2: { name: 'Bek_Sol', teamId: 2 },
+                GK: { name: 'Wall_Keeper', teamId: 2 }
             },
             matches: [
                 { id: 1, week: '1. Hafta', homeId: 1, awayId: 2, homeScore: 2, awayScore: 1 }
             ]
         };
 
-        let appData = JSON.parse(localStorage.getItem('asl_master_data')) || initialData;
+        let appData = JSON.parse(localStorage.getItem('asl_clean_data')) || initialData;
 
         function saveData() {
-            localStorage.setItem('asl_master_data', JSON.stringify(appData));
+            localStorage.setItem('asl_clean_data', JSON.stringify(appData));
             renderAll();
         }
 
-        function loginAdmin() {
-            const u = document.getElementById('adminUser').value.trim();
-            const p = document.getElementById('adminPass').value.trim();
-
-            const isValid = adminAccounts.some(acc => acc.user === u && acc.pass === p);
-            if (isValid) {
-                document.getElementById('btnAdminPanel').classList.remove('d-none');
+        function tryLogin() {
+            const u = document.getElementById('loginUser').value.trim();
+            const p = document.getElementById('loginPass').value.trim();
+            if (adminAccounts.some(acc => acc.user === u && acc.pass === p)) {
+                document.getElementById('btnAdmin').classList.remove('d-none');
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
-                alert("Başarıyla giriş yapıldı! Yönetici Paneli butonu sağ alt köşeye eklendi.");
+                alert("Yönetici girişi başarılı! Sağ alttan Yönetim Paneli'ni açabilirsiniz.");
             } else {
-                alert("Hatalı Kullanıcı Adı veya Şifre!");
+                alert("Hatalı kullanıcı adı veya şifre!");
             }
         }
 
-        function changeTheme(theme) {
-            appData.theme = theme;
-            applyTheme(theme);
-            saveData();
-        }
-
-        function applyTheme(theme) {
-            const root = document.documentElement;
-            if (theme === 'red') {
-                root.style.setProperty('--primary-color', '#d32f2f');
-            } else if (theme === 'lime') {
-                root.style.setProperty('--primary-color', '#88d600');
-            } else if (theme === 'gold') {
-                root.style.setProperty('--primary-color', '#ffc107');
-            } else if (theme === 'blue') {
-                root.style.setProperty('--primary-color', '#00d2ff');
-            }
-            document.getElementById('themeSelector').value = theme;
-        }
-
-        function uploadMainLogo(event) {
-            const file = event.target.files[0];
+        function uploadMainLogo(e) {
+            const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) { appData.logo = e.target.result; saveData(); };
+                reader.onload = function(evt) { appData.logo = evt.target.result; saveData(); };
                 reader.readAsDataURL(file);
             }
         }
 
-        function uploadTeamLogo(event, teamId) {
-            const file = event.target.files[0];
+        function uploadTeamLogo(e, teamId) {
+            const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    const team = appData.teams.find(t => t.id === teamId);
-                    if (team) { team.logo = e.target.result; saveData(); }
+                reader.onload = function(evt) {
+                    const t = appData.teams.find(x => x.id === teamId);
+                    if (t) { t.logo = evt.target.result; saveData(); }
                 };
                 reader.readAsDataURL(file);
             }
         }
 
         function downloadBackup() {
-            const htmlContent = document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const html = document.documentElement.outerHTML;
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'index.html';
             a.click();
         }
 
-        function renderAll() {
-            applyTheme(appData.theme || 'red');
+        function resetToDefaults() {
+            if (confirm("Tüm veriler sıfırlanacak. Onaylıyor musunuz?")) {
+                localStorage.removeItem('asl_clean_data');
+                appData = JSON.parse(JSON.stringify(initialData));
+                saveData();
+                alert("Veriler sıfırlandı!");
+            }
+        }
 
+        function renderAll() {
             if (appData.logo) {
                 document.getElementById('navLogo').src = appData.logo;
                 document.getElementById('navLogo').classList.remove('d-none');
@@ -637,10 +505,17 @@
 
             document.getElementById('announcementText').innerText = appData.announcement;
             document.getElementById('historyDisplay').innerText = appData.history;
-            document.getElementById('awardChampion').innerText = appData.champion;
-            document.getElementById('awardBallon').innerText = appData.ballondor;
-            document.getElementById('awardPuskas').innerText = appData.puskas;
-            document.getElementById('awardGk').innerText = appData.bestGk;
+            document.getElementById('awardChampion').innerText = appData.awards.champion;
+            document.getElementById('awardBallondor').innerText = appData.awards.ballondor;
+            document.getElementById('awardPuskas').innerText = appData.awards.puskas;
+            document.getElementById('awardGk').innerText = appData.awards.bestGk;
+
+            // Admin Input sync
+            document.getElementById('admAnnouncement').value = appData.announcement;
+            document.getElementById('admChamp').value = appData.awards.champion;
+            document.getElementById('admBallon').value = appData.awards.ballondor;
+            document.getElementById('admPuskas').value = appData.awards.puskas;
+            document.getElementById('admGk').value = appData.awards.bestGk;
 
             // Standings
             const sortedTeams = [...appData.teams].map(t => {
@@ -653,10 +528,7 @@
             document.getElementById('standingsBody').innerHTML = sortedTeams.map((t, idx) => `
                 <tr>
                     <td class="fw-bold text-warning">${idx + 1}</td>
-                    <td>
-                        <img src="${t.logo || 'https://via.placeholder.com/30'}" class="team-logo-small">
-                        <strong>${t.name}</strong>
-                    </td>
+                    <td><img src="${t.logo || 'https://via.placeholder.com/30'}" class="team-badge"><strong>${t.name}</strong></td>
                     <td>${t.o}</td><td>${t.g}</td><td>${t.b}</td><td>${t.m}</td><td>${t.ag}</td><td>${t.yg}</td>
                     <td class="${t.av >= 0 ? 'text-success' : 'text-danger'}">${t.av > 0 ? '+' + t.av : t.av}</td>
                     <td class="fw-bold text-warning fs-5">${t.p}</td>
@@ -675,124 +547,92 @@
 
             renderPlayers();
             renderTotw();
-            updateSelects();
-            renderAdminTables();
+            renderAdminPanels();
         }
 
         function renderPlayers() {
             const search = document.getElementById('playerSearch').value.toLowerCase();
             const teamId = document.getElementById('teamFilter').value;
-
-            const filtered = appData.players.filter(p => {
-                return p.name.toLowerCase().includes(search) && (teamId === 'ALL' || p.teamId == teamId);
-            });
+            const filtered = appData.players.filter(p => p.name.toLowerCase().includes(search) && (teamId === 'ALL' || p.teamId == teamId));
 
             document.getElementById('playersBody').innerHTML = filtered.map(p => {
                 const team = appData.teams.find(t => t.id === p.teamId);
-                return `
-                    <tr>
-                        <td class="fw-bold text-white">${p.name}</td>
-                        <td>${team ? team.name : '-'}</td>
-                        <td><span class="badge bg-secondary">${p.role}</span></td>
-                        <td>${p.goals}</td><td>${p.assists || 0}</td>
-                        <td><span class="badge bg-warning text-dark">${p.rating || '7.0'}</span></td>
-                    </tr>
-                `;
+                return `<tr><td class="fw-bold">${p.name}</td><td>${team ? team.name : '-'}</td><td><span class="badge bg-secondary">${p.role}</span></td><td>${p.goals}</td><td>${p.assists || 0}</td><td><span class="badge bg-warning text-dark">${p.rating || '7.0'}</span></td></tr>`;
             }).join('');
         }
 
         function filterPlayers() { renderPlayers(); }
 
         function renderTotw() {
-            const pos = appData.totw.positions;
-            const makeCard = (p) => {
-                const team = appData.teams.find(t => t.id === p.teamId);
-                return `
-                    <div class="pitch-player-card">
-                        <div class="fw-bold text-warning">${p.name || '-'}</div>
-                        <small class="text-muted d-block">${team ? team.name : ''}</small>
-                    </div>
-                `;
+            const t = appData.totw;
+            const makeCard = (posKey, title) => {
+                const p = t[posKey] || {};
+                const team = appData.teams.find(x => x.id === p.teamId);
+                return `<div class="pitch-card"><small class="text-warning fw-bold">${title}</small><div class="fw-bold text-white">${p.name || '-'}</div><small class="text-muted">${team ? team.name : ''}</small></div>`;
             };
 
-            document.getElementById('pitchFW').innerHTML = makeCard(pos.LW) + makeCard(pos.ST) + makeCard(pos.RW);
-            document.getElementById('pitchMF').innerHTML = makeCard(pos.CM1) + makeCard(pos.CAM) + makeCard(pos.CM2);
-            document.getElementById('pitchDF').innerHTML = makeCard(pos.LB) + makeCard(pos.CB1) + makeCard(pos.CB2) + makeCard(pos.RB);
-            document.getElementById('pitchGK').innerHTML = makeCard(pos.GK);
-
-            const mvpTeam = appData.teams.find(t => t.id === appData.totw.mvpTeamId);
-            document.getElementById('totwMvpName').innerText = appData.totw.mvpName || '-';
-            document.getElementById('totwMvpTeam').innerText = mvpTeam ? mvpTeam.name : '-';
-            document.getElementById('totwMvpRating').innerText = appData.totw.mvpRating || '0.0';
+            document.getElementById('pitchFW').innerHTML = makeCard('FW', 'Forvet');
+            document.getElementById('pitchMF').innerHTML = makeCard('MF1', 'Orta Saha') + makeCard('MF2', 'Orta Saha');
+            document.getElementById('pitchDF').innerHTML = makeCard('DF1', 'Defans') + makeCard('DF2', 'Defans');
+            document.getElementById('pitchGK').innerHTML = makeCard('GK', 'Kaleci');
         }
 
-        function updateSelects() {
-            const options = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
-            document.getElementById('teamFilter').innerHTML = '<option value="ALL">Tüm Takımlar</option>' + options;
-            document.getElementById('pTeamSelect').innerHTML = options;
-            document.getElementById('mHome').innerHTML = options;
-            document.getElementById('mAway').innerHTML = options;
-            document.getElementById('totwMvpTeamSelect').innerHTML = options;
+        function renderAdminPanels() {
+            const teamOpts = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            document.getElementById('teamFilter').innerHTML = '<option value="ALL">Tüm Takımlar</option>' + teamOpts;
+            document.getElementById('pTeamSelect').innerHTML = teamOpts;
 
-            // Matches
-            document.getElementById('matchesList').innerHTML = appData.matches.map(m => {
-                const home = appData.teams.find(t => t.id === m.homeId);
-                const away = appData.teams.find(t => t.id === m.awayId);
-                return `
-                    <div class="col-md-6">
-                        <div class="card-custom p-3 text-center">
-                            <span class="badge bg-danger mb-2">${m.week}</span>
-                            <div class="d-flex justify-content-between align-items-center fs-5 fw-bold">
-                                <span>${home ? home.name : '???'}</span>
-                                <span class="badge bg-dark text-warning border border-warning">${m.homeScore} - ${m.awayScore}</span>
-                                <span>${away ? away.name : '???'}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderAdminTables() {
+            // Teams Admin Table
             document.getElementById('admTeamsBody').innerHTML = appData.teams.map(t => `
                 <tr>
                     <td><input type="file" class="form-control form-control-sm" accept="image/*" onchange="uploadTeamLogo(event, ${t.id})"></td>
                     <td><input type="text" class="form-control form-control-sm" value="${t.name}" onchange="updateTeamName(${t.id}, this.value)"></td>
-                    <td><input type="number" class="form-control form-control-sm" value="${t.g}" onchange="updateTeamVal(${t.id}, 'g', this.value)"></td>
-                    <td><input type="number" class="form-control form-control-sm" value="${t.b}" onchange="updateTeamVal(${t.id}, 'b', this.value)"></td>
-                    <td><input type="number" class="form-control form-control-sm" value="${t.m}" onchange="updateTeamVal(${t.id}, 'm', this.value)"></td>
-                    <td><input type="number" class="form-control form-control-sm" value="${t.ag}" onchange="updateTeamVal(${t.id}, 'ag', this.value)"></td>
-                    <td><input type="number" class="form-control form-control-sm" value="${t.yg}" onchange="updateTeamVal(${t.id}, 'yg', this.value)"></td>
+                    <td><input type="number" class="form-control form-control-sm" value="${t.g}" style="width:50px" onchange="updateTeamVal(${t.id}, 'g', this.value)"></td>
+                    <td><input type="number" class="form-control form-control-sm" value="${t.b}" style="width:50px" onchange="updateTeamVal(${t.id}, 'b', this.value)"></td>
+                    <td><input type="number" class="form-control form-control-sm" value="${t.m}" style="width:50px" onchange="updateTeamVal(${t.id}, 'm', this.value)"></td>
+                    <td><input type="number" class="form-control form-control-sm" value="${t.ag}" style="width:60px" onchange="updateTeamVal(${t.id}, 'ag', this.value)"></td>
+                    <td><input type="number" class="form-control form-control-sm" value="${t.yg}" style="width:60px" onchange="updateTeamVal(${t.id}, 'yg', this.value)"></td>
                     <td><button class="btn btn-sm btn-danger" onclick="deleteTeam(${t.id})"><i class="fa-solid fa-trash"></i></button></td>
                 </tr>
             `).join('');
 
+            // Players Admin Table
             document.getElementById('admPlayersBody').innerHTML = appData.players.map(p => {
                 const team = appData.teams.find(t => t.id === p.teamId);
-                return `
-                    <tr>
-                        <td>${p.name}</td><td>${team ? team.name : '-'}</td><td>${p.role}</td>
-                        <td><button class="btn btn-sm btn-danger" onclick="deletePlayer(${p.id})"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>
-                `;
+                return `<tr><td>${p.name}</td><td>${team ? team.name : '-'}</td><td>${p.role}</td><td>${p.goals}</td><td><button class="btn btn-sm btn-danger" onclick="deletePlayer(${p.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             }).join('');
 
-            // TOTW Inputs
-            const keys = ['ST', 'LW', 'RW', 'CM1', 'CM2', 'CAM', 'LB', 'CB1', 'CB2', 'RB', 'GK'];
-            const options = appData.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
-            document.getElementById('totwPositionsInputs').innerHTML = keys.map(k => `
+            // Totw Inputs (Haftanın 6'sı)
+            const totwKeys = [
+                { key: 'FW', label: 'Forvet (FW)' },
+                { key: 'MF1', label: 'Orta Saha 1' },
+                { key: 'MF2', label: 'Orta Saha 2' },
+                { key: 'DF1', label: 'Defans 1' },
+                { key: 'DF2', label: 'Defans 2' },
+                { key: 'GK', label: 'Kaleci (GK)' }
+            ];
+
+            document.getElementById('admTotwInputs').innerHTML = totwKeys.map(tk => `
                 <div class="col-md-4 mb-2">
-                    <label class="small text-muted">${k} Oyuncusu:</label>
-                    <input type="text" id="totw_name_${k}" class="form-control form-control-sm" value="${appData.totw.positions[k]?.name || ''}">
-                    <select id="totw_team_${k}" class="form-select form-select-sm mt-1">${options}</select>
+                    <label class="small text-muted">${tk.label}:</label>
+                    <input type="text" id="totw_n_${tk.key}" class="form-control form-control-sm mb-1" value="${appData.totw[tk.key]?.name || ''}" placeholder="Oyuncu Adı" onchange="saveTotwInput('${tk.key}')">
+                    <select id="totw_t_${tk.key}" class="form-select form-select-sm" onchange="saveTotwInput('${tk.key}')">${teamOpts}</select>
                 </div>
             `).join('');
+
+            totwKeys.forEach(tk => {
+                if (appData.totw[tk.key]?.teamId) {
+                    const sel = document.getElementById(`totw_t_${tk.key}`);
+                    if (sel) sel.value = appData.totw[tk.key].teamId;
+                }
+            });
         }
 
         function addTeam() {
             const name = document.getElementById('newTeamName').value.trim();
             if (name) {
                 appData.teams.push({ id: Date.now(), name, logo: '', g: 0, b: 0, m: 0, ag: 0, yg: 0 });
+                document.getElementById('newTeamName').value = '';
                 saveData();
             }
         }
@@ -815,11 +655,11 @@
         function addPlayer() {
             const name = document.getElementById('pName').value.trim();
             const teamId = parseInt(document.getElementById('pTeamSelect').value);
-            const role = document.getElementById('pRole').value.trim() || 'ST';
+            const role = document.getElementById('pRole').value.trim() || 'FW';
             const goals = parseInt(document.getElementById('pGoals').value) || 0;
-
             if (name) {
-                appData.players.push({ id: Date.now(), name, teamId, role, goals, assists: 0, rating: '7.0' });
+                appData.players.push({ id: Date.now(), name, teamId, role, goals, assists: 0, rating: '7.5' });
+                document.getElementById('pName').value = '';
                 saveData();
             }
         }
@@ -829,44 +669,11 @@
             saveData();
         }
 
-        function addMatch() {
-            const homeId = parseInt(document.getElementById('mHome').value);
-            const awayId = parseInt(document.getElementById('mAway').value);
-            const homeScore = parseInt(document.getElementById('mHomeScore').value) || 0;
-            const awayScore = parseInt(document.getElementById('mAwayScore').value) || 0;
-            const week = document.getElementById('mWeek').value.trim() || '1. Hafta';
-
-            if (homeId !== awayId) {
-                appData.matches.push({ id: Date.now(), week, homeId, awayId, homeScore, awayScore });
-                saveData();
-            }
-        }
-
-        function saveTotw() {
-            appData.totw.mvpName = document.getElementById('totwMvpNameInput').value;
-            appData.totw.mvpTeamId = parseInt(document.getElementById('totwMvpTeamSelect').value);
-            appData.totw.mvpRating = document.getElementById('totwMvpRatingInput').value;
-
-            const keys = ['ST', 'LW', 'RW', 'CM1', 'CM2', 'CAM', 'LB', 'CB1', 'CB2', 'RB', 'GK'];
-            keys.forEach(k => {
-                appData.totw.positions[k] = {
-                    name: document.getElementById(`totw_name_${k}`).value,
-                    teamId: parseInt(document.getElementById(`totw_team_${k}`).value)
-                };
-            });
+        function saveTotwInput(key) {
+            const name = document.getElementById(`totw_n_${key}`).value;
+            const teamId = parseInt(document.getElementById(`totw_t_${key}`).value);
+            appData.totw[key] = { name, teamId };
             saveData();
-            alert("Haftanın Takımı Kaydedildi!");
-        }
-
-        function saveAwardsAndText() {
-            appData.champion = document.getElementById('awardChampionInput').value;
-            appData.ballondor = document.getElementById('awardBallonInput').value;
-            appData.puskas = document.getElementById('awardPuskasInput').value;
-            appData.bestGk = document.getElementById('awardGkInput').value;
-            appData.announcement = document.getElementById('announcementInput').value;
-            appData.history = document.getElementById('historyInput').value;
-            saveData();
-            alert("Ödüller Güncellendi!");
         }
 
         document.addEventListener('DOMContentLoaded', () => { renderAll(); });
