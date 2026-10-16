@@ -365,12 +365,10 @@
 
     <!-- Script Logics -->
     <script>
-        // GITHUB API ENTEGRASYON BİLGİLERİ
         const GITHUB_CONFIG = {
             owner: "anadolusuperlig",
             repo: "Anadolu-Super-Lig",
-            path: "index.html",
-            token: "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"
+            path: "index.html"
         };
 
         const ADMIN_ACCOUNTS = [
@@ -454,38 +452,47 @@
             renderAll();
         }
 
-        // GITHUB KODUNU OTOMATİK DÜZENLEME VE COMMIT ETME FONKSİYONU
+        // GITHUB'A GÜVENLİ KAYDETME SİSTEMİ
         async function saveChangesToGitHub() {
             if (!currentUser) return;
+            
+            let token = localStorage.getItem('asl_github_pat');
+            if (!token) {
+                token = prompt("Lütfen GitHub Personal Access Token'ınızı (ghp_...) yapıştırın:\n(Bu token sadece tarayıcınızda güvenle saklanacaktır)");
+                if (!token) return;
+                localStorage.setItem('asl_github_pat', token.trim());
+            }
+
             const btnText = document.getElementById('github-save-btn-text');
             btnText.innerText = "GitHub'a Aktarılıyor...";
 
             try {
-                // 1. Mevcut GitHub index.html dosyasının SHA kodunu al
                 const getUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
                 const getRes = await fetch(getUrl, {
-                    headers: { 'Authorization': `token ${GITHUB_CONFIG.token}` }
+                    headers: { 'Authorization': `token ${token}` }
                 });
 
-                if (!getRes.ok) throw new Error("GitHub dosyası okunamadı.");
+                if (!getRes.ok) {
+                    if (getRes.status === 401) {
+                        localStorage.removeItem('asl_github_pat');
+                        throw new Error("Girdiğiniz Token geçersiz. Lütfen tekrar doğru token'ı girin.");
+                    }
+                    throw new Error("GitHub dosyası okunamadı. Repo adını veya erişim izinlerini kontrol edin.");
+                }
+                
                 const fileData = await getRes.json();
                 const currentSha = fileData.sha;
 
-                // 2. Mevcut sayfa kodunu al ve defaultLeagueData nesnesini güncellenmiş leagueData ile değiştir
                 let fullHtml = document.documentElement.outerHTML;
-                
-                // HTML içeriğini düzelt ve en son veriyi koda göm
                 const updatedDataScript = `const defaultLeagueData = ${JSON.stringify(leagueData, null, 4)};`;
                 fullHtml = fullHtml.replace(/const defaultLeagueData = \{[\s\S]*?\};/, updatedDataScript);
 
-                // Base64 kodlaması yap (UTF-8 destekli)
                 const encodedContent = btoa(unescape(encodeURIComponent("<!DOCTYPE html>\n<html" + fullHtml.split('<html')[1])));
 
-                // 3. GitHub API üzerinden dosyayı güncelle (Commit)
                 const putRes = await fetch(getUrl, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${GITHUB_CONFIG.token}`,
+                        'Authorization': `token ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -502,7 +509,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert("GitHub API bağlantı hatası: " + err.message);
+                alert("Hata: " + err.message);
             } finally {
                 btnText.innerText = "GitHub'a Kaydet";
             }
