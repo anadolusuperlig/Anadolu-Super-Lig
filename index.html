@@ -3,7 +3,1572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anadolu Süper Lig - Pro Soccer Online</title>a<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anadolu Süper Lig - Pro Soccer Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 900: '#140305', 800: '#24060a', 700: '#380910', 600: '#520d17' },
+                        brand: { 500: '#e11d48', 600: '#be123c', 400: '#fb7185', 700: '#9f1239' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg-color-1: #1f0307;
+            --bg-color-2: #120104;
+            --bg-color-3: #290409;
+            --card-bg: rgba(36, 6, 10, 0.85);
+            --card-border: rgba(225, 29, 72, 0.3);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 50%, var(--bg-color-3) 100%) !important;
+            background-attachment: fixed !important;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: var(--card-bg) !important;
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--card-border) !important;
+        }
+
+        .glass-card {
+            background: var(--card-bg) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border) !important;
+        }
+
+        .team-logo-img {
+            width: 2.25rem;
+            height: 2.25rem;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body id="app-body" class="text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white pb-20 overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 min-w-0">
+                <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-full overflow-hidden border-2 border-white shadow-xl shadow-brand-500/50 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5">
+                    <svg viewBox="0 0 200 200" class="w-full h-full">
+                        <circle cx="100" cy="100" r="96" fill="#d90429" stroke="#ffffff" stroke-width="6"/>
+                        <circle cx="100" cy="100" r="88" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        <polygon points="100,18 103,28 113,28 105,34 108,44 100,38 92,44 95,34 87,28 97,28" fill="#ffffff"/>
+                        <path d="M 65 42 A 42 42 0 1 0 115 110 A 50 50 0 1 1 65 42 Z" fill="#ffffff"/>
+                        <circle cx="100" cy="74" r="23" fill="#ffffff"/>
+                        <circle cx="100" cy="74" r="21" fill="#d90429"/>
+                        <polygon points="100,62 109,68 106,78 94,78 91,68" fill="#ffffff"/>
+                        <line x1="100" y1="62" x2="100" y2="53" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="109" y1="68" x2="117" y2="64" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="106" y1="78" x2="114" y2="83" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="94" y1="78" x2="86" y2="83" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="91" y1="68" x2="83" y2="64" stroke="#ffffff" stroke-width="2"/>
+                        <path d="M 88 108 Q 105 132 138 96 Q 115 125 88 108 Z" fill="#ffffff"/>
+                        <text x="100" y="146" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="21" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANADOLU</text>
+                        <text x="100" y="167" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#ffffff" text-anchor="middle" letter-spacing="1">SÜPER LİG</text>
+                        <line x1="32" y1="176" x2="85" y2="176" stroke="#ffffff" stroke-width="2.5"/>
+                        <line x1="115" y1="176" x2="168" y2="176" stroke="#ffffff" stroke-width="2.5"/>
+                        <polygon points="100,170 102.5,176 108,176 103.5,180 105,186 100,182 95,186 96.5,180 92,176 97.5,176" fill="#ffffff"/>
+                    </svg>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="font-black text-base sm:text-xl md:text-2xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent whitespace-nowrap overflow-hidden text-ellipsis">ANADOLU SÜPER LİG</h1>
+                    <span class="text-[10px] sm:text-xs font-bold text-brand-400 tracking-wider uppercase block whitespace-nowrap overflow-hidden text-ellipsis">Pro Soccer Online Sezonu</span>
+                </div>
+            </div>
+
+            <!-- Masaüstü Navigasyon -->
+            <nav class="hidden lg:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40">
+                <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-lg shadow-brand-600/30">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
+                </button>
+                <button onclick="switchTab('fixtures')" id="nav-fixtures" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="calendar" class="w-4 h-4"></i><span>Fikstür</span>
+                </button>
+                <button onclick="switchTab('cup')" id="nav-cup" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-amber-400 hover:text-amber-300">
+                    <i data-lucide="trophy" class="w-4 h-4"></i><span>Kupa Turnuvası</span>
+                </button>
+                <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="award" class="w-4 h-4"></i><span>Krallıklar & Kadro</span>
+                </button>
+                <button onclick="switchTab('teams')" id="nav-teams" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i data-lucide="shield" class="w-4 h-4"></i><span>Kulüpler</span>
+                </button>
+                <button onclick="switchTab('history')" id="nav-history" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 text-amber-400 hover:text-amber-300">
+                    <i data-lucide="history" class="w-4 h-4"></i><span>Tarihçemiz</span>
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-2 flex-shrink-0">
+                <div id="user-info" class="hidden text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/20 truncate max-w-[120px]"></div>
+                <button onclick="handleAdminLoginLogout()" id="admin-main-btn" class="px-3 sm:px-4 py-2.5 rounded-xl bg-dark-800 hover:bg-dark-700 border border-brand-900/50 text-xs sm:text-sm font-bold flex items-center space-x-1.5 transition-all">
+                    <i data-lucide="user" class="w-4 h-4 text-brand-400"></i>
+                    <span id="admin-btn-text" class="inline">Yönetici Girişi</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobil Navigasyon Barı -->
+        <div class="lg:hidden flex overflow-x-auto px-4 py-2 bg-dark-900/90 border-t border-brand-900/40 gap-1 space-x-1 scrollbar-none">
+            <button onclick="switchTab('standings')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-brand-600 text-white">Puan Durumu</button>
+            <button onclick="switchTab('fixtures')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Fikstür</button>
+            <button onclick="switchTab('cup')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-amber-400">Kupa Turnuvası</button>
+            <button onclick="switchTab('stats')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Krallıklar & Kadro</button>
+            <button onclick="switchTab('teams')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Kulüpler</button>
+            <button onclick="switchTab('history')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-amber-400">Tarihçemiz</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full overflow-hidden">
+        
+        <!-- Admin Banner ve GitHub'a Kaydet Butonu -->
+        <div id="admin-active-banner" class="hidden bg-brand-600/20 border border-brand-500/40 p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <i data-lucide="shield-check" class="w-5 h-5 text-brand-400 flex-shrink-0"></i>
+                <span class="text-xs sm:text-sm font-bold text-white">Yönetici Modu Aktif: Sitede yaptığınız değişiklikleri GitHub kodunuza tek tıkla işleyebilirsiniz.</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="saveChangesToGitHub()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-xs font-bold rounded-xl text-white shadow-lg flex items-center space-x-2">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    <span id="github-save-btn-text">GitHub'a Kaydet</span>
+                </button>
+                <button onclick="resetAllDataCompletely()" class="px-3 py-2 bg-rose-600/30 hover:bg-rose-600 text-xs font-bold rounded-xl text-rose-300 hover:text-white border border-rose-500/30">Sıfırla</button>
+            </div>
+        </div>
+
+        <!-- Standings Tab -->
+        <section id="tab-standings" class="tab-content space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 glass p-6 rounded-3xl">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Puan Durumu</h2>
+                    <p class="text-sm text-gray-400 mt-1">14 Takımlı Anadolu Süper Lig Sıralaması</p>
+                </div>
+                <div id="admin-add-team-container" class="hidden">
+                    <button onclick="openTeamModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg flex items-center space-x-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i><span>Yeni Takım Ekle</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto max-w-full">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="border-b border-brand-900/40 text-xs font-bold text-gray-400 uppercase tracking-wider bg-dark-800/60">
+                                <th class="py-4 px-4 sm:px-6 text-center w-12">#</th>
+                                <th class="py-4 px-4 sm:px-6">Takım</th>
+                                <th class="py-4 px-3 text-center">O</th>
+                                <th class="py-4 px-3 text-center">G</th>
+                                <th class="py-4 px-3 text-center">B</th>
+                                <th class="py-4 px-3 text-center">M</th>
+                                <th class="py-4 px-3 text-center">AG</th>
+                                <th class="py-4 px-3 text-center">YG</th>
+                                <th class="py-4 px-3 text-center">AV</th>
+                                <th class="py-4 px-4 sm:px-6 text-center font-black text-white">Puan</th>
+                                <th class="admin-only hidden py-4 px-4 text-center">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody" class="divide-y divide-brand-900/30 text-xs sm:text-sm font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fixtures Tab -->
+        <section id="tab-fixtures" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 glass p-6 rounded-3xl">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Fikstür & Maç Sonuçları</h2>
+                    <p class="text-sm text-gray-400 mt-1">13 Haftalık Program</p>
+                </div>
+                <div class="flex flex-wrap gap-1.5 max-w-full overflow-x-auto pb-1" id="week-selector"></div>
+            </div>
+            <div id="fixtures-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </section>
+
+        <!-- CUP TOURNAMENT TAB -->
+        <section id="tab-cup" class="tab-content hidden space-y-6">
+            <div class="glass p-6 rounded-3xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-amber-400 flex items-center space-x-2">
+                        <i data-lucide="trophy" class="w-6 h-6"></i><span>ANADOLU KUPASI</span>
+                    </h2>
+                    <p class="text-sm text-gray-400 mt-1">A & B Grupları (6 Maç) ve Eleme Turları</p>
+                </div>
+                <div class="flex space-x-2 bg-dark-900/80 p-1.5 rounded-2xl border border-brand-900/50">
+                    <button onclick="switchCupSubTab('groups')" id="cup-tab-btn-groups" class="px-4 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white">Grup Aşaması</button>
+                    <button onclick="switchCupSubTab('playoffs')" id="cup-tab-btn-playoffs" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white">Elemeler</button>
+                </div>
+            </div>
+
+            <!-- Cup Sub Tab: Groups -->
+            <div id="cup-subtab-groups" class="space-y-8">
+                
+                <!-- Yöneticiye Özel Kura & Grup Seçim Paneli -->
+                <div class="admin-only hidden glass-card p-4 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row justify-between items-center gap-3 bg-amber-500/5">
+                    <div class="text-xs text-amber-300 font-bold flex items-center space-x-2">
+                        <i data-lucide="shuffle" class="w-4 h-4"></i>
+                        <span>Kura & Takım Dağıtımı Yönetimi</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="drawRandomCupGroups()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow">🎲 Rastgele Kura Çek</button>
+                        <button onclick="openCustomGroupModal()" class="px-3 py-1.5 bg-dark-800 hover:bg-dark-700 text-amber-400 text-xs font-bold rounded-xl border border-amber-500/40">⚙️ Grupları Elle Ayarla</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Group A -->
+                    <div class="glass-card rounded-3xl p-6 space-y-4">
+                        <h3 class="text-lg font-black text-amber-400 border-b border-brand-900/40 pb-2 flex items-center justify-between">
+                            <span>A GRUBU (7 Takım)</span>
+                            <span class="text-xs text-gray-400 font-normal">İlk 4 Çıkar</span>
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="text-gray-400 border-b border-white/10">
+                                        <th class="py-2">#</th>
+                                        <th class="py-2">Takım</th>
+                                        <th class="py-2 text-center">O</th>
+                                        <th class="py-2 text-center">AV</th>
+                                        <th class="py-2 text-center font-bold text-white">P</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cup-group-a-tbody" class="divide-y divide-white/5"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Group B -->
+                    <div class="glass-card rounded-3xl p-6 space-y-4">
+                        <h3 class="text-lg font-black text-amber-400 border-b border-brand-900/40 pb-2 flex items-center justify-between">
+                            <span>B GRUBU (7 Takım)</span>
+                            <span class="text-xs text-gray-400 font-normal">İlk 4 Çıkar</span>
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="text-gray-400 border-b border-white/10">
+                                        <th class="py-2">#</th>
+                                        <th class="py-2">Takım</th>
+                                        <th class="py-2 text-center">O</th>
+                                        <th class="py-2 text-center">AV</th>
+                                        <th class="py-2 text-center font-bold text-white">P</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cup-group-b-tbody" class="divide-y divide-white/5"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cup Matches (6 Weeks) -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <h3 class="text-base font-bold text-white uppercase">Grup Maç Programı (6 Maç)</h3>
+                        <div class="flex space-x-1 overflow-x-auto" id="cup-week-selector"></div>
+                    </div>
+                    <div id="cup-fixtures-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+            </div>
+
+            <!-- Cup Sub Tab: Playoffs -->
+            <div id="cup-subtab-playoffs" class="hidden space-y-8">
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                        <h3 class="text-lg font-black text-amber-400">ELEME TURLARI & EŞLEŞMELER</h3>
+                        <div class="admin-only hidden">
+                            <button onclick="generatePlayoffsFromGroups()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow">Gruplardan Elemeleri Oluştur</button>
+                        </div>
+                    </div>
+
+                    <div id="playoffs-container" class="space-y-8"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Tab -->
+        <section id="tab-stats" class="tab-content hidden space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2 text-amber-400 font-extrabold text-xs uppercase tracking-wider">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i><span>Haftanın Yıldızı (MVP)</span>
+                        </div>
+                        <div class="p-4 bg-dark-800/80 rounded-2xl border border-amber-500/20 text-center space-y-1">
+                            <div id="weekly-mvp-name" class="text-xl sm:text-2xl font-black text-white truncate">Henüz Seçilmedi</div>
+                            <div id="weekly-mvp-team" class="text-xs text-brand-400 font-bold truncate">-</div>
+                        </div>
+                    </div>
+                    <div class="admin-only hidden text-right">
+                        <button onclick="editWeeklyMVP()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-xs font-bold rounded-xl text-white">MVP Düzenle</button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-brand-900/40 pb-3">
+                        <div class="flex items-center space-x-2 text-brand-400 font-extrabold text-xs uppercase tracking-wider">
+                            <i data-lucide="shield" class="w-4 h-4"></i><span>Haftanın Altın Kadrosu</span>
+                        </div>
+                        <div class="admin-only hidden">
+                            <button onclick="addWeeklyTeamPlayerPrompt()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-xl text-white">+ Oyuncu Ekle</button>
+                        </div>
+                    </div>
+                    <div id="weekly-team-players-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-3xl p-6 space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-brand-900/40 pb-4">
+                        <div class="p-3 bg-amber-500/10 rounded-2xl text-amber-400"><i data-lucide="award" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold">Gol Krallığı</h3>
+                            <p class="text-xs text-gray-400">En golcü oyuncular</p>
+                        </div>
+                    </div>
+                    <div id="scorers-list" class="space-y-4"></div>
+                </div>
+
+                <div class="glass-card rounded-3xl p-6 space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-brand-900/40 pb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-2xl text-blue-400"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold">Asist Krallığı</h3>
+                            <p class="text-xs text-gray-400">En çok asist yapanlar</p>
+                        </div>
+                    </div>
+                    <div id="assists-list" class="space-y-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teams Tab -->
+        <section id="tab-teams" class="tab-content hidden space-y-6">
+            <div class="glass p-6 rounded-3xl">
+                <h2 class="text-2xl font-black text-white">Kulüpler & Kadrolar</h2>
+                <p class="text-sm text-gray-400 mt-1">Takım kadroları ve oyuncu istatistikleri</p>
+            </div>
+            <div id="teams-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- History Tab -->
+        <section id="tab-history" class="tab-content hidden space-y-8">
+            <div class="glass p-6 rounded-3xl flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-black text-amber-400 flex items-center space-x-2">
+                        <i data-lucide="trophy" class="w-6 h-6"></i><span>LİG TARİHÇEMİZ & MÜZEMİZ</span>
+                    </h2>
+                    <p class="text-sm text-gray-400 mt-1">Geçmiş Sezon Şampiyonları, Ballon d'Or, Puskás ve Yılın Kalecileri</p>
+                </div>
+                <div class="admin-only hidden">
+                    <button onclick="addHistoryRecordPrompt()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-lg flex items-center space-x-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i><span>Yeni Sezon Başarısı Ekle</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="history-records-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass bg-dark-800/95 w-full max-w-md rounded-3xl p-6 border border-brand-900/50 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-brand-900/40 pb-4">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i data-lucide="lock" class="w-5 h-5 text-brand-400"></i>
+                    <span>Yönetici Girişi</span>
+                </h3>
+                <button onclick="toggleLoginModal()" class="p-2 rounded-xl hover:bg-dark-700 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Kullanıcı Adı</label>
+                    <input type="text" id="login-username" class="w-full px-4 py-3 bg-dark-900 border border-brand-900/40 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Şifre</label>
+                    <input type="password" id="login-password" class="w-full px-4 py-3 bg-dark-900 border border-brand-900/40 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500">
+                </div>
+            </div>
+            <div class="pt-2">
+                <button onclick="loginAdmin()" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl shadow-lg shadow-brand-600/30">Giriş Yap</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Add / Edit Modal -->
+    <div id="team-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass bg-dark-800/95 w-full max-w-md rounded-3xl p-6 border border-brand-900/50 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-brand-900/40 pb-4">
+                <h3 id="team-modal-title" class="text-xl font-bold flex items-center space-x-2">
+                    <i data-lucide="shield" class="w-5 h-5 text-brand-400"></i>
+                    <span>Takım Düzenle / Ekle</span>
+                </h3>
+                <button onclick="closeTeamModal()" class="p-2 rounded-xl hover:bg-dark-700 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-4">
+                <input type="hidden" id="edit-team-id" value="">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Takım Adı</label>
+                    <input type="text" id="modal-team-name" placeholder="Örn: Anadolu Gücü" class="w-full px-4 py-3 bg-dark-900 border border-brand-900/40 rounded-2xl text-white font-medium focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Takım Amblemi / Logosu</label>
+                    <div class="flex flex-col space-y-2">
+                        <input type="file" id="modal-team-logo-file" accept="image/*" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand-600 file:text-white hover:file:bg-brand-500 cursor-pointer">
+                        <span class="text-[10px] text-gray-500">Veya bir emoji / URL yazabilirsiniz:</span>
+                        <input type="text" id="modal-team-logo-text" placeholder="Örn: 🦅 veya emoji" class="w-full px-4 py-2 bg-dark-900 border border-brand-900/40 rounded-xl text-white text-xs focus:outline-none focus:border-brand-500">
+                    </div>
+                </div>
+            </div>
+            <div class="pt-2">
+                <button onclick="saveTeamFromModal()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/30">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Selection Modal (Grup Seçimi Modal) -->
+    <div id="group-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass bg-dark-800/95 w-full max-w-lg rounded-3xl p-6 border border-amber-500/50 space-y-6 shadow-2xl max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 flex-shrink-0">
+                <h3 class="text-xl font-bold text-amber-400 flex items-center space-x-2">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span>Gruplara Takım Atama</span>
+                </h3>
+                <button onclick="closeGroupModal()" class="p-2 rounded-xl hover:bg-dark-700 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div id="group-selection-list" class="space-y-3 overflow-y-auto pr-2 flex-grow"></div>
+            <div class="pt-2 flex-shrink-0">
+                <button onclick="saveCustomGroups()" class="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-2xl shadow-lg">Grupları Kaydet ve Fikstürü Oluştur</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-brand-900/40 py-6 text-center text-xs text-gray-500">
+        Anadolu Süper Lig &copy; 2026. Tüm hakları saklıdır.
+    </footer>
+
+    <!-- Script Logics -->
+    <script>
+        const GITHUB_CONFIG = {
+            owner: "anadolusuperlig",
+            repo: "Anadolu-Super-Lig",
+            path: "index.html"
+        };
+
+        const ADMIN_ACCOUNTS = [
+            { username: "civciv", password: "1717OK", name: "Civciv" },
+            { username: "Noctra", password: "hahaytcano", name: "Noctra" },
+            { username: "31cibalik", password: "Cinar.61", name: "31cibalik" },
+            { username: "egess", password: "ege1s0y!", name: "egess" },
+            { username: "alen123", password: "alentsmtsıvtsıv", name: "Alen" },
+            { username: "atlasakxs", password: "0549!wfIL", name: "Atlas" }
+        ];
+
+        let currentUser = null;
+
+        function checkSavedAdminSession() {
+            const savedUser = localStorage.getItem('asl_admin_session');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    document.getElementById('user-info').classList.remove('hidden');
+                    document.getElementById('user-info').innerText = `Yetkili: ${currentUser.name}`;
+                    document.getElementById('admin-btn-text').innerText = "Çıkış Yap";
+                } catch(e) {
+                    currentUser = null;
+                }
+            }
+        }
+
+        function sanitizeInput(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function renderLogoHtml(logoStr) {
+            if (!logoStr) return '⚽';
+            if (logoStr.startsWith('data:image/') || logoStr.startsWith('http://') || logoStr.startsWith('https://')) {
+                return `<img src="${logoStr}" alt="Logo" class="team-logo-img rounded-md inline-block">`;
+            }
+            return sanitizeInput(logoStr);
+        }
+
+        const defaultTeams = [
+            { id: 1, name: "Anadolu Gücü", logo: "🦅", squad: [] },
+            { id: 2, name: "Cyber United", logo: "⚡", squad: [] },
+            { id: 3, name: "Anatolia Esports", logo: "🐺", squad: [] },
+            { id: 4, name: "Night Wolves", logo: "🌙", squad: [] },
+            { id: 5, name: "Pixel FC", logo: "🎮", squad: [] },
+            { id: 6, name: "Royal Titans", logo: "🛡️", squad: [] },
+            { id: 7, name: "Bosphorus FC", logo: "🌊", squad: [] },
+            { id: 8, name: "Ankara City", logo: "🏛️", squad: [] },
+            { id: 9, name: "Ege Yıldızları", logo: "⭐", squad: [] },
+            { id: 10, name: "Karadeniz Gücü", logo: "⚓", squad: [] },
+            { id: 11, name: "Toros Spor", logo: "🏔️", squad: [] },
+            { id: 12, name: "Güneş FC", logo: "☀️", squad: [] },
+            { id: 13, name: "Fırtına Esports", logo: "🌪️", squad: [] },
+            { id: 14, name: "Zirve United", logo: "👑", squad: [] }
+        ];
+
+        function generate13WeekFixtures(teams) {
+            let fixtures = [];
+            let matchId = 1;
+            for (let week = 1; week <= 13; week++) {
+                for (let i = 0; i < 7; i++) {
+                    let homeIdx = (week + i) % teams.length;
+                    let awayIdx = (week + teams.length - 1 - i) % teams.length;
+                    if (homeIdx === awayIdx) awayIdx = (awayIdx + 1) % teams.length;
+                    fixtures.push({ id: matchId++, week: week, home: teams[homeIdx].id, away: teams[awayIdx].id, homeScore: 0, awayScore: 0, played: false });
+                }
+            }
+            return fixtures;
+        }
+
+        function generateCupGroupFixtures(groupTeams) {
+            let fixtures = [];
+            let matchId = 100 + Math.floor(Math.random() * 1000);
+            for (let week = 1; week <= 6; week++) {
+                for (let i = 0; i < Math.floor(groupTeams.length / 2); i++) {
+                    let homeIdx = (week + i) % groupTeams.length;
+                    let awayIdx = (week + groupTeams.length - 1 - i) % groupTeams.length;
+                    if (homeIdx === awayIdx) awayIdx = (awayIdx + 1) % groupTeams.length;
+                    fixtures.push({ id: matchId++, week: week, home: groupTeams[homeIdx].id, away: groupTeams[awayIdx].id, homeScore: 0, awayScore: 0, played: false });
+                }
+            }
+            return fixtures;
+        }
+
+        const groupA_Teams = defaultTeams.slice(0, 7);
+        const groupB_Teams = defaultTeams.slice(7, 14);
+
+        const defaultLeagueData = {
+            teams: defaultTeams,
+            fixtures: generate13WeekFixtures(defaultTeams),
+            cupGroupA: groupA_Teams.map(t => t.id),
+            cupGroupB: groupB_Teams.map(t => t.id),
+            cupFixturesA: generateCupGroupFixtures(groupA_Teams),
+            cupFixturesB: generateCupGroupFixtures(groupB_Teams),
+            cupPlayoffs: [
+                { id: 1, round: "Çeyrek Final 1", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 2, round: "Çeyrek Final 2", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 3, round: "Çeyrek Final 3", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 4, round: "Çeyrek Final 4", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 5, round: "Yarı Final 1", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 6, round: "Yarı Final 2", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 7, round: "BÜYÜK FİNAL 🏆", home: null, away: null, homeScore: 0, awayScore: 0, played: false }
+            ],
+            weeklyMVP: { name: "Henüz Seçilmedi", team: "-" },
+            weeklyTeamPlayers: [],
+            historyRecords: [
+                { season: "1. Sezon", championTeamId: 1, ballondor: "Mert (Anadolu Gücü)", puskas: "Emre (Anadolu Gücü)", gkOfYear: "Burak (Anadolu Gücü)" }
+            ]
+        };
+
+        let leagueData = JSON.parse(localStorage.getItem('asl_final_v2026_data')) || defaultLeagueData;
+        let currentWeek = 1;
+        let currentCupWeek = 1;
+
+        function saveData() {
+            localStorage.setItem('asl_final_v2026_data', JSON.stringify(leagueData));
+            renderAll();
+        }
+
+        async function saveChangesToGitHub() {
+            if (!currentUser) return;
+            
+            let token = localStorage.getItem('asl_github_pat');
+            if (!token) {
+                token = prompt("Lütfen GitHub Personal Access Token'ınızı (ghp_...) yapıştırın:\n(Bu token sadece tarayıcınızda güvenle saklanacaktır)");
+                if (!token) return;
+                localStorage.setItem('asl_github_pat', token.trim());
+            }
+
+            const btnText = document.getElementById('github-save-btn-text');
+            btnText.innerText = "GitHub'a Aktarılıyor...";
+
+            try {
+                const getUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+                const getRes = await fetch(getUrl, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+
+                if (!getRes.ok) {
+                    if (getRes.status === 401) {
+                        localStorage.removeItem('asl_github_pat');
+                        throw new Error("Girdiğiniz Token geçersiz. Lütfen tekrar doğru token'ı girin.");
+                    }
+                    throw new Error("GitHub dosyası okunamadı. Repo adını veya erişim izinlerini kontrol edin.");
+                }
+                
+                const fileData = await getRes.json();
+                const currentSha = fileData.sha;
+
+                let fullHtml = document.documentElement.outerHTML;
+                const updatedDataScript = `const defaultLeagueData = ${JSON.stringify(leagueData, null, 4)};`;
+                fullHtml = fullHtml.replace(/const defaultLeagueData = \{[\s\S]*?\};/, updatedDataScript);
+
+                const encodedContent = btoa(unescape(encodeURIComponent("<!DOCTYPE html>\n<html" + fullHtml.split('<html')[1])));
+
+                const putRes = await fetch(getUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Yönetici Paneli Güncellemesi: ${currentUser.name}`,
+                        content: encodedContent,
+                        sha: currentSha
+                    })
+                });
+
+                if (putRes.ok) {
+                    alert("Tebrikler! Sitede yaptığınız değişiklikler GitHub kaynak kodunuza başarıyla yazıldı!");
+                } else {
+                    alert("GitHub güncellemesi sırasında bir hata oluştu.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Hata: " + err.message);
+            } finally {
+                btnText.innerText = "GitHub'a Kaydet";
+            }
+        }
+
+        function resetAllDataCompletely() {
+            if (!currentUser) return;
+            if (confirm("Bütün veriler varsayılana döndürülecek. Emin misiniz?")) {
+                localStorage.clear();
+                leagueData = JSON.parse(JSON.stringify(defaultLeagueData));
+                saveData();
+                alert("Tüm veriler sıfırlandı!");
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-lg');
+                btn.classList.add('text-gray-400');
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-lg');
+                activeBtn.classList.remove('text-gray-400');
+            }
+            lucide.createIcons();
+        }
+
+        function switchCupSubTab(subTab) {
+            document.getElementById('cup-subtab-groups').classList.add('hidden');
+            document.getElementById('cup-subtab-playoffs').classList.add('hidden');
+            
+            document.getElementById('cup-tab-btn-groups').classList.replace('bg-brand-600', 'text-gray-400');
+            document.getElementById('cup-tab-btn-groups').classList.remove('text-white');
+            document.getElementById('cup-tab-btn-playoffs').classList.replace('bg-brand-600', 'text-gray-400');
+            document.getElementById('cup-tab-btn-playoffs').classList.remove('text-white');
+
+            if (subTab === 'groups') {
+                document.getElementById('cup-subtab-groups').classList.remove('hidden');
+                document.getElementById('cup-tab-btn-groups').classList.add('bg-brand-600', 'text-white');
+            } else {
+                document.getElementById('cup-subtab-playoffs').classList.remove('hidden');
+                document.getElementById('cup-tab-btn-playoffs').classList.add('bg-brand-600', 'text-white');
+            }
+            lucide.createIcons();
+        }
+
+        function calculateStandings() {
+            leagueData.teams.forEach(t => { t.p = 0; t.w = 0; t.d = 0; t.l = 0; t.gf = 0; t.ga = 0; t.pts = 0; });
+            if (leagueData.fixtures) {
+                leagueData.fixtures.forEach(f => {
+                    if (!f.played) return;
+                    let homeTeam = leagueData.teams.find(t => t.id === f.home);
+                    let awayTeam = leagueData.teams.find(t => t.id === f.away);
+                    if (!homeTeam || !awayTeam) return;
+
+                    homeTeam.p++; awayTeam.p++;
+                    homeTeam.gf += f.homeScore; homeTeam.ga += f.awayScore;
+                    awayTeam.gf += f.awayScore; awayTeam.ga += f.homeScore;
+
+                    if (f.homeScore > f.awayScore) { homeTeam.w++; homeTeam.pts += 3; awayTeam.l++; }
+                    else if (f.homeScore < f.awayScore) { awayTeam.w++; awayTeam.pts += 3; homeTeam.l++; }
+                    else { homeTeam.d++; homeTeam.pts += 1; awayTeam.d++; awayTeam.pts += 1; }
+                });
+            }
+
+            leagueData.teams.sort((a, b) => {
+                if (b.pts !== a.pts) return b.pts - a.pts;
+                let avB = (b.gf - b.ga), avA = (a.gf - a.ga);
+                if (avB !== avA) return avB - avA;
+                return b.gf - a.gf;
+            });
+        }
+
+        function renderStandings() {
+            calculateStandings();
+            const tbody = document.getElementById('standings-tbody');
+            tbody.innerHTML = '';
+
+            leagueData.teams.forEach((t, index) => {
+                let badgeColor = "text-gray-400";
+                let rowBorder = "";
+                if (index === 0) { badgeColor = "bg-amber-500/20 text-amber-400 border border-amber-500/30"; rowBorder = "bg-amber-500/5"; }
+                else if (index >= leagueData.teams.length - 2) { badgeColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30"; rowBorder = "bg-rose-500/5"; }
+
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-white/5 transition-colors ${rowBorder}`;
+                tr.innerHTML = `
+                    <td class="py-4 px-4 sm:px-6 text-center font-bold"><span class="inline-flex items-center justify-center w-7 h-7 rounded-xl ${badgeColor}">${index + 1}</span></td>
+                    <td class="py-4 px-4 sm:px-6 font-bold flex items-center space-x-3"><span class="text-xl flex-shrink-0 flex items-center justify-center w-8 h-8">${renderLogoHtml(t.logo)}</span><span class="truncate max-w-[140px] sm:max-w-none">${sanitizeInput(t.name)}</span></td>
+                    <td class="py-4 px-3 text-center text-gray-300">${t.p}</td>
+                    <td class="py-4 px-3 text-center text-emerald-400">${t.w}</td>
+                    <td class="py-4 px-3 text-center text-amber-400">${t.d}</td>
+                    <td class="py-4 px-3 text-center text-rose-400">${t.l}</td>
+                    <td class="py-4 px-3 text-center text-gray-300">${t.gf}</td>
+                    <td class="py-4 px-3 text-center text-gray-300">${t.ga}</td>
+                    <td class="py-4 px-3 text-center font-semibold ${(t.gf - t.ga) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${(t.gf - t.ga) > 0 ? '+' + (t.gf - t.ga) : (t.gf - t.ga)}</td>
+                    <td class="py-4 px-4 sm:px-6 text-center font-black text-brand-400 text-base">${t.pts}</td>
+                    <td class="admin-only ${currentUser ? '' : 'hidden'} py-4 px-4 text-center">
+                        <div class="flex items-center justify-center space-x-2">
+                            <button onclick="openTeamModal(${t.id})" class="px-2.5 py-1 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-lg text-white">Düzenle</button>
+                            <button onclick="deleteTeam(${t.id})" class="px-2 py-1 bg-rose-600 hover:bg-rose-500 text-xs font-bold rounded-lg text-white">Sil</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderFixtures() {
+            const weekSelector = document.getElementById('week-selector');
+            weekSelector.innerHTML = '';
+            for (let i = 1; i <= 13; i++) {
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex-shrink-0 ${currentWeek === i ? 'bg-brand-600 text-white shadow-md' : 'bg-dark-800 text-gray-400 hover:bg-dark-700'}`;
+                btn.innerText = i + '. Hafta';
+                btn.onclick = () => { currentWeek = i; renderFixtures(); };
+                weekSelector.appendChild(btn);
+            }
+
+            const container = document.getElementById('fixtures-container');
+            container.innerHTML = '';
+
+            const weekMatches = (leagueData.fixtures || []).filter(f => f.week === currentWeek);
+            weekMatches.forEach(m => {
+                let home = leagueData.teams.find(t => t.id === m.home);
+                let away = leagueData.teams.find(t => t.id === m.away);
+
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 sm:p-5 rounded-2xl flex items-center justify-between border border-brand-900/30 shadow-lg gap-2 overflow-hidden';
+                
+                let scoreArea = `<div class="px-3 sm:px-4 py-2 bg-dark-900/90 rounded-xl border border-brand-900/40 text-center font-black text-sm sm:text-lg tracking-widest text-brand-400 min-w-[70px] sm:min-w-[80px] flex-shrink-0">${m.played ? `${m.homeScore} -${m.awayScore}` : 'VS'}</div>`;
+
+                if (currentUser) {
+                    scoreArea = `
+                        <div class="flex items-center space-x-1 sm:space-x-2 bg-dark-900/90 p-1 sm:p-1.5 rounded-xl border border-brand-500/40 flex-shrink-0">
+                            <input type="number" id="fh-${m.id}" value="${m.homeScore}" min="0" max="99" class="w-8 sm:w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-xs sm:text-sm">
+                            <span class="text-xs text-gray-400">-</span>
+                            <input type="number" id="fa-${m.id}" value="${m.awayScore}" min="0" max="99" class="w-8 sm:w-10 text-center bg-dark-800 border border-gray-700 rounded-lg py-1 font-bold text-brand-400 text-xs sm:text-sm">
+                            <button onclick="saveMatchScoreDirect(${m.id})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-lg shadow">Kaydet</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-2 sm:space-x-3 w-1/3 justify-end min-w-0">
+                        <span class="font-bold text-xs sm:text-sm text-right truncate">${sanitizeInput(home ? home.name : '')}</span>
+                        <span class="text-lg sm:text-xl flex-shrink-0 flex items-center justify-center w-6 h-6">${renderLogoHtml(home ? home.logo : '')}</span>
+                    </div>
+                    ${scoreArea}
+                    <div class="flex items-center space-x-2 sm:space-x-3 w-1/3 min-w-0">
+                        <span class="text-lg sm:text-xl flex-shrink-0 flex items-center justify-center w-6 h-6">${renderLogoHtml(away ? away.logo : '')}</span>
+                        <span class="font-bold text-xs sm:text-sm truncate">${sanitizeInput(away ? away.name : '')}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function drawRandomCupGroups() {
+            if (!currentUser) return;
+            if (confirm("Kupa grupları kura ile sıfırdan rastgele oluşturulsun mu?")) {
+                let shuffled = [...leagueData.teams].sort(() => 0.5 - Math.random());
+                let mid = Math.ceil(shuffled.length / 2);
+                let groupA = shuffled.slice(0, mid);
+                let groupB = shuffled.slice(mid);
+
+                leagueData.cupGroupA = groupA.map(t => t.id);
+                leagueData.cupGroupB = groupB.map(t => t.id);
+
+                leagueData.cupFixturesA = generateCupGroupFixtures(groupA);
+                leagueData.cupFixturesB = generateCupGroupFixtures(groupB);
+
+                saveData();
+                alert("Kura çekildi! Gruplar ve fikstür rastgele oluşturuldu.");
+            }
+        }
+
+        function openCustomGroupModal() {
+            if (!currentUser) return;
+            const container = document.getElementById('group-selection-list');
+            container.innerHTML = leagueData.teams.map(t => {
+                let isGroupA = (leagueData.cupGroupA || []).includes(t.id);
+                return `
+                    <div class="flex items-center justify-between p-3 bg-black/40 rounded-2xl border border-white/10">
+                        <div class="flex items-center space-x-3 min-w-0">
+                            <span class="w-6 h-6 flex items-center justify-center">${renderLogoHtml(t.logo)}</span>
+                            <span class="font-bold text-xs text-white truncate">${sanitizeInput(t.name)}</span>
+                        </div>
+                        <select id="group-select-${t.id}" class="bg-dark-900 border border-amber-500/40 text-amber-400 font-bold text-xs rounded-xl px-3 py-1.5 focus:outline-none">
+                            <option value="A" ${isGroupA ? 'selected' : ''}>A Grubu</option>
+                            <option value="B" ${!isGroupA ? 'selected' : ''}>B Grubu</option>
+                        </select>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('group-modal').classList.remove('hidden');
+        }
+
+        function closeGroupModal() {
+            document.getElementById('group-modal').classList.add('hidden');
+        }
+
+        function saveCustomGroups() {
+            if (!currentUser) return;
+            let groupAIds = [];
+            let groupBIds = [];
+
+            leagueData.teams.forEach(t => {
+                let select = document.getElementById(`group-select-${t.id}`);
+                if (select) {
+                    if (select.value === 'A') groupAIds.push(t.id);
+                    else groupBIds.push(t.id);
+                }
+            });
+
+            leagueData.cupGroupA = groupAIds;
+            leagueData.cupGroupB = groupBIds;
+
+            let groupATeams = leagueData.teams.filter(t => groupAIds.includes(t.id));
+            let groupBTeams = leagueData.teams.filter(t => groupBIds.includes(t.id));
+
+            leagueData.cupFixturesA = generateCupGroupFixtures(groupATeams);
+            leagueData.cupFixturesB = generateCupGroupFixtures(groupBTeams);
+
+            saveData();
+            closeGroupModal();
+            alert("Gruplar kaydedildi ve maç fikstürü güncellendi!");
+        }
+
+        function getGroupStandings(teamIds, groupFixtures) {
+            let stats = teamIds.map(id => {
+                let team = leagueData.teams.find(t => t.id === id) || { id, name: "Bilinmeyen", logo: "⚽" };
+                return { team, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
+            });
+
+            if (groupFixtures) {
+                groupFixtures.forEach(f => {
+                    if (!f.played) return;
+                    let home = stats.find(s => s.team.id === f.home);
+                    let away = stats.find(s => s.team.id === f.away);
+                    if (!home || !away) return;
+
+                    home.p++; away.p++;
+                    home.gf += f.homeScore; home.ga += f.awayScore;
+                    away.gf += f.awayScore; away.ga += f.homeScore;
+
+                    if (f.homeScore > f.awayScore) { home.w++; home.pts += 3; away.l++; }
+                    else if (f.homeScore < f.awayScore) { away.w++; away.pts += 3; home.l++; }
+                    else { home.d++; home.pts += 1; away.d++; away.pts += 1; }
+                });
+            }
+
+            stats.sort((a, b) => {
+                if (b.pts !== a.pts) return b.pts - a.pts;
+                let avB = b.gf - b.ga, avA = a.gf - a.ga;
+                if (avB !== avA) return avB - avA;
+                return b.gf - a.gf;
+            });
+
+            return stats;
+        }
+
+        function renderCup() {
+            const statsA = getGroupStandings(leagueData.cupGroupA || [], leagueData.cupFixturesA || []);
+            const tbodyA = document.getElementById('cup-group-a-tbody');
+            tbodyA.innerHTML = statsA.map((s, idx) => `
+                <tr class="${idx < 4 ? 'bg-amber-500/10 font-bold' : ''}">
+                    <td class="py-2.5">${idx + 1}</td>
+                    <td class="py-2.5 flex items-center space-x-2">
+                        <span class="w-5 h-5 flex items-center justify-center">${renderLogoHtml(s.team.logo)}</span>
+                        <span class="truncate max-w-[110px] sm:max-w-none">${sanitizeInput(s.team.name)}</span>
+                    </td>
+                    <td class="py-2.5 text-center">${s.p}</td>
+                    <td class="py-2.5 text-center">${s.gf - s.ga}</td>
+                    <td class="py-2.5 text-center text-amber-400 font-extrabold">${s.pts}</td>
+                </tr>
+            `).join('');
+
+            const statsB = getGroupStandings(leagueData.cupGroupB || [], leagueData.cupFixturesB || []);
+            const tbodyB = document.getElementById('cup-group-b-tbody');
+            tbodyB.innerHTML = statsB.map((s, idx) => `
+                <tr class="${idx < 4 ? 'bg-amber-500/10 font-bold' : ''}">
+                    <td class="py-2.5">${idx + 1}</td>
+                    <td class="py-2.5 flex items-center space-x-2">
+                        <span class="w-5 h-5 flex items-center justify-center">${renderLogoHtml(s.team.logo)}</span>
+                        <span class="truncate max-w-[110px] sm:max-w-none">${sanitizeInput(s.team.name)}</span>
+                    </td>
+                    <td class="py-2.5 text-center">${s.p}</td>
+                    <td class="py-2.5 text-center">${s.gf - s.ga}</td>
+                    <td class="py-2.5 text-center text-amber-400 font-extrabold">${s.pts}</td>
+                </tr>
+            `).join('');
+
+            const cupWeekSelector = document.getElementById('cup-week-selector');
+            cupWeekSelector.innerHTML = '';
+            for (let i = 1; i <= 6; i++) {
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1 rounded-lg text-xs font-bold transition-all flex-shrink-0 ${currentCupWeek === i ? 'bg-amber-600 text-white' : 'bg-dark-800 text-gray-400'}`;
+                btn.innerText = i + '. Maç';
+                btn.onclick = () => { currentCupWeek = i; renderCup(); };
+                cupWeekSelector.appendChild(btn);
+            }
+
+            const cupFixturesContainer = document.getElementById('cup-fixtures-container');
+            cupFixturesContainer.innerHTML = '';
+
+            const allCupMatches = [
+                ...(leagueData.cupFixturesA || []),
+                ...(leagueData.cupFixturesB || [])
+            ].filter(f => f.week === currentCupWeek);
+
+            allCupMatches.forEach(m => {
+                let home = leagueData.teams.find(t => t.id === m.home);
+                let away = leagueData.teams.find(t => t.id === m.away);
+
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-2xl flex items-center justify-between border border-amber-500/20 shadow-lg gap-2 overflow-hidden';
+
+                let scoreArea = `<div class="px-3 py-1.5 bg-dark-900/90 rounded-xl border border-amber-500/30 text-center font-black text-sm tracking-widest text-amber-400 min-w-[70px] flex-shrink-0">${m.played ? `${m.homeScore} -${m.awayScore}` : 'VS'}</div>`;
+
+                if (currentUser) {
+                    scoreArea = `
+                        <div class="flex items-center space-x-1 bg-dark-900/90 p-1 rounded-xl border border-amber-500/40 flex-shrink-0">
+                            <input type="number" id="cfh-${m.id}" value="${m.homeScore}" min="0" max="99" class="w-8 text-center bg-dark-800 border border-gray-700 rounded py-1 font-bold text-amber-400 text-xs">
+                            <span class="text-xs text-gray-400">-</span>
+                            <input type="number" id="cfa-${m.id}" value="${m.awayScore}" min="0" max="99" class="w-8 text-center bg-dark-800 border border-gray-700 rounded py-1 font-bold text-amber-400 text-xs">
+                            <button onclick="saveCupMatchScore(${m.id})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded shadow">Kaydet</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-2 w-1/3 justify-end min-w-0">
+                        <span class="font-bold text-xs text-right truncate">${sanitizeInput(home ? home.name : '')}</span>
+                        <span class="w-5 h-5 flex-shrink-0 flex items-center justify-center">${renderLogoHtml(home ? home.logo : '')}</span>
+                    </div>
+                    ${scoreArea}
+                    <div class="flex items-center space-x-2 w-1/3 min-w-0">
+                        <span class="w-5 h-5 flex-shrink-0 flex items-center justify-center">${renderLogoHtml(away ? away.logo : '')}</span>
+                        <span class="font-bold text-xs truncate">${sanitizeInput(away ? away.name : '')}</span>
+                    </div>
+                `;
+                cupFixturesContainer.appendChild(card);
+            });
+
+            renderPlayoffs();
+        }
+
+        function saveCupMatchScore(matchId) {
+            if (!currentUser) return;
+            let match = [...leagueData.cupFixturesA, ...leagueData.cupFixturesB].find(f => f.id === matchId);
+            if (match) {
+                match.homeScore = parseInt(document.getElementById(`cfh-${matchId}`).value) || 0;
+                match.awayScore = parseInt(document.getElementById(`cfa-${matchId}`).value) || 0;
+                match.played = true;
+                saveData();
+                alert("Kupa maç skoru kaydedildi!");
+            }
+        }
+
+        function generatePlayoffsFromGroups() {
+            if (!currentUser) return;
+            const statsA = getGroupStandings(leagueData.cupGroupA || [], leagueData.cupFixturesA || []);
+            const statsB = getGroupStandings(leagueData.cupGroupB || [], leagueData.cupFixturesB || []);
+
+            const topA = statsA.slice(0, 4).map(s => s.team.id);
+            const topB = statsB.slice(0, 4).map(s => s.team.id);
+
+            if (topA.length < 4 || topB.length < 4) {
+                alert("Grup maçları tamamlanmadı!");
+                return;
+            }
+
+            leagueData.cupPlayoffs = [
+                { id: 1, round: "Çeyrek Final 1", home: topA[0], away: topB[3], homeScore: 0, awayScore: 0, played: false },
+                { id: 2, round: "Çeyrek Final 2", home: topA[1], away: topB[2], homeScore: 0, awayScore: 0, played: false },
+                { id: 3, round: "Çeyrek Final 3", home: topA[2], away: topB[1], homeScore: 0, awayScore: 0, played: false },
+                { id: 4, round: "Çeyrek Final 4", home: topA[3], away: topB[0], homeScore: 0, awayScore: 0, played: false },
+                { id: 5, round: "Yarı Final 1", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 6, round: "Yarı Final 2", home: null, away: null, homeScore: 0, awayScore: 0, played: false },
+                { id: 7, round: "BÜYÜK FİNAL 🏆", home: null, away: null, homeScore: 0, awayScore: 0, played: false }
+            ];
+
+            saveData();
+            alert("Elemeler gruplardaki ilk 4 takıma göre otomatik eşleştirildi!");
+        }
+
+        function renderPlayoffs() {
+            const container = document.getElementById('playoffs-container');
+            if (!leagueData.cupPlayoffs) return;
+
+            container.innerHTML = leagueData.cupPlayoffs.map(p => {
+                let home = leagueData.teams.find(t => t.id === p.home);
+                let away = leagueData.teams.find(t => t.id === p.away);
+
+                let scoreArea = `<div class="px-3 py-1.5 bg-dark-900 border border-amber-500/30 rounded-xl font-black text-amber-400 text-sm">${p.played ? `${p.homeScore} -${p.awayScore}` : 'VS'}</div>`;
+
+                if (currentUser) {
+                    scoreArea = `
+                        <div class="flex items-center space-x-1 bg-dark-900 p-1 rounded-xl border border-amber-500/40">
+                            <input type="number" id="pfh-${p.id}" value="${p.homeScore}" min="0" max="99" class="w-8 text-center bg-dark-800 border border-gray-700 rounded py-1 font-bold text-amber-400 text-xs">
+                            <span class="text-xs text-gray-400">-</span>
+                            <input type="number" id="pfa-${p.id}" value="${p.awayScore}" min="0" max="99" class="w-8 text-center bg-dark-800 border border-gray-700 rounded py-1 font-bold text-amber-400 text-xs">
+                            <button onclick="savePlayoffMatchScore(${p.id})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded">Kaydet</button>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="p-4 bg-black/40 rounded-2xl border border-amber-500/20 space-y-2">
+                        <div class="text-xs font-black text-amber-400 uppercase tracking-wider border-b border-white/10 pb-1 flex justify-between items-center">
+                            <span>${sanitizeInput(p.round)}</span>
+                            ${currentUser ? `<button onclick="editPlayoffTeamsPrompt(${p.id})" class="text-[10px] text-brand-400">Eşleşmeyi Düzenle</button>` : ''}
+                        </div>
+                        <div class="flex items-center justify-between gap-2 pt-1">
+                            <div class="flex items-center space-x-2 w-1/3 justify-end">
+                                <span class="font-bold text-xs truncate">${sanitizeInput(home ? home.name : 'Bekleniyor...')}</span>
+                                <span class="w-5 h-5 flex items-center justify-center">${renderLogoHtml(home ? home.logo : '')}</span>
+                            </div>
+                            ${scoreArea}
+                            <div class="flex items-center space-x-2 w-1/3">
+                                <span class="w-5 h-5 flex items-center justify-center">${renderLogoHtml(away ? away.logo : '')}</span>
+                                <span class="font-bold text-xs truncate">${sanitizeInput(away ? away.name : 'Bekleniyor...')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function savePlayoffMatchScore(id) {
+            if (!currentUser) return;
+            let match = leagueData.cupPlayoffs.find(p => p.id === id);
+            if (match) {
+                match.homeScore = parseInt(document.getElementById(`pfh-${id}`).value) || 0;
+                match.awayScore = parseInt(document.getElementById(`pfa-${id}`).value) || 0;
+                match.played = true;
+
+                if (id <= 4) {
+                    let semiMatch = leagueData.cupPlayoffs.find(p => p.id === (id <= 2 ? 5 : 6));
+                    let winnerId = match.homeScore > match.awayScore ? match.home : match.away;
+                    if (id % 2 === 1) semiMatch.home = winnerId;
+                    else semiMatch.away = winnerId;
+                } else if (id === 5 || id === 6) {
+                    let finalMatch = leagueData.cupPlayoffs.find(p => p.id === 7);
+                    let winnerId = match.homeScore > match.awayScore ? match.home : match.away;
+                    if (id === 5) finalMatch.home = winnerId;
+                    else finalMatch.away = winnerId;
+                }
+
+                saveData();
+                alert("Eleme skor ve tur atlayan takım güncellendi!");
+            }
+        }
+
+        function editPlayoffTeamsPrompt(id) {
+            if (!currentUser) return;
+            let match = leagueData.cupPlayoffs.find(p => p.id === id);
+            let teamList = leagueData.teams.map((t, i) => `${i + 1}. ${t.name}`).join("\n");
+            
+            let hChoice = prompt(`Ev Sahibi Takımı Seçin (Numara Girin):\n${teamList}`);
+            let aChoice = prompt(`Deplasman Takımını Seçin (Numara Girin):\n${teamList}`);
+
+            let hIdx = parseInt(hChoice) - 1;
+            let aIdx = parseInt(aChoice) - 1;
+
+            if (leagueData.teams[hIdx]) match.home = leagueData.teams[hIdx].id;
+            if (leagueData.teams[aIdx]) match.away = leagueData.teams[aIdx].id;
+
+            saveData();
+            alert("Eşleşme güncellendi!");
+        }
+
+        function renderStats() {
+            document.getElementById('weekly-mvp-name').innerText = sanitizeInput((leagueData.weeklyMVP && leagueData.weeklyMVP.name) || "Henüz Seçilmedi");
+            document.getElementById('weekly-mvp-team').innerText = sanitizeInput((leagueData.weeklyMVP && leagueData.weeklyMVP.team) || "-");
+
+            const weeklyTeamEl = document.getElementById('weekly-team-players-list');
+            if (!leagueData.weeklyTeamPlayers || leagueData.weeklyTeamPlayers.length === 0) {
+                weeklyTeamEl.innerHTML = '<div class="text-xs text-gray-500 italic col-span-2 p-3">Henüz haftanın kadrosuna oyuncu eklenmedi.</div>';
+            } else {
+                weeklyTeamEl.innerHTML = leagueData.weeklyTeamPlayers.map((p, idx) => `
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10 overflow-hidden gap-2">
+                        <div class="flex items-center space-x-3 min-w-0">
+                            <span class="px-2 py-0.5 bg-brand-500/20 text-brand-400 font-extrabold text-xs rounded-md flex-shrink-0">${sanitizeInput(p.pos)}</span>
+                            <div class="min-w-0">
+                                <div class="font-bold text-sm text-white truncate">${sanitizeInput(p.name)}</div>
+                                <div class="text-xs text-gray-400 truncate">${sanitizeInput(p.team)}</div>
+                            </div>
+                        </div>
+                        ${currentUser ? `<button onclick="removeWeeklyTeamPlayer(${idx})" class="text-xs text-rose-400 font-bold flex-shrink-0">Sil</button>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            let allPlayers = [];
+            leagueData.teams.forEach(t => { if(t.squad) t.squad.forEach(p => { allPlayers.push({ ...p, teamName: t.name }); }); });
+
+            let scorers = [...allPlayers].filter(p => p.goals > 0).sort((a, b) => b.goals - a.goals);
+            const scorersEl = document.getElementById('scorers-list');
+            scorersEl.innerHTML = scorers.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz gol yok.</div>' : scorers.slice(0, 10).map((s, idx) => `
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10 gap-2">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <span class="w-6 text-center font-bold text-xs text-gray-500 flex-shrink-0">#${idx+1}</span>
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">${sanitizeInput(s.name)} <span class="text-xs text-brand-400">(${sanitizeInput(s.pos)})</span></div>
+                            <div class="text-xs text-gray-400 truncate">${sanitizeInput(s.teamName)}</div>
+                        </div>
+                    </div>
+                    <div class="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl font-black text-sm flex-shrink-0">${s.goals} Gol</div>
+                </div>
+            `).join('');
+
+            let assists = [...allPlayers].filter(p => p.assists > 0).sort((a, b) => b.assists - a.assists);
+            const assistsEl = document.getElementById('assists-list');
+            assistsEl.innerHTML = assists.length === 0 ? '<div class="text-xs text-gray-500 italic p-3">Henüz asist yok.</div>' : assists.slice(0, 10).map((a, idx) => `
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-black/40 border border-white/10 gap-2">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <span class="w-6 text-center font-bold text-xs text-gray-500 flex-shrink-0">#${idx+1}</span>
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">${sanitizeInput(a.name)} <span class="text-xs text-brand-400">(${sanitizeInput(a.pos)})</span></div>
+                            <div class="text-xs text-gray-400 truncate">${sanitizeInput(a.teamName)}</div>
+                        </div>
+                    </div>
+                    <div class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm flex-shrink-0">${a.assists} Asist</div>
+                </div>
+            `).join('');
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-records-container');
+            if (!leagueData.historyRecords || leagueData.historyRecords.length === 0) {
+                container.innerHTML = '<div class="text-sm text-gray-500 italic col-span-2">Henüz geçmiş sezon kaydı bulunmuyor.</div>';
+                return;
+            }
+
+            container.innerHTML = leagueData.historyRecords.map((h, idx) => {
+                let champTeam = leagueData.teams.find(t => t.id === h.championTeamId);
+                let teamName = champTeam ? champTeam.name : "Belirtilmedi";
+                let teamLogo = champTeam ? champTeam.logo : "🏆";
+
+                return `
+                    <div class="glass-card p-6 rounded-3xl space-y-5 border border-amber-500/30 relative overflow-hidden">
+                        <div class="flex justify-between items-center border-b border-amber-500/20 pb-3">
+                            <span class="text-lg font-black text-amber-400 flex items-center space-x-2">
+                                <i data-lucide="crown" class="w-5 h-5"></i>
+                                <span>${sanitizeInput(h.season)}</span>
+                            </span>
+                            ${currentUser ? `<button onclick="deleteHistoryRecord(${idx})" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Kayıt Sil</button>` : ''}
+                        </div>
+
+                        <div class="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/30 flex items-center space-x-4">
+                            <span class="text-3xl flex-shrink-0 w-10 h-10 flex items-center justify-center">${renderLogoHtml(teamLogo)}</span>
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold text-amber-400 uppercase">Sezon Şampiyonu</div>
+                                <div class="text-xl font-black text-white truncate">${sanitizeInput(teamName)}</div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-2.5 text-xs">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2 text-amber-300 font-bold flex-shrink-0">
+                                    <i data-lucide="award" class="w-4 h-4"></i><span>Ballon d'Or:</span>
+                                </div>
+                                <span class="font-extrabold text-white text-sm truncate">${sanitizeInput(h.ballondor || '-')}</span>
+                            </div>
+
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2 text-rose-400 font-bold flex-shrink-0">
+                                    <i data-lucide="flame" class="w-4 h-4"></i><span>Puskás (Yılın Golü):</span>
+                                </div>
+                                <span class="font-extrabold text-white text-sm truncate">${sanitizeInput(h.puskas || '-')}</span>
+                            </div>
+
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2 text-emerald-400 font-bold flex-shrink-0">
+                                    <i data-lucide="shield-check" class="w-4 h-4"></i><span>Yılın Kalecisi:</span>
+                                </div>
+                                <span class="font-extrabold text-white text-sm truncate">${sanitizeInput(h.gkOfYear || '-')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTeams() {
+            const container = document.getElementById('teams-container');
+            container.innerHTML = leagueData.teams.map(t => {
+                if(!t.squad) t.squad = [];
+                return `
+                    <div class="glass-card p-6 rounded-3xl space-y-4 border border-brand-900/30 overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4 gap-2">
+                            <div class="flex items-center space-x-4 min-w-0">
+                                <span class="text-3xl p-2 bg-black/40 rounded-2xl border border-white/10 flex-shrink-0 w-12 h-12 flex items-center justify-center">${renderLogoHtml(t.logo)}</span>
+                                <div class="min-w-0">
+                                    <h3 class="font-extrabold text-lg text-white truncate">${sanitizeInput(t.name)}</h3>
+                                    <span class="text-xs text-brand-400 font-semibold">Resmi Kulüp</span>
+                                </div>
+                            </div>
+                            ${currentUser ? `<button onclick="addSquadPlayerPrompt(${t.id})" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-xs font-bold rounded-xl text-white shadow flex-shrink-0">+ Oyuncu</button>` : ''}
+                        </div>
+                        <div class="space-y-3">
+                            <div class="text-xs font-bold text-gray-400 uppercase">Kadro & Oyuncu İstatistikleri</div>
+                            <div class="space-y-2">
+                                ${t.squad.length === 0 ? '<div class="text-xs text-gray-500 italic py-2">Kadro boş.</div>' : t.squad.map((p, pIdx) => {
+                                    let isGoalie = p.pos === 'KL';
+                                    if (currentUser) {
+                                        return `
+                                            <div class="bg-black/50 p-3 rounded-2xl border border-white/10 space-y-2">
+                                                <div class="flex justify-between items-center gap-2">
+                                                    <span class="font-bold text-sm text-white truncate">${sanitizeInput(p.name)} <span class="text-xs text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">${sanitizeInput(p.pos)}</span></span>
+                                                    <button onclick="removeSquadPlayer(${t.id},${pIdx})" class="text-xs text-rose-400 font-bold flex-shrink-0">Sil</button>
+                                                </div>
+                                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                                    <div>Gol: <input type="number" id="p-g-${t.id}-${pIdx}" min="0" value="${p.goals}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-amber-400 font-bold"></div>
+                                                    <div>Asist: <input type="number" id="p-a-${t.id}-${pIdx}" min="0" value="${p.assists}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-blue-400 font-bold"></div>
+                                                    <div>Tackle: <input type="number" id="p-t-${t.id}-${pIdx}" min="0" value="${p.tackles}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-emerald-400 font-bold"></div>
+                                                    ${isGoalie ? `
+                                                        <div>Catch: <input type="number" id="p-c-${t.id}-${pIdx}" min="0" value="${p.catches || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-purple-400 font-bold"></div>
+                                                        <div>Saves: <input type="number" id="p-s-${t.id}-${pIdx}" min="0" value="${p.saves || 0}" class="w-full bg-dark-900 border border-gray-700 rounded px-1.5 py-1 text-rose-400 font-bold"></div>
+                                                    ` : ''}
+                                                </div>
+                                                <button onclick="savePlayerStats(${t.id},${pIdx})" class="w-full mt-1 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg">Kaydet</button>
+                                            </div>
+                                        `;
+                                    } else {
+                                        return `
+                                            <div class="flex items-center justify-between text-xs bg-black/40 px-3 py-2.5 rounded-xl text-gray-300 font-medium border border-white/10 gap-2">
+                                                <div class="truncate"><span class="font-bold text-white">${sanitizeInput(p.name)}</span> <span class="text-brand-400">(${sanitizeInput(p.pos)})</span></div>
+                                                <div class="flex items-center space-x-1.5 text-[10px] sm:text-[11px] flex-shrink-0">
+                                                    <span class="px-1.5 py-0.5 bg-amber-500/10 text-amber-400 rounded">G: ${p.goals}</span>
+                                                    <span class="px-1.5 py-0.5 bg-blue-500/10 text-blue-400 rounded">A: ${p.assists}</span>
+                                                    <span class="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">T: ${p.tackles}</span>${isGoalie ? `
+                                                        <span class="px-1.5 py-0.5 bg-purple-500/10 text-purple-400 rounded">C: ${p.catches || 0}</span>
+                                                        <span class="px-1.5 py-0.5 bg-rose-500/10 text-rose-400 rounded">S: ${p.saves || 0}</span>
+                                                    ` : ''}
+                                                </div>
+                                            </div>
+                                        `;
+                                    }
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAll() {
+            renderStandings();
+            renderFixtures();
+            renderCup();
+            renderStats();
+            renderTeams();
+            renderHistory();
+            
+            if (currentUser) {
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                document.getElementById('admin-add-team-container').classList.remove('hidden');
+                document.getElementById('admin-active-banner').classList.remove('hidden');
+            } else {
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+                document.getElementById('admin-add-team-container').classList.add('hidden');
+                document.getElementById('admin-active-banner').classList.add('hidden');
+            }
+        }
+
+        function openTeamModal(id = null) {
+            if (!currentUser) return;
+            const modal = document.getElementById('team-modal');
+            const title = document.getElementById('team-modal-title');
+            const editId = document.getElementById('edit-team-id');
+            const nameInput = document.getElementById('modal-team-name');
+            const logoFileInput = document.getElementById('modal-team-logo-file');
+            const logoTextInput = document.getElementById('modal-team-logo-text');
+
+            logoFileInput.value = '';
+
+            if (id) {
+                let team = leagueData.teams.find(t => t.id === id);
+                title.innerText = "Takım Düzenle";
+                editId.value = id;
+                nameInput.value = team.name;
+                if (team.logo && !team.logo.startsWith('data:image/')) {
+                    logoTextInput.value = team.logo;
+                } else {
+                    logoTextInput.value = '';
+                }
+            } else {
+                title.innerText = "Yeni Takım Ekle";
+                editId.value = '';
+                nameInput.value = '';
+                logoTextInput.value = '⚽';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeTeamModal() {
+            document.getElementById('team-modal').classList.add('hidden');
+        }
+
+        function saveTeamFromModal() {
+            if (!currentUser) return;
+            const editId = document.getElementById('edit-team-id').value;
+            const name = document.getElementById('modal-team-name').value.trim();
+            const logoFile = document.getElementById('modal-team-logo-file').files[0];
+            const logoText = document.getElementById('modal-team-logo-text').value.trim();
+
+            if (!name) {
+                alert("Lütfen bir takım adı yazın!");
+                return;
+            }
+
+            if (logoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    applyTeamSave(editId, name, e.target.result);
+                };
+                reader.readAsDataURL(logoFile);
+            } else {
+                let logo = logoText || '⚽';
+                applyTeamSave(editId, name, logo);
+            }
+        }
+
+        function applyTeamSave(editId, name, logo) {
+            if (editId) {
+                let team = leagueData.teams.find(t => t.id == editId);
+                if (team) {
+                    team.name = sanitizeInput(name);
+                    team.logo = logo;
+                }
+            } else {
+                leagueData.teams.push({
+                    id: Date.now(),
+                    name: sanitizeInput(name),
+                    logo: logo,
+                    squad: []
+                });
+            }
+            saveData();
+            closeTeamModal();
+            alert("Takım bilgileri kaydedildi!");
+        }
+
+        function saveMatchScoreDirect(id) {
+            if (!currentUser) return;
+            let match = leagueData.fixtures.find(f => f.id === id);
+            match.homeScore = parseInt(document.getElementById(`fh-${id}`).value) || 0;
+            match.awayScore = parseInt(document.getElementById(`fa-${id}`).value) || 0;
+            match.played = true;
+            saveData();
+            alert("Skor kaydedildi!");
+        }
+
+        function savePlayerStats(teamId, pIdx) {
+            if (!currentUser) return;
+            let team = leagueData.teams.find(t => t.id === teamId);
+            let p = team.squad[pIdx];
+            p.goals = parseInt(document.getElementById(`p-g-${teamId}-${pIdx}`).value) || 0;
+            p.assists = parseInt(document.getElementById(`p-a-${teamId}-${pIdx}`).value) || 0;
+            p.tackles = parseInt(document.getElementById(`p-t-${teamId}-${pIdx}`).value) || 0;
+            if (p.pos === 'KL') {
+                p.catches = parseInt(document.getElementById(`p-c-${teamId}-${pIdx}`).value) || 0;
+                p.saves = parseInt(document.getElementById(`p-s-${teamId}-${pIdx}`).value) || 0;
+            }
+            saveData();
+            alert("İstatistikler kaydedildi!");
+        }
+
+        function addHistoryRecordPrompt() {
+            if (!currentUser) return;
+            let season = prompt("Sezon Adı (Örn: 1. Sezon):");
+            if (!season) return;
+
+            let teamNamesList = leagueData.teams.map((t, i) => `${i + 1}. ${t.name}`).join("\n");
+            let teamChoice = prompt(`Şampiyon Takımı Seçin (Numara Girin):\n${teamNamesList}`);
+            let chosenIdx = parseInt(teamChoice) - 1;
+
+            if (isNaN(chosenIdx) || !leagueData.teams[chosenIdx]) {
+                alert("Geçersiz takım seçimi!");
+                return;
+            }
+
+            let ballondor = prompt("Ballon d'Or Kazananı (İsim - Kulüp):");
+            let puskas = prompt("Puskas Kazananı (İsim - Kulüp):");
+            let gkOfYear = prompt("Yılın Kalecisi Kazananı (İsim - Kulüp):");
+
+            if (!leagueData.historyRecords) leagueData.historyRecords = [];
+            leagueData.historyRecords.push({
+                season: sanitizeInput(season.trim()),
+                championTeamId: leagueData.teams[chosenIdx].id,
+                ballondor: sanitizeInput(ballondor || '-'),
+                puskas: sanitizeInput(puskas || '-'),
+                gkOfYear: sanitizeInput(gkOfYear || '-')
+            });
+
+            saveData();
+            alert("Sezon başarısı tarihçeye eklendi!");
+        }
+
+        function deleteHistoryRecord(idx) {
+            if (!currentUser) return;
+            if (confirm("Bu tarihçe kaydını silmek istediğinize emin misiniz?")) {
+                leagueData.historyRecords.splice(idx, 1);
+                saveData();
+            }
+        }
+
+        function deleteTeam(id) {
+            if (!currentUser) return;
+            if (confirm("Takımı silmek istediğinize emin misiniz?")) {
+                leagueData.teams = leagueData.teams.filter(t => t.id !== id);
+                saveData();
+            }
+        }
+
+        function editWeeklyMVP() {
+            if (!currentUser) return;
+            let name = prompt("Haftanın Yıldızı (Oyuncu Adı):", (leagueData.weeklyMVP && leagueData.weeklyMVP.name) || "");
+            let team = prompt("Haftanın Yıldızı (Takımı):", (leagueData.weeklyMVP && leagueData.weeklyMVP.team) || "");
+            if (name) {
+                leagueData.weeklyMVP = { name: sanitizeInput(name.trim()), team: sanitizeInput((team || "").trim()) };
+                saveData();
+            }
+        }
+
+        function addWeeklyTeamPlayerPrompt() {
+            if (!currentUser) return;
+            let name = prompt("Oyuncu Adı:");
+            let team = prompt("Takımı:");
+            let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
+            if (name && team) {
+                if (!leagueData.weeklyTeamPlayers) leagueData.weeklyTeamPlayers = [];
+                leagueData.weeklyTeamPlayers.push({ name: sanitizeInput(name.trim()), team: sanitizeInput(team.trim()), pos: sanitizeInput(pos.trim()) });
+                saveData();
+            }
+        }
+
+        function removeWeeklyTeamPlayer(idx) {
+            if (!currentUser) return;
+            leagueData.weeklyTeamPlayers.splice(idx, 1);
+            saveData();
+        }
+
+        function addSquadPlayerPrompt(teamId) {
+            if (!currentUser) return;
+            let name = prompt("Oyuncu Adı:");
+            let pos = prompt("Mevkii (KL, DF, OS, FV):", "OS").toUpperCase();
+            if (name) {
+                let team = leagueData.teams.find(t => t.id === teamId);
+                if (!team.squad) team.squad = [];
+                team.squad.push({ name: sanitizeInput(name.trim()), pos: sanitizeInput(pos.trim()), goals: 0, assists: 0, tackles: 0, catches: 0, saves: 0 });
+                saveData();
+            }
+        }
+
+        function removeSquadPlayer(teamId, pIdx) {
+            if (!currentUser) return;
+            let team = leagueData.teams.find(t => t.id === teamId);
+            team.squad.splice(pIdx, 1);
+            saveData();
+        }
+
+        function handleAdminLoginLogout() {
+            if (currentUser) {
+                currentUser = null;
+                localStorage.removeItem('asl_admin_session');
+                document.getElementById('user-info').classList.add('hidden');
+                document.getElementById('admin-btn-text').innerText = "Yönetici Girişi";
+                renderAll();
+                alert("Çıkış yapıldı.");
+            } else {
+                toggleLoginModal();
+            }
+        }
+
+        function toggleLoginModal() {
+            document.getElementById('login-modal').classList.toggle('hidden');
+        }
+
+        function loginAdmin() {
+            const userInp = document.getElementById('login-username').value.trim();
+            const passInp = document.getElementById('login-password').value.trim();
+            const found = ADMIN_ACCOUNTS.find(a => a.username === userInp && a.password === passInp);
+
+            if (found) {
+                currentUser = found;
+                localStorage.setItem('asl_admin_session', JSON.stringify(currentUser));
+                document.getElementById('user-info').classList.remove('hidden');
+                document.getElementById('user-info').innerText = `Yetkili: ${currentUser.name}`;
+                document.getElementById('admin-btn-text').innerText = "Çıkış Yap";
+                toggleLoginModal();
+                renderAll();
+                document.getElementById('login-username').value = '';
+                document.getElementById('login-password').value = '';
+                alert("Giriş Yapıldı!");
+            } else {
+                alert("Hatalı kullanıcı adı veya şifre!");
+            }
+        }
+
+        window.onload = () => {
+            checkSavedAdminSession();
+            renderAll();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
