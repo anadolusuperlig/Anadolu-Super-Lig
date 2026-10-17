@@ -61,22 +61,22 @@
 
     <!-- Header / Navbar -->
     <header id="app-header" class="glass sticky top-0 z-40 border-b border-brand-900/40 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between gap-3">
-            <div class="flex items-center space-x-3 min-w-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 flex-shrink-0">
                 <!-- Seçilebilir Lig Logosu -->
-                <button onclick="openLeagueLogoModal()" class="w-16 h-16 sm:w-18 sm:h-18 rounded-full overflow-hidden border-2 border-white shadow-xl shadow-brand-500/50 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5 hover:opacity-90 transition-opacity" title="Lig Logosunu Değiştir">
+                <button onclick="openLeagueLogoModal()" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-white shadow-xl shadow-brand-500/50 flex-shrink-0 bg-[#d90429] flex items-center justify-center p-0.5 hover:opacity-90 transition-opacity" title="Lig Logosunu Değiştir">
                     <div id="league-main-logo-container" class="w-full h-full flex items-center justify-center">
                         <!-- Otomatik Yüklenen SVG / Resim -->
                     </div>
                 </button>
-                <div class="min-w-0">
-                    <h1 class="font-black text-base sm:text-xl md:text-2xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent whitespace-nowrap overflow-hidden text-ellipsis">ANADOLU SÜPER LİG</h1>
-                    <span class="text-[10px] sm:text-xs font-bold text-brand-400 tracking-wider uppercase block whitespace-nowrap overflow-hidden text-ellipsis">Pro Soccer Online Sezonu</span>
+                <div class="flex flex-col justify-center">
+                    <h1 class="font-black text-base sm:text-lg md:text-xl lg:text-2xl tracking-wide bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent whitespace-nowrap">ANADOLU SÜPER LİG</h1>
+                    <span class="text-[10px] sm:text-xs font-bold text-brand-400 tracking-wider uppercase whitespace-nowrap block">Pro Soccer Online Sezonu</span>
                 </div>
             </div>
 
             <!-- Masaüstü Navigasyon -->
-            <nav class="hidden lg:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40">
+            <nav class="hidden xl:flex space-x-1 bg-dark-800/90 p-1.5 rounded-2xl border border-brand-900/40 flex-shrink-0">
                 <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn px-3 lg:px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-lg shadow-brand-600/30">
                     <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Puan Durumu</span>
                 </button>
@@ -106,8 +106,8 @@
             </div>
         </div>
 
-        <!-- Mobil Navigasyon Barı -->
-        <div class="lg:hidden flex overflow-x-auto px-4 py-2 bg-dark-900/90 border-t border-brand-900/40 gap-1 space-x-1 scrollbar-none">
+        <!-- Mobil ve Orta Boyut Ekran Navigasyon Barı -->
+        <div class="xl:hidden flex overflow-x-auto px-4 py-2 bg-dark-900/90 border-t border-brand-900/40 gap-1 space-x-1 scrollbar-none">
             <button onclick="switchTab('standings')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-brand-600 text-white">Puan Durumu</button>
             <button onclick="switchTab('fixtures')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-gray-400 hover:text-white">Fikstür</button>
             <button onclick="switchTab('cup')" class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap text-amber-400">Kupa Turnuvası</button>
@@ -497,7 +497,6 @@
 
         let currentUser = null;
 
-        // Otomatik çıkış için sessionStorage kullanımı
         function checkSavedAdminSession() {
             const savedUser = sessionStorage.getItem('asl_admin_session');
             if (savedUser) {
